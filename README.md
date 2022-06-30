@@ -40,7 +40,10 @@ You can build City3D from the source code˙
 This demo version adapts the UI of [PolyFit](https://github.com/LiangliangNan/PolyFit), which provides a simple user interface with a few buttons (with numbered icons) and screen hints corresponding to these steps. Just click the buttons following the hints.
 
 ---
-![](./images/GUI.png)
+
+<p align="center"> 
+     <img src="./images/GUI.png" width="800"> 
+</p>
 ### Data
 Some test data can be downloaded from the [data](https://github.com/tudelft3d/City3D/tree/main/data) directory.
 
