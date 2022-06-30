@@ -1,14 +1,14 @@
 #ifndef _CGAL_TYPES_H_
 #define _CGAL_TYPES_H_
 
-#include <CGAL/Exact_predicates_exact_constructions_kernel.h>
+#include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 #include <CGAL/Polygon_2.h>
 #include <CGAL/intersections.h>
 #include <CGAL/Boolean_set_operations_2.h>
 #include <CGAL/bounding_box.h>
 #include "../math/math_types.h"
 
-typedef CGAL::Exact_predicates_exact_constructions_kernel Kernel;
+typedef CGAL::Exact_predicates_inexact_constructions_kernel Kernel;
 typedef Kernel::FT Float;
 typedef Kernel::Point_2 Point_2;
 typedef Kernel::Vector_2 Vector_2;
