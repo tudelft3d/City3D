@@ -1,25 +1,28 @@
-#City3D: Large-scale Building Reconstruction from Airborne LiDAR Point Clouds
+## City3D: Large-scale Building Reconstruction from Airborne LiDAR Point Clouds
 
-City3D implements the hypothesis and selection based building reconstruction method described in the following [paper](https://www.mdpi.com/2072-4292/14/9/2254):
+City3D implements the hypothesis-and-selection based building reconstruction method described in the following [paper](https://www.mdpi.com/2072-4292/14/9/2254):
 ```
-Huang, Jin and Stoter, Jantien and Peters, Ravi and Nan, Liangliang. 
-City3D: Large-scale Building Reconstruction from Airborne LiDAR Point Clouds
-Remote Sensing 2022.
+Jin Huang, Jantien Stoter, Ravi Peters, Liangliang Nan. 
+City3D: Large-scale Building Reconstruction from Airborne LiDAR Point Clouds.
+Remote Sensing. 14(9), 2254, 2022.
 ```
+
+This implementation is based on [PolyFit](https://github.com/LiangliangNan/PolyFit).
+
 ---
 
 ### Obtaining City3D
 
-You can also build City3D from the source code˙
+You can build City3D from the source code˙
 
 * Download the [source code](https://github.com/tudelft3d/City3D).
 * Dependencies
     - [Qt](https://www.qt.io/) (v5.12 and later)
-    - [CGAL](http://www.cgal.org/index.html) ( v5.0 and later )
-    - [OpenCv](https://opencv.org/releases/) (v4.0 and later, only main modules are need.)
-    - [Gurobi](https://www.gurobi.com/) ( v9.5)
+    - [CGAL](http://www.cgal.org/index.html) (v5.0 and later)
+    - [OpenCv](https://opencv.org/releases/) (v4.0 and later, only the main modules are needed)
+    - [Gurobi](https://www.gurobi.com/) (v9.5)
 
-* Build.
+* Build
     - There are many ways to build City3D. Choose one of the following (or whatever you are familiar with):
         - Option 1: Use any IDE that can directly handle CMakeLists files to open the CMakeLists.txt in the root directory of City3D. Then you should have obtained a usable project and just build. I recommend using [CLion](https://www.jetbrains.com/clion/).
         - Option 2: Use CMake to generate project files for your IDE. Then load the project to your IDE and build.
@@ -34,17 +37,17 @@ You can also build City3D from the source code˙
 ---
 
 ### Run City3D
-This demo version provides a user interface with a few buttons (with numbered icons) and screen hints corresponding to these steps. Just click the buttons following the hints.
+This demo version adapts the UI of [PolyFit](https://github.com/LiangliangNan/PolyFit), which provides a simple user interface with a few buttons (with numbered icons) and screen hints corresponding to these steps. Just click the buttons following the hints.
 
 ---
 ![](./images/GUI.png)
 ### Data
-Some test data can be downloaded from the \data.
+Some test data can be downloaded from the [data](https://github.com/tudelft3d/City3D/tree/main/data) directory.
 
 ---
 
 ### About the solvers
-We recommend using Gurobi9.5, which is the fastest solver for integer programming.   You may  need to obtain a license (free for academic use) from [here](https://www.gurobi.com/downloads/end-user-license-agreement-academic/).
+We recommend using Gurobi 9.5, which is the fastest solver for integer programming. You may need to obtain a license (free for academic use) from [here](https://www.gurobi.com/downloads/end-user-license-agreement-academic/).
 
 ---
 
@@ -52,7 +55,6 @@ We recommend using Gurobi9.5, which is the fastest solver for integer programmin
 If you use the code/program (or part) of City3D in a scientific work, please cite our paper:
 
 ```bibtex
-
 @Article{HuangCity3d_2022,
     AUTHOR = {Huang, Jin and Stoter, Jantien and Peters, Ravi and Nan, Liangliang},
     TITLE = {City3D: Large-Scale Building Reconstruction from Airborne LiDAR Point Clouds},
@@ -62,7 +64,6 @@ If you use the code/program (or part) of City3D in a scientific work, please cit
     NUMBER = {9},
     ARTICLE-NUMBER = {2254},
 }
-
 
 ```
 
