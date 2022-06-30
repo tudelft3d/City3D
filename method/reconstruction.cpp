@@ -347,7 +347,7 @@ bool is_simple_polygon(const Map::Facet* f)
 	return plg.is_simple();
 }
 
-bool Reconstruction::reconstruct(PointSet* pset, Map* foot_print, Map* result, bool show)
+bool Reconstruction::reconstruct(PointSet* pset, Map* foot_print, Map* result, LinearProgramSolver::SolverName solver_name, bool update_display)
 {
 	if (!pset)
 	{
@@ -408,12 +408,12 @@ bool Reconstruction::reconstruct(PointSet* pset, Map* foot_print, Map* result, b
 			continue;
 		}
         auto line_segs  = compute_line_segment(image_pset, roof_pset, it);
-		Map* building = reconstruct_single_building(roof_pset, line_segs, it);
+		Map* building = reconstruct_single_building(roof_pset, line_segs, it, solver_name);
 
 		if (building)
 		{
 			Geom::merge_into_source(result, building);
-			if (show)
+			if (update_display)
 			{
 				Tessellator::invalidate();
 				MeshRender::invalidate();
@@ -653,7 +653,8 @@ std::vector<vec3> Reconstruction::compute_line_segment(PointSet* seg_pset,
 
 Map* Reconstruction::reconstruct_single_building(PointSet* roof_pset,
 	std::vector<vec3> line_segments,
-	Map::Facet* footprint)
+	Map::Facet* footprint,
+    LinearProgramSolver::SolverName solver_name)
 {
 	// refine planes
 	HypothesisGenerator hypo(roof_pset);
@@ -669,7 +670,7 @@ Map* Reconstruction::reconstruct_single_building(PointSet* roof_pset,
 
 	FaceSelection selector(roof_pset, hypothesis);
 
-	selector.optimize(&polyfit_info, footprint, v);
+	selector.optimize(&polyfit_info, footprint, v, solver_name);
 
 	extrude_boundary_to_ground(hypothesis, Geom::facet_plane(footprint), &polyfit_info);
 

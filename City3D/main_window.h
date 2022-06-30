@@ -1,6 +1,6 @@
 /*
 Copyright (C) 2017  Liangliang Nan
-http://web.siat.ac.cn/~liangliang/ - liangliang.nan@gmail.com
+https://3d.bk.tudelft.nl/liangliang/ - liangliang.nan@gmail.com
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -27,6 +27,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../math/math_types.h"
 #include "../basic/logger.h"
 #include "../basic/progress.h"
+#include "../math/linear_program_solver.h"
 
 
 class QLabel;
@@ -61,6 +62,8 @@ public:
 	void showCoordinateUnderMouse(const vec3& p, bool found) ;
 
 	void resetRendering();
+
+    LinearProgramSolver::SolverName active_solver() const;
 
 public Q_SLOTS:
 	bool open();

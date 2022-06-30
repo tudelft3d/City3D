@@ -50,8 +50,9 @@ Some test data can be downloaded from the [data](https://github.com/tudelft3d/Ci
 ---
 
 ### About the solvers
-We recommend using Gurobi 9.5, which is the fastest solver for integer programming. You may need to obtain a license (free for academic use) from [here](https://www.gurobi.com/downloads/end-user-license-agreement-academic/).
+This demo program uses the open-source SCIP solver by default, which is slightly slower than Gurobi.
 
+To use Gurobi, one has to modify the code in XXX as well as obtain a license (free for academic use) from [here](https://www.gurobi.com/downloads/end-user-license-agreement-academic/). 
 ---
 
 ### Citation

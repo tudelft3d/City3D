@@ -21,9 +21,6 @@ namespace Method {
 	// - a point considered to be on a plane, etc.
 	extern METHOD_API double coincident_threshold;
 
-
-	extern METHOD_API LinearProgramSolver::SolverName  solver_name;
-
 	//________________ names for various quality measures ____________________
 
 	extern METHOD_API std::string facet_attrib_supporting_vertex_group;

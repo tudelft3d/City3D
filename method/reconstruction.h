@@ -5,6 +5,7 @@
 #include "../model/vertex_group.h"
 #include "../model/map.h"
 #include "../model/point_set.h"
+#include "../math/linear_program_solver.h"
 
 
 #include <vector>
@@ -32,7 +33,7 @@ class METHOD_API Reconstruction
 
 	void extract_roofs(PointSet* pset, Map* foot_print);
 	// the reconstructed models will be merged into 'result'
-	bool reconstruct(PointSet* pset, Map* foot_print, Map* result, bool show);
+	bool reconstruct(PointSet* pset, Map* foot_print, Map* result, LinearProgramSolver::SolverName solver_name, bool update_display);
 
  private:
 	PointSet* create_roof_point_set(const PointSet* pset,
@@ -44,7 +45,8 @@ class METHOD_API Reconstruction
 		VertexGroup* building,
 		unsigned int min_support = 40);
 
-	Map* reconstruct_single_building(PointSet* roof_pset, std::vector<vec3> line_segments, Map::Facet* footprint);
+	Map* reconstruct_single_building(PointSet* roof_pset, std::vector<vec3> line_segments, Map::Facet* footprint,
+                                     LinearProgramSolver::SolverName solver_name);
 
 	std::vector<vec3> compute_line_segment(PointSet* seg_pset, PointSet* roof_pset, Map::Facet* footprint);
 

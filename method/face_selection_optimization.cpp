@@ -1,6 +1,6 @@
 /*
 Copyright (C) 2017  Liangliang Nan
-http://web.siat.ac.cn/~liangliang/ - liangliang.nan@gmail.com
+https://3d.bk.tudelft.nl/liangliang/ - liangliang.nan@gmail.com
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -103,7 +103,7 @@ std::vector<std::vector<Map::Facet*> > FaceSelection::find_multi_roofs(Map* mesh
 
 void FaceSelection::optimize(PolyFitInfo* polyfit_info,
 	Map::Facet* foot_print,
-	std::vector<Plane3d*>& v)
+	std::vector<Plane3d*>& v, LinearProgramSolver::SolverName solver_name)
 {
 	if (pset_ == 0 || model_ == 0)
 		return;
@@ -431,7 +431,7 @@ void FaceSelection::optimize(PolyFitInfo* polyfit_info,
 	//////////////////////////////////////////////////////////////////////////
 
 	LinearProgramSolver solver;
-	if (solver.solve(&program_, Method::solver_name))
+	if (solver.solve(&program_, solver_name))
 	{
 
 		// mark results

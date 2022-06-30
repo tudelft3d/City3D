@@ -1,6 +1,6 @@
 /*
 Copyright (C) 2017  Liangliang Nan
-http://web.siat.ac.cn/~liangliang/ - liangliang.nan@gmail.com
+https://3d.bk.tudelft.nl/liangliang/ - liangliang.nan@gmail.com
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -677,7 +677,7 @@ void PaintCanvas::reconstruct() {
 	main_window_->updateWeights();
 	Reconstruction recon;
 
-	bool status = recon.reconstruct(point_set_, foot_print_, reconstruction_, show_reconstruction_);
+	bool status = recon.reconstruct(point_set_, foot_print_, reconstruction_, main_window_->active_solver(), show_reconstruction_);
 	if (!status)
 		setReconstruction(nil);
 

@@ -1,6 +1,6 @@
 /*
 Copyright (C) 2017  Liangliang Nan
-http://web.siat.ac.cn/~liangliang/ - liangliang.nan@gmail.com
+https://3d.bk.tudelft.nl/liangliang/ - liangliang.nan@gmail.com
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -24,6 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "polyfit_info.h"
 #include "../math/math_types.h"
 #include "../math/linear_program.h"
+#include "../math/linear_program_solver.h"
 #include "../model/map_attributes.h"
 
 #include <vector>
@@ -52,7 +53,7 @@ class METHOD_API FaceSelection
 	}
 
 	// optimization using Gurobi solver; This is the default solver
-	virtual void optimize(PolyFitInfo* polyfit_info, Map::Facet* foot_print, std::vector<Plane3d*>& v);
+	virtual void optimize(PolyFitInfo* polyfit_info, Map::Facet* foot_print, std::vector<Plane3d*>& v, LinearProgramSolver::SolverName solver_name);
 
 	//virtual void optimize(PolyFitInfo* polyfit_info, Map::Facet* foot_print, std::vector < Plane3d* > v);
 	std::vector<std::vector<Map::Facet*> > find_multi_roofs(Map* mesh,

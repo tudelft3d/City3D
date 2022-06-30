@@ -13,9 +13,6 @@ namespace Method
 
 	double coincident_threshold = 1e-7;
 
-	//LinearProgramSolver::SolverName solver_name = LinearProgramSolver::SCIP;
-	LinearProgramSolver::SolverName solver_name = LinearProgramSolver::GUROBI;
-
 	//________________ names for various quality measures ____________________
 
 	std::string facet_attrib_supporting_vertex_group = "facet_supporting_vertex_group";
