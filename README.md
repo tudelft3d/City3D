@@ -17,7 +17,7 @@ You can build City3D from the source code˙
 
 * Download the [source code](https://github.com/tudelft3d/City3D).
 * Dependencies
-    - [Qt](https://www.qt.io/) (v5.12 and later)
+    - [Qt](https://www.qt.io/) (v5.12 and later). This is required for only the [GUI demo](./City3D) of City3D. Without Qt, you should still be able to build the [commandline example](./Example) of City3D.
     - [CGAL](http://www.cgal.org/index.html) (v5.0 and later)
     - [OpenCv](https://opencv.org/releases/) (v4.0 and later, only the main modules are needed)
     - [Gurobi](https://www.gurobi.com/) (v9.5)
@@ -37,7 +37,9 @@ You can build City3D from the source code˙
 ---
 
 ### Run City3D
-This demo version adapts the UI of [PolyFit](https://github.com/LiangliangNan/PolyFit), which provides a simple user interface with a few buttons (with numbered icons) and screen hints corresponding to these steps. Just click the buttons following the hints.
+For the [commandline example](./Example), you can simply build and run it (the paths to the input files are hard-coded in the [code](./Example/main.cpp)).
+
+The demo version adapts the UI of [PolyFit](https://github.com/LiangliangNan/PolyFit), which provides a simple user interface with a few buttons (with numbered icons). Just click the buttons one by one in the specified order.
 
 ---
 
