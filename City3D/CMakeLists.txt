@@ -50,7 +50,7 @@ else ()
 endif ()
 
 
-set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER "LOD2")
+set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER "City3D")
 
 
 # The following define makes your compiler emit warnings if you use

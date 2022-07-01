@@ -68,6 +68,8 @@ add_subdirectory(math)
 add_subdirectory(model)
 add_subdirectory(renderer)
 add_subdirectory(method)
-add_subdirectory(City3D)
+
+add_subdirectory(Example)       # command line example
+add_subdirectory(City3D)        # demo with GUI
 
 

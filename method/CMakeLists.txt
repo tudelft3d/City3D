@@ -35,7 +35,7 @@ set(method_SOURCES
 
 add_library(${PROJECT_NAME} STATIC ${method_SOURCES} ${method_HEADERS})
 set_target_properties(${PROJECT_NAME} PROPERTIES
-        FOLDER "LOD2")
+        FOLDER "City3D")
 
 find_package(CGAL REQUIRED COMPONENTS Core)
 if (CGAL_FOUND)

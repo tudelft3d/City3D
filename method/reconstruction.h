@@ -15,28 +15,29 @@ class PolyFitInfo;
 class METHOD_API Reconstruction
 {
  public:
-	Reconstruction()
-	{
-	}
-	~Reconstruction()
-	{
-	}
+	Reconstruction() {}
+	~Reconstruction() {}
 
-	std::vector<std::vector<int>> detect_height_jump(PointSet* pset,
-		Map::Facet* footprint,
-		double min_height,
-		double max_height);
-
-	std::vector<std::vector<int>> compute_height_field(PointSet* pset, Map::Facet* footprint);
-
+    /// segment the scene point cloud using footprint (to obtain individual buildings)
 	void segmentation(PointSet* pset, Map* foot_print);
 
+    /// extract the roof planes for each building
 	void extract_roofs(PointSet* pset, Map* foot_print);
-	// the reconstructed models will be merged into 'result'
-	bool reconstruct(PointSet* pset, Map* foot_print, Map* result, LinearProgramSolver::SolverName solver_name, bool update_display);
+
+	/// reconstruct mesh models of the buildings in the scene.
+	/// Note: the reconstructed models will be merged into 'result'.
+	bool reconstruct(PointSet* pset, Map* foot_print, Map* result, LinearProgramSolver::SolverName solver_name, bool update_display = false);
 
  private:
-	PointSet* create_roof_point_set(const PointSet* pset,
+
+    std::vector<std::vector<int>> detect_height_jump(PointSet* pset,
+                                                     Map::Facet* footprint,
+                                                     double min_height,
+                                                     double max_height);
+
+    std::vector<std::vector<int>> compute_height_field(PointSet* pset, Map::Facet* footprint);
+
+    PointSet* create_roof_point_set(const PointSet* pset,
 		const std::vector<VertexGroup::Ptr>& segments, VertexGroup* building);
 
 	PointSet* create_projected_point_set(const PointSet* pset, const PointSet* roof);

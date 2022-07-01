@@ -33,7 +33,7 @@ set(math_SOURCES
 
 add_library(${PROJECT_NAME} STATIC ${math_SOURCES} ${math_HEADERS})
 set_target_properties(${PROJECT_NAME} PROPERTIES
-                      FOLDER "LOD2")
+                      FOLDER "City3D")
 
 
 target_include_directories(${PROJECT_NAME} PRIVATE

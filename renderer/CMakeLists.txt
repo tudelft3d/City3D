@@ -23,7 +23,7 @@ set(renderer_SOURCES
 
 add_library(${PROJECT_NAME} STATIC ${renderer_SOURCES} ${renderer_HEADERS})
 set_target_properties(${PROJECT_NAME} PROPERTIES
-        FOLDER "LOD2")
+        FOLDER "City3D")
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${POLYFIT_glew_DIR}/include)
 

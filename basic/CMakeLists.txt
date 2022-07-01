@@ -52,7 +52,7 @@ set(basic_SOURCES
 
 add_library(${PROJECT_NAME} SHARED ${basic_SOURCES} ${basic_HEADERS})
 set_target_properties(${PROJECT_NAME} PROPERTIES
-                      FOLDER "LOD2")
+                      FOLDER "City3D")
 
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE BASIC_EXPORTS)

@@ -168,7 +168,6 @@ void Logger::initialize() {
 
 void Logger::terminate() {
 	Logger::out("City3D") << "terminated... Bye!" << std::endl ;
-	ogf_assert(instance_ != nil) ;
 	delete instance_ ;
 	instance_ = nil ;
 }
@@ -274,22 +273,26 @@ Logger::~Logger() {
 }
 
 LoggerStream& Logger::out(const std::string& feature) {
-	ogf_assert(instance_ != nil) ;
+	if (instance_ == nil)
+        initialize();
 	return instance_->out_stream(feature) ;
 }
 
 LoggerStream& Logger::err(const std::string& feature) {
-	ogf_assert(instance_ != nil) ;
+    if (instance_ == nil)
+        initialize();
 	return instance_->err_stream(feature) ;
 }
 
 LoggerStream& Logger::warn(const std::string& feature) {
-	ogf_assert(instance_ != nil) ;
+    if (instance_ == nil)
+        initialize();
 	return instance_->warn_stream(feature) ;
 }
 
 LoggerStream& Logger::status() {
-	ogf_assert(instance_ != nil) ;
+    if (instance_ == nil)
+        initialize();
 	return instance_->status_stream() ;
 }
 
