@@ -46,6 +46,7 @@ The demo version adapts the UI of [PolyFit](https://github.com/LiangliangNan/Pol
 <p align="center"> 
      <img src="./images/GUI.png" width="800"> 
 </p>
+
 ### Data
 Some test data can be downloaded from the [data](https://github.com/tudelft3d/City3D/tree/main/data) directory.
 
