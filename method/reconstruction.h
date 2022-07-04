@@ -1,6 +1,6 @@
 #pragma once
 
-#include "method_common.h"
+
 
 #include "../model/vertex_group.h"
 #include "../model/map.h"
@@ -12,7 +12,7 @@
 
 class PolyFitInfo;
 
-class METHOD_API Reconstruction
+class Reconstruction
 {
  public:
 	Reconstruction() {}

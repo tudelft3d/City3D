@@ -7,7 +7,6 @@ project(${PROJECT_NAME})
 set(renderer_HEADERS
         opengl_info.h
         point_set_render.h
-        renderer_common.h
         rendering_styles.h
         mesh_render.h
         tessellator.h
@@ -25,7 +24,7 @@ add_library(${PROJECT_NAME} STATIC ${renderer_SOURCES} ${renderer_HEADERS})
 set_target_properties(${PROJECT_NAME} PROPERTIES
         FOLDER "City3D")
 
-target_include_directories(${PROJECT_NAME} PRIVATE ${POLYFIT_glew_DIR}/include)
+target_include_directories(${PROJECT_NAME} PRIVATE ${POLYFIT_ROOT})
 
 set (OpenGL_GL_PREFERENCE GLVND)
 find_package(OpenGL REQUIRED)

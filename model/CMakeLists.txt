@@ -20,7 +20,6 @@ set(model_HEADERS
         map_serializer_json.h
         map_serializer.h
         map.h
-        model_common.h
         point_set_io.h
         point_set_serializer_vg.h
         point_set_serializer_ply.h

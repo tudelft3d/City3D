@@ -38,7 +38,7 @@
 #ifndef _ATTRIBUTE_MANAGER_H_
 #define _ATTRIBUTE_MANAGER_H_
 
-#include "basic_common.h"
+
 #include "rat.h"
 #include "attribute_store.h"
 
@@ -50,7 +50,7 @@
 
 
 
-class BASIC_API AttributeManager {
+class AttributeManager {
 public:
 
 	enum Mode { FIND=1, CREATE=2, FIND_OR_CREATE=3} ;

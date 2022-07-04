@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef _FACE_SELECTION_H_
 #define _FACE_SELECTION_H_
 
-#include "method_common.h"
+
 #include "polyfit_info.h"
 #include "../math/math_types.h"
 #include "../math/linear_program.h"
@@ -44,7 +44,7 @@ namespace MapTypes
 }
 
 // to determine if a face should be selected or not
-class METHOD_API FaceSelection
+class FaceSelection
 {
  public:
 	FaceSelection(PointSet* pset, Map* model);

@@ -39,7 +39,7 @@
 #ifndef _MATH_TYPES_H_
 #define _MATH_TYPES_H_
 
-#include "math_common.h"
+
 #include "vecg.h"
 #include "box.h"
 #include "line.h"
@@ -52,7 +52,7 @@
  * boxes and matrices in 2D and 3D. 
  */
 
-class MATH_API GeometricTypes 
+class GeometricTypes
 {
 public:
 
@@ -292,11 +292,11 @@ namespace Geom {
         return ::fabs(triangle_signed_area(p1,p2,p3)) ;
     }
 
-    double MATH_API triangle_beauty(
+    double triangle_beauty(
         const vec2& p1, const vec2& p2, const vec2& p3
     ) ;
 
-    double MATH_API triangle_beauty(
+    double triangle_beauty(
         const vec3& p1, const vec3& p2, const vec3& p3
     ) ;
 
@@ -347,7 +347,7 @@ namespace Geom {
         ) ;
     }
 
-    vec3 MATH_API perpendicular(const vec3& V) ;
+    vec3 perpendicular(const vec3& V) ;
 
     inline double tetra_signed_volume(
         const vec3& p1, const vec3& p2, 
@@ -363,7 +363,7 @@ namespace Geom {
         return ::fabs(tetra_signed_volume(p1,p2,p3,p4)) ;
     }
 
-    vec3 MATH_API tetra_circum_center(
+    vec3 tetra_circum_center(
         const vec3& p1, const vec3& p2, 
         const vec3& p3, const vec3& p4
     ) ;
@@ -392,7 +392,7 @@ namespace Geom {
 		return orig + base1 * p.x + base2 * p.y;
 	}
 
-	void MATH_API sort_along_direction(const std::vector<vec3>& points, const vec3& dir, std::vector<unsigned int>& sorted_indices);
+	void sort_along_direction(const std::vector<vec3>& points, const vec3& dir, std::vector<unsigned int>& sorted_indices);
 }
 
 

@@ -39,7 +39,7 @@
 #ifndef _MATH_POLYGON_3D_H_
 #define _MATH_POLYGON_3D_H_
 
-#include "math_common.h"
+
 #include "math_types.h"
 #include <vector>
 
@@ -58,14 +58,14 @@ namespace Geom {
 	* It defaults to the division-free formula (6) in the same article
 	* in degenerate cases.
 	*/
-	void MATH_API barycentric_coords(const Polygon3d& P, const vec3& p, std::vector<double>& bary);
+	void barycentric_coords(const Polygon3d& P, const vec3& p, std::vector<double>& bary);
 
 
 	/**
 	* Precondition: the segment [s, t] intersects the plane (q1,q2,q3).
 	* If both s and t are in the plane, returns the mid-point.
 	*/
-	vec3 MATH_API intersect_segment_with_plane(
+	vec3 intersect_segment_with_plane(
 		const vec3& s, const vec3& t,
 		const vec3& q1, const vec3& q2, const vec3& q3
 		) ;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "renderer_common.h"
+
 #include "../math/math_types.h"
 #include "../renderer/rendering_styles.h"
 
@@ -52,7 +52,7 @@ FOR_EACH_FACET(Map, target, it) {
 
 */
 
-class RENDERER_API Tessellator
+class Tessellator
 {
 public:
 	//---------------------------------------------------------------

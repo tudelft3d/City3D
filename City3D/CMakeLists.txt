@@ -39,8 +39,8 @@ set(${PROJECT_NAME}_FORMS
         )
 
 set(${PROJECT_NAME}_RESOURCES
-        Resources/FootPrint.qrc
-        Resources/FootPrint.rc
+        Resources/City3D.qrc
+        Resources/City3D.rc
         )
 
 if (APPLE)
@@ -59,6 +59,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER "City3D")
 # deprecated API in order to know how to port your code away from it.
 target_compile_definitions(${PROJECT_NAME} PRIVATE QT_DEPRECATED_WARNINGS)
 
+target_include_directories(${PROJECT_NAME} PRIVATE ${POLYFIT_ROOT})
 
 target_link_libraries(${PROJECT_NAME} Qt5::Core)
 target_link_libraries(${PROJECT_NAME} Qt5::Gui)

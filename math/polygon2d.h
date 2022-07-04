@@ -40,7 +40,7 @@
 #ifndef _MATH_GEOMETRY_POLYGON2D_H_
 #define _MATH_GEOMETRY_POLYGON2D_H_
 
-#include "math_common.h"
+
 #include "math_types.h"
 #include <vector>
 
@@ -50,34 +50,34 @@
 
 namespace Geom {
 
-	void MATH_API save_polygon(const Polygon2d& P, const std::string& file_name) ;
+	void save_polygon(const Polygon2d& P, const std::string& file_name) ;
 
-	double MATH_API signed_area(const Polygon2d& P) ;
+	double signed_area(const Polygon2d& P) ;
 
 	inline double area(const Polygon2d& P) { 
 		return ::fabs(signed_area(P)) ; 
 	}
 
-	void MATH_API convex_hull(const Polygon2d& P, Polygon2d& result) ;
+	void convex_hull(const Polygon2d& P, Polygon2d& result) ;
 
 	/**
 	* V1 and V2 are the normalized axes of the
 	* minimum area enclosing rectangle.
 	*/
-	void MATH_API minimum_area_enclosing_rectangle(
+	void minimum_area_enclosing_rectangle(
 		const Polygon2d& P, vec2& V1, vec2& V2
 		) ;
 
 	// NOTE: works for both convex and non-convex polygons.
-	bool MATH_API point_is_in_polygon(const Polygon2d& P, const vec2& p);
+	bool point_is_in_polygon(const Polygon2d& P, const vec2& p);
 
 	/** 
 	* Note: the barycenter of a polygon is not 
 	* the barycenter of its vertices 
 	*/
-	vec2 MATH_API barycenter(const Polygon2d& P) ;
+	vec2 barycenter(const Polygon2d& P) ;
 
-	vec2 MATH_API vertices_barycenter(const Polygon2d& P) ;
+	vec2 vertices_barycenter(const Polygon2d& P) ;
 
 }
 

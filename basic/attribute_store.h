@@ -39,7 +39,7 @@
 #define _ATTRIBUTE_STORE_H_
 
 
-#include "basic_common.h"
+
 #include "raw_attribute_store.h"
 #include "attribute_life_cycle.h"
 #include "../basic/smart_pointer.h"
@@ -57,7 +57,7 @@ class Record ;
 * instances of the attribute. This class should not be used
 * directly by client code.
 */
-class BASIC_API AttributeStore : public Counted, public RawAttributeStore {
+class AttributeStore : public Counted, public RawAttributeStore {
 public:
 
 	AttributeStore(

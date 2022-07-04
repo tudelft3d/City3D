@@ -41,7 +41,7 @@
 #ifndef _GEOM_MAP_H_
 #define _GEOM_MAP_H_
 
-#include "model_common.h"
+
 #include "iterators.h"
 #include "map_cells.h"
 #include "model.h"
@@ -100,7 +100,7 @@ private:
 class MapMutator ;
 
 
-class MODEL_API Map : public Model, public Counted
+class Map : public Model, public Counted
 {
 public:
 	typedef SmartPointer<Map>					Ptr;
@@ -291,7 +291,7 @@ private:
 /*
 * MapMutator is the base class for the classes that can modify the topology of a mesh.
 */
-class MODEL_API MapMutator
+class MapMutator
 {
 public:
 
@@ -402,7 +402,7 @@ private:
 * and mesh->remove_vertex_observer(this) respectively.
 */
 template<> 
-class MODEL_API MapCombelObserver<Map::Vertex> {
+class MapCombelObserver<Map::Vertex> {
 public:
 	MapCombelObserver(Map* m) ;
 	virtual ~MapCombelObserver() ;
@@ -422,7 +422,7 @@ private:
 * and mesh->remove_halfedge_observer(this) respectively.
 */
 template<> 
-class MODEL_API MapCombelObserver<Map::Halfedge> {
+class MapCombelObserver<Map::Halfedge> {
 public:
 	MapCombelObserver(Map* m) ;
 	virtual ~MapCombelObserver() ;
@@ -443,7 +443,7 @@ private:
 * and map->remove_facet_observer(this) respectively.
 */
 template<> 
-class MODEL_API MapCombelObserver<Map::Facet> {
+class MapCombelObserver<Map::Facet> {
 public:
 	MapCombelObserver(Map* m) ;
 	virtual ~MapCombelObserver() ;

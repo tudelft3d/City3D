@@ -20,14 +20,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef _RENDERER_SURFACE_RENDERER_H_
 #define _RENDERER_SURFACE_RENDERER_H_
 
-#include "renderer_common.h"
+
 #include "rendering_styles.h"
 #include "../model/map_attributes.h"
 
 
 class Map;
 
-class RENDERER_API MeshRender
+class MeshRender
 {
 public:
 

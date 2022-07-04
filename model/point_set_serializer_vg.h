@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef _POINT_SERIALIZER_VERTEX_GROUP_H_
 #define _POINT_SERIALIZER_VERTEX_GROUP_H_
 
-#include "model_common.h"
+
 
 
 #include <string>
@@ -31,7 +31,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 class PointSet;
 class VertexGroup;
 
-class MODEL_API PointSetSerializer_vg
+class PointSetSerializer_vg
 {
 public:
 	// labeled vertex groups

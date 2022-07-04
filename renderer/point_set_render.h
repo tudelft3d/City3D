@@ -22,14 +22,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef _POINT_SET_RENDERER_H_
 #define _POINT_SET_RENDERER_H_
 
-#include "renderer_common.h"
+
 #include "rendering_styles.h"
 
 
 class Canvas;
 class PointSet;
 
-class RENDERER_API PointSetRender
+class PointSetRender
 {
 public:
 	PointSetRender(Canvas* cvs);

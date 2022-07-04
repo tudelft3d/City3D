@@ -2,7 +2,7 @@
 #ifndef _FILEIO_MESH_SERIALIZER_JSON_H_
 #define _FILEIO_MESH_SERIALIZER_JSON_H_
 
-#include "model_common.h"
+
 #include "map.h"
 #include "map_builder.h"
 
@@ -11,7 +11,7 @@
 // I store 2D polygons as a 3D mesh (all z-coordinates are set to 0) consisting of
 // a set of individual faces.
 
-class MODEL_API MapSerializer_json
+class MapSerializer_json
 {
 public:
 	MapSerializer_json();

@@ -21,12 +21,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define _MODEL_H_
 
 
-#include "model_common.h"
+
 #include "../basic/basic_types.h"
 #include "../math/math_types.h"
 
 
-class MODEL_API Model
+class Model
 {
 public:
 	Model() : offset_(0, 0, 0) {}

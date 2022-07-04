@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define _POINT_SET_H_
 
 
-#include "model_common.h"
+
 #include "model.h"
 #include "../basic/basic_types.h"
 #include "../math/math_types.h"
@@ -34,7 +34,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 class VertexGroup;
 
-class MODEL_API PointSet : public Model, public Counted
+class PointSet : public Model, public Counted
 {
 public:
 	typedef SmartPointer<PointSet>	Ptr;

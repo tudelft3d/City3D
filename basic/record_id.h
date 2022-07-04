@@ -39,7 +39,7 @@
 #ifndef __RECORD_ID__
 #define __RECORD_ID__
 
-#include "basic_common.h"
+
 #include "../basic/basic_types.h"
 #include "../basic/assertions.h"
 #include <iostream>
@@ -67,7 +67,7 @@
 * allocation table (RAT).
 */
 
-class BASIC_API RecordId {
+class RecordId {
 
 public:
 	/** default constructor, creates a nil RecordId */
@@ -188,7 +188,7 @@ private:
 /**
 * Base class for all the types used to reference attributes.
 */
-class BASIC_API Record {
+class Record {
 
 protected:
 	const RecordId& record_id() const { return record_id_ ; }

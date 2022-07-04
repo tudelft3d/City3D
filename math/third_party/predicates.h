@@ -22,26 +22,26 @@
 /*    insphere(pa, pb, pc, pd, pe)                                           */
 /*    inspherefast(pa, pb, pc, pd, pe)                                       */
 
-void MATH_API exactinit(int, int, int, REAL, REAL, REAL);
+void exactinit(int, int, int, REAL, REAL, REAL);
 
-REAL MATH_API orient2d(REAL *pa, REAL *pb, REAL *pc);
+REAL orient2d(REAL *pa, REAL *pb, REAL *pc);
 
-REAL MATH_API orient2dfast(REAL *pa, REAL *pb, REAL *pc);
+REAL orient2dfast(REAL *pa, REAL *pb, REAL *pc);
 
-REAL MATH_API orient3d(REAL *pa, REAL *pb, REAL *pc, REAL *pd);
+REAL orient3d(REAL *pa, REAL *pb, REAL *pc, REAL *pd);
 
-REAL MATH_API orient3dfast(REAL *pa, REAL *pb, REAL *pc, REAL *pd);
+REAL orient3dfast(REAL *pa, REAL *pb, REAL *pc, REAL *pd);
 
-REAL MATH_API orient3dexact(REAL *pa, REAL *pb, REAL *pc, REAL *pd);
+REAL orient3dexact(REAL *pa, REAL *pb, REAL *pc, REAL *pd);
 
-REAL MATH_API incircle(REAL *pa, REAL *pb, REAL *pc, REAL *pd);
+REAL incircle(REAL *pa, REAL *pb, REAL *pc, REAL *pd);
 
-REAL MATH_API incirclefast(REAL *pa, REAL *pb, REAL *pc, REAL *pd);
+REAL incirclefast(REAL *pa, REAL *pb, REAL *pc, REAL *pd);
 
-REAL MATH_API insphere(REAL *pa, REAL *pb, REAL *pc, REAL *pd, REAL *pe);
+REAL insphere(REAL *pa, REAL *pb, REAL *pc, REAL *pd, REAL *pe);
 
-REAL MATH_API inspherefast(REAL *pa, REAL *pb, REAL *pc, REAL *pd, REAL *pe);
+REAL inspherefast(REAL *pa, REAL *pb, REAL *pc, REAL *pd, REAL *pe);
 
-REAL MATH_API orient4d(REAL *pa, REAL *pb, REAL *pc, REAL *pd, REAL *pe, REAL ah, REAL bh, REAL ch, REAL dh, REAL eh);
+REAL orient4d(REAL *pa, REAL *pb, REAL *pc, REAL *pd, REAL *pe, REAL ah, REAL bh, REAL ch, REAL dh, REAL eh);
 
 #endif

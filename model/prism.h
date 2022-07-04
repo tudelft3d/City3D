@@ -12,7 +12,7 @@ affiliation: Shenzhen Institute of Advanced Technology
 purpose:	 
 *********************************************************************/
 
-#include "model_common.h"
+
 #include "../math/math_types.h"
 
 #include <vector>
@@ -22,7 +22,7 @@ purpose:
 
 class Map;
 
-class MODEL_API Prism
+class Prism
 {
 public:
 	Prism(void) : height_(0.005f) {} // for rendering

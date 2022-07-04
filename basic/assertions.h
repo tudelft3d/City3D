@@ -39,20 +39,20 @@
 #ifndef _BASIC_ASSERTION_H_
 #define _BASIC_ASSERTION_H_
 
-#include "basic_common.h"
+
 #include <string>
 
 
 
-void BASIC_API ogf_assertion_failed(
+void ogf_assertion_failed(
 									const std::string& condition_string,
 									const std::string& file, int line ) ;
 
-void BASIC_API ogf_range_assertion_failed(
+void ogf_range_assertion_failed(
 	double value, double min_value, double max_value, 
 	const std::string& file, int line ) ;
 
-void BASIC_API ogf_should_not_have_reached(
+void ogf_should_not_have_reached(
 	const std::string& file, int line ) ;
 
 

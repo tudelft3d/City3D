@@ -40,7 +40,7 @@
 #ifndef _GEOM_MAP_TYPES_H_
 #define _GEOM_MAP_TYPES_H_
 
-#include "model_common.h"
+
 #include "../basic/counted.h"
 #include "../basic/smart_pointer.h"
 #include "../math/math_types.h"
@@ -64,7 +64,7 @@ namespace MapTypes {
 	* Combinatorial Element. Combel is the base class for 
 	* vertices, half-edges and polygons.
 	*/
-	class MODEL_API Combel : public Record {
+	class Combel : public Record {
 	public:
 		Combel()  { }
 		~Combel() { }
@@ -75,7 +75,7 @@ namespace MapTypes {
 	/**
 	* A vertex of a Map. Each Vertex has a geometry (i.e. a vec3)
 	*/
-	class MODEL_API Vertex : public Combel {
+	class Vertex : public Combel {
 	public:
 		Vertex() : halfedge_(nil) {  }
 		Vertex(const vec3& p) : halfedge_(nil), point_(p) {  }
@@ -113,7 +113,7 @@ namespace MapTypes {
 	* Each edge of a Map is composed of two Halfedges.
 	*/
 
-	class MODEL_API Halfedge : public Combel {
+	class Halfedge : public Combel {
 	public:
 		Halfedge() : 
 		  opposite_(nil), next_(nil), 
@@ -187,7 +187,7 @@ namespace MapTypes {
 	* A Facet of a Map.
 	*/
 
-	class MODEL_API Facet : public Combel {
+	class Facet : public Combel {
 	public:
 		Facet() : halfedge_(nil) { }
 		~Facet() { halfedge_ = nil ; }

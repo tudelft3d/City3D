@@ -39,7 +39,7 @@
 #ifndef _MAP_IO_H_
 #define _MAP_IO_H_
 
-#include "model_common.h"
+
 #include "../basic/basic_types.h"
 
 #include <string>
@@ -48,7 +48,7 @@
 class Map;
 class MapSerializer;
 
-class MODEL_API MapIO
+class MapIO
 {
 public:
 	static Map*	read(const std::string& file_name);

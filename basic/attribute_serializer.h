@@ -38,7 +38,7 @@
 #ifndef ___ATTRIBUTE_SERIALIZER__
 #define ___ATTRIBUTE_SERIALIZER__
 
-#include "basic_common.h"
+
 #include "attribute.h"
 
 #include <map>
@@ -51,7 +51,7 @@
 * to an object. This is the base class for serializing the value of 
 * an attribute and creating an AttributeStore given its type name.
 */
-class BASIC_API AttributeSerializer : public Counted {
+class AttributeSerializer : public Counted {
 public:
 	static void initialize() ;
 	static void terminate() ;

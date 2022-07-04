@@ -39,7 +39,7 @@
 #ifndef _RAW_ATTRIBUTE_STORE__
 #define _RAW_ATTRIBUTE_STORE__
 
-#include "basic_common.h"
+
 #include "record_id.h"
 
 #include <vector>
@@ -52,7 +52,7 @@
 * is allocated in chunks, to make dynamic growing more efficient
 * (i.e. without needing to copy the data).
 */
-class BASIC_API RawAttributeStore {
+class RawAttributeStore {
 public:
 	enum { CHUNK_SIZE = RecordId::MAX_OFFSET + 1 } ;
 

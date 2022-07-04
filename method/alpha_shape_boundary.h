@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #pragma once
 
-#include "method_common.h"
+
 
 #include <string>
 #include "alpha_shape_CGAL5.0.h"
@@ -27,7 +27,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 class VertexGroup;
 
-class METHOD_API AlphaShapeBoundary
+class AlphaShapeBoundary
 {
  public:
 	// return the indices of boundary points

@@ -7,8 +7,7 @@ project(${PROJECT_NAME})
 set(math_HEADERS
     box.h
     line.h
-    math_common.h
-    math_types.h
+        math_types.h
     matrix.h
     plane.h
     polygon2d.h

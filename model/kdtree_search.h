@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef __KDTREE_KDTREE_SEARCH__
 #define __KDTREE_KDTREE_SEARCH__
 
-#include "model_common.h"
+
 #include "../math/math_types.h"
 #include "../basic/counted.h"
 #include "../basic/smart_pointer.h"
@@ -31,7 +31,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 class PointSet;
 
-class MODEL_API KdTreeSearch : public Counted {
+class KdTreeSearch : public Counted {
 public:
 	KdTreeSearch();
 	virtual ~KdTreeSearch();

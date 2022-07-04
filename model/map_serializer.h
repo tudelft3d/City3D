@@ -40,7 +40,7 @@
 #ifndef _MAP_SERIALIZER_H_
 #define _MAP_SERIALIZER_H_
 
-#include "model_common.h"
+
 #include "../model/map.h"
 #include "../basic/counted.h"
 #include "../basic/smart_pointer.h"
@@ -49,7 +49,7 @@
 
 class AbstractMapBuilder;
 
-class MODEL_API MapSerializer : public Counted
+class MapSerializer : public Counted
 {
 public:
 	typedef Map::Vertex		Vertex ;

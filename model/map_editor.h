@@ -40,14 +40,14 @@
 #ifndef _GEOM_MAP_EDITOR_H_
 #define _GEOM_MAP_EDITOR_H_
 
-#include "model_common.h"
+
 #include "map.h"
 #include "map_attributes.h"
 
 
 class MapComponent;
 
-class MODEL_API MapEditor : public MapMutator {
+class MapEditor : public MapMutator {
 public:
 	MapEditor(Map* target = nil);
 	virtual void set_target(Map* target);

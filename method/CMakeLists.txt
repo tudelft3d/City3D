@@ -11,7 +11,6 @@ set(method_HEADERS
         cgal_types.h
         face_selection.h
         hypothesis_generator.h
-        method_common.h
         method_global.h
         point_set_region_growing.h
         Modified_Otr2.h

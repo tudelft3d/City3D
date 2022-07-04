@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef _POLYFIT_DATA_H_
 #define _POLYFIT_DATA_H_
 
-#include "method_common.h"
+
 #include "../math/math_types.h"
 #include "../model/map_attributes.h"
 #include "../model/vertex_group.h"
@@ -34,7 +34,7 @@ class Map;
 class VertexGroup;
 
 
-class METHOD_API PolyFitInfo {
+class PolyFitInfo {
 public:
 	PolyFitInfo() {}
 	~PolyFitInfo() { clear(); }

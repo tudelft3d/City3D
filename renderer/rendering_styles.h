@@ -38,7 +38,7 @@
 */
 
 
-#include "renderer_common.h"
+
 #include "../basic/color.h"
 
 

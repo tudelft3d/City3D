@@ -21,11 +21,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef _OPENGL_GLINFORMATION_H_
 #define _OPENGL_GLINFORMATION_H_
 
-#include "renderer_common.h"
-#include "../3rd_party/3rd_glew/include/GL/glew.h"
 
 #include <string>
 
+#include <3rd_party/3rd_glew/include/GL/glew.h>
 
 
 #ifndef NDEBUG
@@ -36,7 +35,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define ogf_check_gl
 #endif
 
-class RENDERER_API GLInfo
+class GLInfo
 {
 public:
 	/**

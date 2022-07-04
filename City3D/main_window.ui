@@ -396,22 +396,22 @@
   </widget>
   <action name="actionAbout">
    <property name="icon">
-    <iconset resource="Resources/FootPrint.qrc">
+    <iconset resource="Resources/City3D.qrc">
      <normaloff>:/Resources/about.png</normaloff>:/Resources/about.png</iconset>
    </property>
    <property name="text">
-    <string>About FootPrint</string>
+    <string>About City3D</string>
    </property>
    <property name="iconText">
     <string>About</string>
    </property>
    <property name="toolTip">
-    <string>About FootPrint</string>
+    <string>About City3D</string>
    </property>
   </action>
   <action name="actionSnapshot">
    <property name="icon">
-    <iconset resource="Resources/FootPrint.qrc">
+    <iconset resource="Resources/City3D.qrc">
      <normaloff>:/Resources/snap_shot.png</normaloff>:/Resources/snap_shot.png</iconset>
    </property>
    <property name="text">
@@ -423,7 +423,7 @@
   </action>
   <action name="actionOpen">
    <property name="icon">
-    <iconset resource="Resources/FootPrint.qrc">
+    <iconset resource="Resources/City3D.qrc">
      <normaloff>:/Resources/fileopen.png</normaloff>:/Resources/fileopen.png</iconset>
    </property>
    <property name="text">
@@ -438,7 +438,7 @@
   </action>
   <action name="actionSegmentation">
    <property name="icon">
-    <iconset resource="Resources/FootPrint.qrc">
+    <iconset resource="Resources/City3D.qrc">
      <normaloff>:/Resources/step1.png</normaloff>:/Resources/step1.png</iconset>
    </property>
    <property name="text">
@@ -447,7 +447,7 @@
   </action>
   <action name="actionExtractRoofs">
    <property name="icon">
-    <iconset resource="Resources/FootPrint.qrc">
+    <iconset resource="Resources/City3D.qrc">
      <normaloff>:/Resources/step2.png</normaloff>:/Resources/step2.png</iconset>
    </property>
    <property name="text">
@@ -456,7 +456,7 @@
   </action>
   <action name="actionReconstruction">
    <property name="icon">
-    <iconset resource="Resources/FootPrint.qrc">
+    <iconset resource="Resources/City3D.qrc">
      <normaloff>:/Resources/step3.png</normaloff>:/Resources/step3.png</iconset>
    </property>
    <property name="text">
@@ -474,7 +474,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="Resources/FootPrint.qrc">
+    <iconset resource="Resources/City3D.qrc">
      <normaloff>:/Resources/perspective.png</normaloff>:/Resources/perspective.png</iconset>
    </property>
    <property name="text">
@@ -496,7 +496,7 @@
   <tabstop>plainTextEditOutput</tabstop>
  </tabstops>
  <resources>
-  <include location="Resources/FootPrint.qrc"/>
+  <include location="Resources/City3D.qrc"/>
  </resources>
  <connections/>
 </ui>

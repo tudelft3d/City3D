@@ -38,7 +38,7 @@
 *     Qt, SuperLU, WildMagic and CGAL
 */
 
-#include "basic_common.h"
+
 #include "basic_types.h"
 #include "smart_pointer.h"
 #include "assertions.h"
@@ -55,7 +55,7 @@
 * @see SmartPointer
 */
 
-class BASIC_API Counted {
+class Counted {
 
 public:
 	Counted() ;

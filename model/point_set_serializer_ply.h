@@ -2,7 +2,7 @@
 #ifndef _FILEIO_POINT_SERIALIZER_PLY_H_
 #define _FILEIO_POINT_SERIALIZER_PLY_H_
 
-#include "model_common.h"
+
 
 #include <string>
 
@@ -10,7 +10,7 @@
 
 class PointSet;
 
-class MODEL_API PointSetSerializer_ply
+class PointSetSerializer_ply
 {
 public:
 	static std::string title() { return "PointSetSerializer_ply"; }

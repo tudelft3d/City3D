@@ -380,11 +380,11 @@ void MainWindow::showCoordinateUnderMouse(const vec3& p, bool found) {
 void MainWindow::about()
 {
 #if defined (ENV_32_BIT)
-	QString title = QMessageBox::tr("<h3>FootPrint (32-bit)</h3>");
+	QString title = QMessageBox::tr("<h3>City3D (32-bit)</h3>");
 #elif defined (ENV_64_BIT)
 	QString title = QMessageBox::tr("<h3>City3D (64-bit)</h3>");
 #else
-	QString title = QMessageBox::tr("<h3>FootPrint"</h3>);
+	QString title = QMessageBox::tr("<h3>City3D</h3>");
 #endif
 
 #ifndef NDEBUG
@@ -394,7 +394,7 @@ void MainWindow::about()
 	QString text = QMessageBox::tr(
 		"<p>This program implements our building reconstruction method described in the following paper:</p>"
 		
-		"<p>City3D: Large-scale Urban Reconstruction from Airborne Point Clouds<br>"
+		"<p>City3D: Large-scale Building Reconstruction from Airborne LiDAR Point Clouds<br>"
 		"<span style=\"font-style:italic;\">Jin Huang, Jantien Stoter, Ravi Peters, and Liangliang Nan<br>"
 		"--------------------------------------------------------------------------</p>"
 

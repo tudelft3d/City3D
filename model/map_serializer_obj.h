@@ -38,12 +38,12 @@
 #ifndef _MAP_SERIALIZER_OBJ_H_
 #define _MAP_SERIALIZER_OBJ_H_
 
-#include "model_common.h"
+
 #include "map_serializer.h"
 #include "../basic/color.h"
 
 
-class MODEL_API MapSerializer_obj : public MapSerializer 
+class MapSerializer_obj : public MapSerializer
 {
 public:
 	MapSerializer_obj();
@@ -73,7 +73,7 @@ protected:
 /**
 * Extended obj file format, adds attributes.
 */
-class MODEL_API MapSerializer_eobj : public MapSerializer_obj {
+class MapSerializer_eobj : public MapSerializer_obj {
 public:
 	MapSerializer_eobj() ;
 

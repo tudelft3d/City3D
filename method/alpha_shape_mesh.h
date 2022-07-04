@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #pragma once
 
-#include "method_common.h"
+
 #include "../math/math_types.h"
 #include <string>
 #include <vector>
@@ -30,7 +30,7 @@ class VertexGroup;
 class AlphaShape;
 
 // convert the AlphaShape into a mesh representation
-class METHOD_API AlphaShapeMesh
+class AlphaShapeMesh
 {
 public:
 	// plane is used to lift the 2D points into 3D space

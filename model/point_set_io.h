@@ -20,14 +20,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef _POINT_SET_IO_H_
 #define _POINT_SET_IO_H_
 
-#include "model_common.h"
+
 
 #include <string>
 
 
 class PointSet;
 
-class MODEL_API PointSetIO
+class PointSetIO
 {
 public:
 	// for both point cloud and mesh

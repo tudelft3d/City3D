@@ -38,13 +38,13 @@
 #ifndef _ATTRIBUTE_ADAPTER_H_
 #define _ATTRIBUTE_ADAPTER_H_
 
-#include "basic_common.h"
+
 #include "attribute.h"
 #include "../basic/assertions.h"
 #include "../math/math_types.h"
 
 
-class BASIC_API AttributeAdapterBase {
+class AttributeAdapterBase {
 public:
 	enum PrimaryType {
 		ATTR_UNDEFINED,

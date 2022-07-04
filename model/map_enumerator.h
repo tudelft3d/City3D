@@ -40,14 +40,14 @@
 #ifndef _GEOM_MAP_ENUMERATOR_H_
 #define _GEOM_MAP_ENUMERATOR_H_
 
-#include "model_common.h"
+
 #include "map_attributes.h"
 
 
 class Map;
 
 
-class MODEL_API MapEnumerator {
+class MapEnumerator {
 public:
 	/**
 	* returns the number of vertices.

@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef _MATH_GEOMETRY_LINE_H_
 #define _MATH_GEOMETRY_LINE_H_
 
-#include "math_common.h"
+
 #include "vecg.h"
 
 

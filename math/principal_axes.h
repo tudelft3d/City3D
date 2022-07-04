@@ -39,7 +39,7 @@
 #ifndef __MESH_TOOLS_MATH_PPAL_AXIS__
 #define __MESH_TOOLS_MATH_PPAL_AXIS__
 
-#include "math_common.h"
+
 #include "math_types.h"
 #include "../basic/assertions.h"
 
@@ -50,7 +50,7 @@
 * PrincipalAxes3d enables the center and inertia axes of
 * a cloud of 3d points to be computed.
 */
-class MATH_API PrincipalAxes3d {
+class PrincipalAxes3d {
 public:
 	PrincipalAxes3d() ;
 	void begin() ;
@@ -78,7 +78,7 @@ private:
 * PrincipalAxes2d enables the center and inertia axes of
 * a cloud of 2d points to be computed.
 */
-class MATH_API PrincipalAxes2d {
+class PrincipalAxes2d {
 public:
 	PrincipalAxes2d() ;
 	void begin() ;

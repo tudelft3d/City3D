@@ -40,7 +40,7 @@
 #ifndef _GEOM_MAP_COPIER_H_
 #define _GEOM_MAP_COPIER_H_
 
-#include "model_common.h"
+
 #include "map.h"
 #include "map_attributes.h"
 #include "../basic/attribute_copier.h"
@@ -111,7 +111,7 @@ void merge_into_source(Map* source, Map* another) {
 */
 
 
-class MODEL_API MapCopier {
+class MapCopier {
 public:
 	MapCopier() ;
 	~MapCopier() ;

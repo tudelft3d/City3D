@@ -39,7 +39,7 @@
 #ifndef __RAT_H_
 #define __RAT_H_
 
-#include "basic_common.h" 
+
 #include "raw_attribute_store.h"
 
 /**
@@ -47,7 +47,7 @@
 * the AttributeManager. It manages the free list.
 */
 
-class BASIC_API RAT : public RawAttributeStore {
+class RAT : public RawAttributeStore {
 public:
 	RAT() : RawAttributeStore(sizeof(RecordId)) { }
 

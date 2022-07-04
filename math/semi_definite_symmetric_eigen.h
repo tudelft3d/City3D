@@ -39,7 +39,7 @@
 #ifndef _MATH_MATRIX_UTIL_H_
 #define _MATH_MATRIX_UTIL_H_
 
-#include "math_common.h"
+
 
 
 namespace MatrixUtil {
@@ -259,7 +259,7 @@ namespace MatrixUtil {
 
 
 	// another version is kept
-	void MATH_API semi_definite_symmetric_eigen(
+	void semi_definite_symmetric_eigen(
 		const double *mat, int n, double *eigen_vec, double *eigen_val
 		) ;
 

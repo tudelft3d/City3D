@@ -39,7 +39,7 @@
 #ifndef _GEOM_MAP_GEOMETRY_H_
 #define _GEOM_MAP_GEOMETRY_H_
 
-#include "model_common.h"
+
 #include "map.h"
 #include "../math/polygon2d.h"
 
@@ -51,15 +51,15 @@ namespace Geom {
 		return h->vertex()->point() - h->prev()->vertex()->point();
 	}
 
-	MODEL_API vec3 facet_normal(const Map::Facet* f) ; 
-	MODEL_API vec3 vertex_normal(const Map::Vertex* v) ;
-	MODEL_API vec3 triangle_normal(const Map::Facet* f) ;
+	vec3 facet_normal(const Map::Facet* f) ;
+	vec3 vertex_normal(const Map::Vertex* v) ;
+	vec3 triangle_normal(const Map::Facet* f) ;
 
 	// I assume the facet is planar
-	MODEL_API Plane3d	facet_plane(const Map::Facet* f) ;
-	MODEL_API Polygon3d	facet_polygon(const Map::Facet* f) ;
+	Plane3d	facet_plane(const Map::Facet* f) ;
+	Polygon3d	facet_polygon(const Map::Facet* f) ;
 
-	double MODEL_API facet_area(const Map::Facet* f) ;
+	double facet_area(const Map::Facet* f) ;
 
 	inline double edge_length(const Map::Halfedge* h) {
 		return length(vector(h)) ;
@@ -102,19 +102,19 @@ namespace Geom {
 			) ;
 	}
 
-	double MODEL_API map_area(const Map* map) ;
+	double map_area(const Map* map) ;
 
-	Box3d MODEL_API bounding_box(const Map* map) ;
+	Box3d bounding_box(const Map* map) ;
 
-	MODEL_API Map*  duplicate(const Map* map);
+	Map*  duplicate(const Map* map);
 
-	MODEL_API Map*  copy_to_mesh(const Polygon3d& plg);
-	MODEL_API Map*  copy_to_mesh(const std::vector<Polygon3d>& plgs);
+	Map*  copy_to_mesh(const Polygon3d& plg);
+	Map*  copy_to_mesh(const std::vector<Polygon3d>& plgs);
 
-	MODEL_API Map*	merge(const std::vector<Map*>& maps);
-	MODEL_API void	merge_into_source(Map* source, Map* another);
+	Map*	merge(const std::vector<Map*>& maps);
+	void	merge_into_source(Map* source, Map* another);
 
-	MODEL_API void	merge_into_source(Map* source, Map::Facet* f);
+	void	merge_into_source(Map* source, Map::Facet* f);
 
 }
 

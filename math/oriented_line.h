@@ -38,7 +38,7 @@
 #ifndef _MATH_ORIENTED_LINE_H_
 #define _MATH_ORIENTED_LINE_H_
 
-#include "math_common.h"
+
 #include "math_types.h"
 
 /**

@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef _MATH_LINEAR_PROGRAM_H_
 #define _MATH_LINEAR_PROGRAM_H_
 
-#include "math_common.h"
+
 
 #include <vector>
 #include <cassert>

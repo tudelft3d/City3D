@@ -4,7 +4,7 @@
 
 
 
-#include "method_common.h"
+
 #include "../model/vertex_group.h"
 #include <string>
 #include <vector>
@@ -13,7 +13,7 @@
 
 class PointSet;
 
-class METHOD_API Region_Growing_Dectetor
+class Region_Growing_Dectetor
 {
 public:
 	// for entire point cloud. Returns the extracted primitives.

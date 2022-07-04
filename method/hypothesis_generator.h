@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef _HYPOTHESIS_GENERATOR_
 #define _HYPOTHESIS_GENERATOR_
 
-#include "method_common.h"
+
 #include "../math/polygon2d.h"
 #include "../model/vertex_group.h"
 #include "../model/map_attributes.h"
@@ -43,7 +43,7 @@ namespace MapTypes {
 }
 
 
-class METHOD_API HypothesisGenerator
+class HypothesisGenerator
 {
  public:
 	HypothesisGenerator(PointSet* pset);

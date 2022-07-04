@@ -39,7 +39,7 @@
 #ifndef _BASIC_LOGGER_H_
 #define _BASIC_LOGGER_H_
 
-#include "basic_common.h"
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -81,7 +81,7 @@ private:
 
 //_________________________________________________________
 
-class BASIC_API LoggerClient {
+class LoggerClient {
 public:
 	virtual void out_message(const std::string& value) = 0 ;
 	virtual void warn_message(const std::string& value) = 0 ;
@@ -90,7 +90,7 @@ public:
 	virtual ~LoggerClient() ;
 } ;
 
-class BASIC_API CoutLogger : public LoggerClient {
+class CoutLogger : public LoggerClient {
 public:	
 	CoutLogger();
 	~CoutLogger();
@@ -138,7 +138,7 @@ private:
 * so it doesn't need the name.
 */
 
-class BASIC_API Logger {
+class Logger {
 public:
 	static void initialize() ;
 	static void terminate() ;
@@ -239,8 +239,8 @@ private:
 // and redirect their messages into Graphite's logging system by
 // #defining printf and fprintf
 
-void BASIC_API graphite_printf(const char* format, ...) ;
-void BASIC_API graphite_fprintf(FILE* out, const char* format, ...) ;
+void graphite_printf(const char* format, ...) ;
+void graphite_fprintf(FILE* out, const char* format, ...) ;
 
 
 #endif

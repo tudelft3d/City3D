@@ -40,7 +40,7 @@
 #ifndef _GEOM_MAP_BUILDER_H_
 #define _GEOM_MAP_BUILDER_H_
 
-#include "model_common.h"
+
 #include "map.h"
 #include "map_attributes.h"
 #include "../basic/color.h"
@@ -49,7 +49,7 @@
 #include <vector>
 
 
-class MODEL_API AbstractMapBuilder {
+class AbstractMapBuilder {
 public:
 	virtual ~AbstractMapBuilder() ;
 	virtual void begin_surface() = 0 ;
@@ -77,7 +77,7 @@ public:
 
 //_________________________________________________________
 
-class MODEL_API MapBuilder : public AbstractMapBuilder, public MapMutator {
+class MapBuilder : public AbstractMapBuilder, public MapMutator {
 private:
 	enum state {initial, surface, facet, final} ;
 
