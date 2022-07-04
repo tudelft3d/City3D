@@ -241,7 +241,7 @@ std::vector<vec3> Otr2_edge_sim::cluster_lines(Otr_2 &otr2, Map::Facet *foot_pri
         }
         cen /= (2 * cls.size());
         vec2 avg_dir;
-        double total_len;
+        double total_len = 0.0;
         for (int i = 0; i < dirs.size(); ++i)
         {
             auto tmp_dir = dirs[i];
