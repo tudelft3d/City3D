@@ -21,16 +21,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "point_set_render.h"
 #include "../model/point_set.h"
-#include "../model/vertex_group.h"
 
-
-#ifdef __APPLE__
-#include <OpenGL/gl.h>
-#else
-#include <GL/gl.h>
-#endif
-
-
+#include "../3rd_party/3rd_glew/include/GL/glew.h"
 
 
 PointSetRender::PointSetRender(Canvas* cvs)
@@ -74,7 +66,6 @@ void PointSetRender::set_per_point_color(bool x) {
 
 
 void PointSetRender::draw(PointSet*	pset) {
-	glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
 	glDisable(GL_MULTISAMPLE);
 
 	if (point_set_style_.visible) {
@@ -88,7 +79,6 @@ void PointSetRender::draw(PointSet*	pset) {
 		draw_vertex_groups(pset);
 
 	glEnable(GL_MULTISAMPLE);
-	glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
 }
 
 
