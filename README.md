@@ -56,8 +56,8 @@ Some test data can be downloaded from the [data](https://github.com/tudelft3d/Ci
 This demo program can use either the open-source SCIP solver or the commercial solver Gurobi. The entire source code 
 of the SCIP solver is already included in this repository.
 
-To use Gurobi, one has to install Gurobi first and make sure the solver's headers and libraries 
-can be found by CMake. This can be done by specifying the paths of the solver in [FindGUROBI.cmake](https://github.com/tudelft3d/City3D/blob/main/cmake/FindGUROBI.cmake). 
+The Gurobi solver is faster than SCIP and is thus highly recommended. To use Gurobi, install it first and make sure 
+the headers and libraries of Gurobi can be found by CMake. This can be done by specifying the paths of Gurobi in [FindGUROBI.cmake](https://github.com/tudelft3d/City3D/blob/main/cmake/FindGUROBI.cmake). 
 Note: you need to [obtain a license](https://www.gurobi.com/downloads/end-user-license-agreement-academic/) to use Gurobi, which is free for academic use.
 
 ---
