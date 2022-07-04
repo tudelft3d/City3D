@@ -33,8 +33,7 @@ set(method_SOURCES
 
 
 add_library(${PROJECT_NAME} STATIC ${method_SOURCES} ${method_HEADERS})
-set_target_properties(${PROJECT_NAME} PROPERTIES
-        FOLDER "City3D")
+set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER "City3D")
 
 find_package(CGAL REQUIRED COMPONENTS Core)
 if (CGAL_FOUND)
@@ -58,9 +57,6 @@ endif ()
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${POLYFIT_eigen_DIR})
 
-target_compile_definitions(${PROJECT_NAME} PRIVATE METHOD_EXPORTS)
-
-
 if (MSVC)
     target_compile_definitions(${PROJECT_NAME} PRIVATE
             _CRT_SECURE_NO_WARNINGS
@@ -68,4 +64,4 @@ if (MSVC)
             )
 endif ()
 find_package( OpenCV REQUIRED )
-target_link_libraries(${PROJECT_NAME} basic math model  renderer   ${OpenCV_LIBS})
+target_link_libraries(${PROJECT_NAME} basic math model renderer ${OpenCV_LIBS})

@@ -55,17 +55,11 @@ set(model_SOURCES
         kdtree/kdTree.cpp
         )
 
-
 add_library(${PROJECT_NAME} STATIC ${model_SOURCES} ${model_HEADERS})
-set_target_properties(${PROJECT_NAME} PROPERTIES
-        FOLDER "City3D")
+set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER "City3D")
 
 set(LASTOOLS_INCLUDE_DIR ${3RD_PARTY_DIR}/3rd_LAStools/LASzip/src ${3RD_PARTY_DIR}/3rd_LAStools/LASlib/inc)
 target_include_directories(${PROJECT_NAME} PRIVATE ${LASTOOLS_INCLUDE_DIR})
-
-
-target_compile_definitions(${PROJECT_NAME} PRIVATE MODEL_EXPORTS)
-
 
 if (MSVC)
     target_compile_definitions(${PROJECT_NAME} PRIVATE
@@ -73,6 +67,5 @@ if (MSVC)
             _CRT_SECURE_NO_DEPRECATE
             )
 endif ()
-
 
 target_link_libraries(${PROJECT_NAME} basic math 3rd_LAStools 3rd_rply)

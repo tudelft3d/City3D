@@ -19,20 +19,14 @@ set(renderer_SOURCES
         tessellator.cpp
         )
 
-
 add_library(${PROJECT_NAME} STATIC ${renderer_SOURCES} ${renderer_HEADERS})
-set_target_properties(${PROJECT_NAME} PROPERTIES
-        FOLDER "City3D")
+set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER "City3D")
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${POLYFIT_ROOT})
 
 set (OpenGL_GL_PREFERENCE GLVND)
 find_package(OpenGL REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE ${OPENGL_LIBRARIES} basic math model 3rd_glew)
-
-
-target_compile_definitions(${PROJECT_NAME} PRIVATE RENDERER_EXPORTS)
-
 
 if (MSVC)
     target_compile_definitions(${PROJECT_NAME} PRIVATE

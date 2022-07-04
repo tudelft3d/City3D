@@ -5,49 +5,46 @@ project(${PROJECT_NAME})
 
 
 set(math_HEADERS
-    box.h
-    line.h
+        box.h
+        line.h
         math_types.h
-    matrix.h
-    plane.h
-    polygon2d.h
-    principal_axes.h
-    semi_definite_symmetric_eigen.h
-    vecg.h
-    linear_program.h
-    linear_program_solver.h
-    )
+        matrix.h
+        plane.h
+        polygon2d.h
+        principal_axes.h
+        semi_definite_symmetric_eigen.h
+        vecg.h
+        linear_program.h
+        linear_program_solver.h
+        )
 
 set(math_SOURCES
-    math_types.cpp
-    polygon2d.cpp
-    principal_axes.cpp
-    semi_definite_symmetric_eigen.cpp
-    linear_program_solver.cpp
-    linear_program_solver_SCIP.cpp
-    linear_program_solver_GUROBI.cpp
-    )
+        math_types.cpp
+        polygon2d.cpp
+        principal_axes.cpp
+        semi_definite_symmetric_eigen.cpp
+        linear_program_solver.cpp
+        linear_program_solver_SCIP.cpp
+        linear_program_solver_GUROBI.cpp
+        )
 
 
 
 add_library(${PROJECT_NAME} STATIC ${math_SOURCES} ${math_HEADERS})
 set_target_properties(${PROJECT_NAME} PROPERTIES
-                      FOLDER "City3D")
+        FOLDER "City3D")
 
 
 target_include_directories(${PROJECT_NAME} PRIVATE
-  ${POLYFIT_scip_DIR}
-  ${POLYFIT_scip_DIR}/scip
-  )
-
-target_compile_definitions(${PROJECT_NAME} PRIVATE MATH_EXPORTS)
-
+        ${POLYFIT_scip_DIR}
+        ${POLYFIT_scip_DIR}/scip
+        )
 
 if (MSVC)
     target_compile_definitions(${PROJECT_NAME} PRIVATE
-        _CRT_SECURE_NO_WARNINGS
-        _CRT_SECURE_NO_DEPRECATE
-        )
+            _CRT_SECURE_NO_WARNINGS
+            _CRT_SECURE_NO_DEPRECATE
+            )
 endif()
 
 include(../cmake/FindGUROBI.cmake)
@@ -61,7 +58,4 @@ if (GUROBI_FOUND)
     target_link_libraries(${PROJECT_NAME} PRIVATE ${GUROBI_LIBRARIES})
 endif()
 
-
-
-
-target_link_libraries( ${PROJECT_NAME} PRIVATE basic 3rd_scip 3rd_soplex )
+target_link_libraries( ${PROJECT_NAME} PRIVATE basic 3rd_scip 3rd_soplex)
