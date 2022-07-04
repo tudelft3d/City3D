@@ -50,15 +50,15 @@ Error : libQGLViewer requires a minimum Qt version of 4.0
 # ifndef QGLVIEWER_STATIC
 #   ifdef CREATE_QGLVIEWER_DLL
 #     if QT_VERSION >= 0x040500
-#       define QGLVIEWER_EXPORT Q_DECL_EXPORT
+#       define QGLVIEWER_EXPORT //Q_DECL_EXPORT
 #     else
-#       define QGLVIEWER_EXPORT  __declspec(dllexport)
+#       define QGLVIEWER_EXPORT  //__declspec(dllexport)
 #     endif
 #   else
 #     if QT_VERSION >= 0x040500
-#       define QGLVIEWER_EXPORT Q_DECL_IMPORT
+#       define QGLVIEWER_EXPORT //Q_DECL_IMPORT
 #     else
-#       define QGLVIEWER_EXPORT  __declspec(dllimport)
+#       define QGLVIEWER_EXPORT  //__declspec(dllimport)
 #     endif
 #  endif
 # endif

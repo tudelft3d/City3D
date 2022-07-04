@@ -74,7 +74,7 @@ set(qglviewer_SOURCES
     )
 
 
-add_library(${PROJECT_NAME} SHARED ${qglviewer_SOURCES} ${qglviewer_HEADERS})
+add_library(${PROJECT_NAME} STATIC ${qglviewer_SOURCES} ${qglviewer_HEADERS})
 set_target_properties(${PROJECT_NAME} PROPERTIES
                       FOLDER "3rd_party")
 
@@ -92,7 +92,7 @@ if (MSVC)
     target_compile_definitions(${PROJECT_NAME} PRIVATE
             _CRT_SECURE_NO_WARNINGS
             _CRT_SECURE_NO_DEPRECATE
-            CREATE_QGLVIEWER_DLL
+            QGLVIEWER_STATIC
         )
 endif()
 

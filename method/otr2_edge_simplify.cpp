@@ -1,17 +1,22 @@
 #include "otr2_edge_simplify.h"
+
 #include <fstream>
-#include "../basic/logger.h"
+
 #include <CGAL/bounding_box.h>
-#include "../model/map_circulators.h"
 #include <CGAL/linear_least_squares_fitting_2.h>
 #include <CGAL/Bbox_2.h>
-#include "../model/map_io.h"
-#include<boost/shared_ptr.hpp>
-#include "dbscan.h"
-#include "../model/point_set.h"
 #include <CGAL/Simple_cartesian.h>
 #include <CGAL/Iso_rectangle_2.h>
 #include <CGAL/squared_distance_2.h> //for 2D functions
+#include <boost/shared_ptr.hpp>
+
+#include "../basic/logger.h"
+#include "../model/map_circulators.h"
+#include "../model/map_io.h"
+#include "../model/point_set.h"
+
+#include "dbscan.h" 
+#include "cgal_types.h" 
 
 using FT = typename K::FT;
 using Indices = std::vector<std::size_t>;
@@ -93,11 +98,6 @@ std::vector<vec3> Otr2_edge_sim::edge_simplify(std::vector<std::vector<int>> edg
     line_segments = cluster_lines(otr2, foot_print, sp);
     return line_segments;
 
-}
-
-Point to_cgal_point(const vec2 &p)
-{
-    return Point(p.x, p.y);
 }
 
 double compute_avg_length(Map::Facet *foot_print)
