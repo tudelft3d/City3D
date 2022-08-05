@@ -90,7 +90,6 @@ typedef CGAL_AlphaShape::Finite_vertices_iterator			Vertices_iterator;
 typedef CGAL_AlphaShape::Finite_faces_iterator				Faces_iterator;
 typedef CGAL_AlphaShape::Face_handle						Face_handle;
 typedef CGAL_AlphaShape::Vertex_handle						Vertex_handle;
-typedef CGAL_AlphaShape::					Vertex_iterator;
 
 
 class AlphaShape : public CGAL_AlphaShape  
