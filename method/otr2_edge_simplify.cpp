@@ -1,26 +1,13 @@
 #include "otr2_edge_simplify.h"
-
-#include <fstream>
-
 #include <CGAL/bounding_box.h>
-#include <CGAL/linear_least_squares_fitting_2.h>
 #include <CGAL/Bbox_2.h>
 #include <CGAL/Simple_cartesian.h>
 #include <CGAL/Iso_rectangle_2.h>
 #include <CGAL/squared_distance_2.h> //for 2D functions
-#include <boost/shared_ptr.hpp>
-
-#include "../basic/logger.h"
 #include "../model/map_circulators.h"
-#include "../model/map_io.h"
-#include "../model/point_set.h"
-
 #include "dbscan.h" 
 #include "cgal_types.h" 
 
-using FT = typename K::FT;
-using Indices = std::vector<std::size_t>;
-using Segments = std::vector<Segment>;
 
 FT Otr2_edge_sim::max_distance(std::vector<Point> p, Otr_2 &otr2)
 {
@@ -277,9 +264,10 @@ std::vector<vec3> Otr2_edge_sim::cluster_lines(Otr_2 &otr2, Map::Facet *foot_pri
     auto edge_pairs = output_edges;
 
     //rotate the direction of the line segments to make them strictly align with  the footprint edge
-    std::vector<Point> rotated_points;
-    std::vector<std::pair<std::size_t, std::size_t> > rotated_edges;
-
+    std::vector<Point> rotated_points=pts;
+    std::vector<std::pair<std::size_t, std::size_t> > rotated_edges=edge_pairs;
+#if 1
+    rotated_edges.clear(); rotated_edges.clear();
     for (eit = edge_pairs.begin(); eit != edge_pairs.end(); eit++)
     {
         std::size_t index_1 = eit->first;
@@ -311,6 +299,7 @@ std::vector<vec3> Otr2_edge_sim::cluster_lines(Otr_2 &otr2, Map::Facet *foot_pri
         rotated_edges.push_back(std::make_pair(rotated_points.size() - 1, rotated_points.size() - 2));
 
     }
+#endif
     new_point = rotated_points;
     edges = rotated_edges;
 

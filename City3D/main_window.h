@@ -129,6 +129,8 @@ private:
 
 public:
 	WgtRender*	wgtRender_;
+
+    void generate_footprint();
 };
 
 #endif // TESTQGLVIEWER_H

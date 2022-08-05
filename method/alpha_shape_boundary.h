@@ -22,14 +22,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
 #include <string>
-#include "alpha_shape_CGAL5.0.h"
+#include "alpha_shape_CGAL5_4.h"
+#include "../model/point_set.h"
 #include <vector>
 
-class VertexGroup;
 
 class AlphaShapeBoundary
 {
  public:
 	// return the indices of boundary points
-	static std::vector<unsigned int> apply(VertexGroup* g, double radius);
+	static std::vector<vec2> apply(PointSet* g,double radius);
 };

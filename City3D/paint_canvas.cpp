@@ -458,7 +458,10 @@ void PaintCanvas::setReconstruction(Map* mesh) {
 
 void PaintCanvas::setPointSet(PointSet* pset) { 
 	if (point_set_)
-		point_set_.forget();
+    {
+        foot_print_.forget();
+        point_set_.forget();
+    }
 
 	if (pset) 
 		point_set_ = pset; 
@@ -645,7 +648,11 @@ void PaintCanvas::segmentation() {
 	main_window_->checkBoxShowReconstruction->setChecked(false);
     main_window_->updateWeights();
 	Reconstruction recon;
-
+    if (!foot_print_)
+    {
+        main_window_->generate_footprint();
+        foot_print_=recon.generate_polygon(point_set_);
+    }
 	recon.segmentation(point_set_, foot_print_);
 
 	update_all();
@@ -658,7 +665,6 @@ void PaintCanvas::extractRoofs() {
 	main_window_->checkBoxShowReconstruction->setChecked(false);
     main_window_->updateWeights();
 	Reconstruction recon;
-
 	recon.extract_roofs(point_set_, foot_print_);
 
 	update_all();

@@ -21,6 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <QFileDialog>
 #include <QLabel>
 #include <QStatusBar>
+#include <QDebug>
 #include <QSettings>
 #include <QCloseEvent>
 #include <QPlainTextEdit>
@@ -375,6 +376,18 @@ void MainWindow::showCoordinateUnderMouse(const vec3& p, bool found) {
 	if (found)
 		coordString = QString("XYZ = [%1, %2, %3]").arg(p.x).arg(p.y).arg(p.z);
 	coordinateUnderMouseLabel_->setText(coordString);
+}
+
+void MainWindow::generate_footprint() {
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, " ", "No footprint provided, generate  one?",
+                                  QMessageBox::No|QMessageBox::Yes);
+    if (reply == QMessageBox::Yes) {
+        qDebug() << "We generate a footprint";
+    } else {
+        qDebug() << "No footprint provided";
+        QApplication::quit();
+    }
 }
 
 void MainWindow::about()

@@ -38,18 +38,21 @@ void WeightPanelManual::updateUI() {
 	float complexity = truncate_digits(Method::lambda_model_complexity, 3);
     float number=Method::number_region_growing;
     float density=Method::point_density;
+    float ground=   Method::ground_height;
 
 	QString text_fitting = QString("%1").arg(fitting);
 	QString text_coverage = QString("%1").arg(coverage);
 	QString text_complexity = QString("%1").arg(complexity);
     QString text_number = QString("%1").arg(number);
     QString text_density = QString("%1").arg(density);
+    QString text_ground = QString("%1").arg(ground);
 
 	lineEditFitting->setText(text_fitting);
 	lineEditHeight->setText(text_coverage);
 	lineEditComplexity->setText(text_complexity);
     lineEditNumber->setText(text_number);
     lineEditDensity->setText(text_density);
+    lineEditGround->setText(text_ground);
 }
 
 
@@ -59,4 +62,5 @@ void WeightPanelManual::updateWeights() {
 	Method::lambda_model_complexity = lineEditComplexity->text().toFloat();
     Method::number_region_growing=lineEditNumber->text().toFloat();
     Method::point_density=lineEditDensity->text().toFloat();
+    Method::ground_height=lineEditGround->text().toFloat();
 }

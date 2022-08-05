@@ -5,7 +5,7 @@ project(${PROJECT_NAME})
 
 
 set(method_HEADERS
-        alpha_shape_CGAL5.0.h
+        alpha_shape_CGAL5_4.h
         alpha_shape_mesh.h
         alpha_shape.h
         cgal_types.h
@@ -16,6 +16,7 @@ set(method_HEADERS
         Modified_Otr2.h
         dbscan.h
         otr2_edge_simplify.h
+        regularize_polygon.h
         )
 
 set(method_SOURCES
@@ -29,6 +30,7 @@ set(method_SOURCES
         reconstruction.cpp
         method_global.cpp
         point_set_region_growing.cpp
+        regularize_polygon.cpp
         otr2_edge_simplify.cpp)
 
 
@@ -64,4 +66,13 @@ if (MSVC)
             )
 endif ()
 find_package( OpenCV REQUIRED )
-target_link_libraries(${PROJECT_NAME} basic math model renderer ${OpenCV_LIBS})
+include(../cmake/FindGUROBI.cmake)
+if (GUROBI_FOUND)
+    message(STATUS "Gurobi include dir: " ${GUROBI_INCLUDE_DIRS})
+    message(STATUS "Gurobi libraries: " ${GUROBI_LIBRARIES})
+
+    target_compile_definitions(${PROJECT_NAME} PUBLIC HAS_GUROBI)
+
+    target_include_directories(${PROJECT_NAME} PRIVATE ${GUROBI_INCLUDE_DIRS})
+endif()
+target_link_libraries(${PROJECT_NAME} basic math model renderer ${OpenCV_LIBS} ${GUROBI_LIBRARIES})

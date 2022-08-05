@@ -21,13 +21,6 @@
 #include <memory>
 #include <functional>
 
-#if !BRUTEFORCE
-/*
-* @author: Scott Deming, John Tsiombikas
-* @github:https://github.com/sdeming/kdtree
-*/
-#include "kdtree.h"
-#endif
 
 typedef unsigned int uint;
 

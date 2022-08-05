@@ -16,6 +16,7 @@ namespace Method {
 
     extern double number_region_growing;
     extern double point_density;
+    extern double ground_height;
 
 	// - two points considered as coincident; 
 	// - a point considered to be on a plane, etc.

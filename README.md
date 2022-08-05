@@ -17,8 +17,8 @@ You can build City3D from the source code˙
 
 * Download the [source code](https://github.com/tudelft3d/City3D).
 * Dependencies
-    - [Qt](https://www.qt.io/) (v5.12 and later). This is required for only the [GUI demo](./City3D) of City3D. Without Qt, you should still be able to build the [commandline example](./Example) of City3D.
-    - [CGAL](http://www.cgal.org/index.html) (v5.0 and later).
+    - [Qt](https://www.qt.io/) (v5.12 and later). This is required for only the [GUI demo](./City3D) of City3D. Without Qt, you should still be able to build the [commandline example](./Example1) of City3D.
+    - [CGAL](http://www.cgal.org/index.html) (v5.4 and later).
     - [OpenCv](https://opencv.org/releases/) (v4.0 and later, only the main modules are needed).
     - [Gurobi](https://www.gurobi.com/) (optional but recommended).
 
@@ -37,7 +37,7 @@ You can build City3D from the source code˙
 ---
 
 ### Run City3D
-For the [commandline example](./Example), you can simply build and run it (the paths to the input files are hard-coded in the [code](./Example/main.cpp)).
+For the [commandline example](./Example1), you can simply build and run it (the paths to the input files are hard-coded in the [code](Example1/main.cpp)).
 
 The demo version adapts the UI of [PolyFit](https://github.com/LiangliangNan/PolyFit), which provides a simple user interface with a few buttons (with numbered icons). Just click the buttons one by one in the specified order.
 
@@ -48,9 +48,11 @@ The demo version adapts the UI of [PolyFit](https://github.com/LiangliangNan/Pol
 </p>
 
 ### Data
-Some test data can be downloaded from the [data](https://github.com/tudelft3d/City3D/tree/main/data) directory.
-Requirements on the input data: raw Lidar point clouds and footprint data.
-If no footprint is provided, we can optionally generate the footprint from the point cloud of building instance.
+Some test data can be found [here](https://github.com/tudelft3d/City3D/tree/main/data).
+Two ways to use our method:
+- Raw Lidar point clouds and footprint data are available (see the  [data](https://github.com/tudelft3d/City3D/tree/main/data) directory),  run  [Example1](./Example1).
+- Only Lidar point clouds of building instances (see the  [data](https://github.com/tudelft3d/City3D/tree/main/data/building_instances) directory) are provided, we can generate the footprint for each single building and then reconstruct the building  model, run  [Example2](./Example2).
+
 
 
 ---
@@ -83,10 +85,9 @@ If you use the code/program (or part) of City3D in a scientific work, please cit
 
 ## TODOs
 This is an academic prototype of LoD2 building reconstruction from LiDAR point clouds. Many intermediate steps can be improved.
-- [ ] Add support for generating footprint from point cloud of buildings instance.
 - [ ] Integrate with other line segments detector, like [LSD](http://www.ipol.im/pub/art/2012/gjmr-lsd/?utm%20source=doi)
-- [ ] Use more robust plane segmentation methods, like [PDPC](https://github.com/STORM-IRIT/Plane-Detection-Point-Cloud)
-- [ ] Compare our cluster based shape regularization scheme with the one in [CGAL](https://doc.cgal.org/latest/Shape_regularization/index.html)
+- [ ] Use more robust plane segmentation methods, like [GoCoPP](https://github.com/Ylannl/GoCoPP)
+
                            
 
 ---

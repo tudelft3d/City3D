@@ -4,14 +4,14 @@ get_filename_component(PROJECT_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 project(${PROJECT_NAME})
 
 set(${PROJECT_NAME}_SOURCES
-    main.cpp
-    )
+        building_instance.cpp
+        )
 
-add_executable( ${PROJECT_NAME} ${${PROJECT_NAME}_SOURCES})
+add_executable(${PROJECT_NAME} ${${PROJECT_NAME}_SOURCES})
 
 set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER "City3D")
 
-target_link_libraries( ${PROJECT_NAME} basic math model method)
+target_link_libraries(${PROJECT_NAME} basic math model method)
 
 # The resources directory
 target_compile_definitions(

@@ -69,7 +69,8 @@ add_subdirectory(model)
 add_subdirectory(renderer)
 add_subdirectory(method)
 
-add_subdirectory(Example)       # command line example
+add_subdirectory(Example1)       # command line example
+add_subdirectory(Example2)       # command line example
 add_subdirectory(City3D)        # demo with GUI
 
 

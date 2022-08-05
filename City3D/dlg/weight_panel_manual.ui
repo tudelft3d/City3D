@@ -78,6 +78,13 @@
          </property>
         </widget>
        </item>
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Ground</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </item>
      <item>
@@ -168,6 +175,19 @@
          </property>
         </widget>
        </item>
+       <item>
+        <widget class="QLineEdit" name="lineEditGround">
+         <property name="maximumSize">
+          <size>
+           <width>80</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
       </layout>
      </item>
      <item>
@@ -193,7 +213,7 @@
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>38</height>
+       <height>33</height>
       </size>
      </property>
     </spacer>
