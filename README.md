@@ -50,10 +50,8 @@ The demo version adapts the UI of [PolyFit](https://github.com/LiangliangNan/Pol
 ### Data
 Some test data can be found [here](https://github.com/tudelft3d/City3D/tree/main/data).
 Two ways to use our method:
-- Raw Lidar point clouds and footprint data are available (see the  [data](https://github.com/tudelft3d/City3D/tree/main/data) directory),  run  [Example1](./Example1).
-- Only Lidar point clouds of building instances (see the  [data](https://github.com/tudelft3d/City3D/tree/main/data/building_instances) directory) are provided, we can generate the footprint for each single building and then reconstruct the building  model, run  [Example2](./Example2).
-
-
+- Both point cloud and footprint are available (see the [data](https://github.com/tudelft3d/City3D/tree/main/data) directory), see [Example1](./Example1).
+- Only point cloud of building instances is available (see the [data](https://github.com/tudelft3d/City3D/tree/main/data/building_instances) directory), the method can generate footprint for each building and then reconstruct it, See [Example2](./Example2).
 
 ---
 
