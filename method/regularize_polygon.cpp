@@ -241,5 +241,5 @@ std::vector<vec2> RegularizePolygon::optimize_polygon(const std::vector<vec2> &p
         std::cerr << "Exception during optimization" << std::endl;
     }
 
-
+    return std::vector<vec2>();
 }
