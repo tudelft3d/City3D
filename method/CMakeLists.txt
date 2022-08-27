@@ -39,13 +39,17 @@ set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER "City3D")
 
 find_package(CGAL REQUIRED COMPONENTS Core)
 if (CGAL_FOUND)
-    message("Found CGAL.")
-    include(${CGAL_USE_FILE})
-    message("CGAL_CXX_FLAGS_INIT: ${CGAL_CXX_FLAGS_INIT}")
-    add_definitions(${CGAL_CXX_GLAFS_INIT})
-    message("CGAL_LIBRARIES: ${CGAL_LIBRARIES}")
-    message("CGAL_3RD_PARTY_LIBRARIES: ${CGAL_3RD_PARTY_LIBRARIES}")
-    target_link_libraries(${PROJECT_NAME} ${CGAL_LIBRARIES} ${CGAL_3RD_PARTY_LIBRARIES})
+    message(STATUS "Found CGAL: ${CGAL_VERSION}")
+    if (CGAL_VERSION VERSION_GREATER_EQUAL "5.4")
+        include(${CGAL_USE_FILE})
+        message("CGAL_CXX_FLAGS_INIT: ${CGAL_CXX_FLAGS_INIT}")
+        add_definitions(${CGAL_CXX_GLAFS_INIT})
+        message("CGAL_LIBRARIES: ${CGAL_LIBRARIES}")
+        message("CGAL_3RD_PARTY_LIBRARIES: ${CGAL_3RD_PARTY_LIBRARIES}")
+        target_link_libraries(${PROJECT_NAME} ${CGAL_LIBRARIES} ${CGAL_3RD_PARTY_LIBRARIES})
+    else ()
+        message(FATAL_ERROR "CGAL ${CGAL_VERSION} found, but v5.4 or above is required. Please install CGAL v5.4 or above")
+    endif ()
 else ()
     message(FATAL_ERROR "CGAL is required.")
 endif ()
@@ -59,20 +63,24 @@ endif ()
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${POLYFIT_eigen_DIR})
 
-if (MSVC)
-    target_compile_definitions(${PROJECT_NAME} PRIVATE
-            _CRT_SECURE_NO_WARNINGS
-            _CRT_SECURE_NO_DEPRECATE
-            )
-endif ()
-find_package( OpenCV REQUIRED )
+
+find_package(OpenCV REQUIRED)
+
 include(../cmake/FindGUROBI.cmake)
 if (GUROBI_FOUND)
     message(STATUS "Gurobi include dir: " ${GUROBI_INCLUDE_DIRS})
     message(STATUS "Gurobi libraries: " ${GUROBI_LIBRARIES})
 
     target_compile_definitions(${PROJECT_NAME} PUBLIC HAS_GUROBI)
-
     target_include_directories(${PROJECT_NAME} PRIVATE ${GUROBI_INCLUDE_DIRS})
-endif()
-target_link_libraries(${PROJECT_NAME} basic math model renderer ${OpenCV_LIBS} ${GUROBI_LIBRARIES})
+    target_link_libraries(${PROJECT_NAME} basic math model renderer ${OpenCV_LIBS} ${GUROBI_LIBRARIES})
+else ()
+    target_link_libraries(${PROJECT_NAME} basic math model renderer ${OpenCV_LIBS})
+endif ()
+
+if (MSVC)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE
+            _CRT_SECURE_NO_WARNINGS
+            _CRT_SECURE_NO_DEPRECATE
+            )
+endif ()
