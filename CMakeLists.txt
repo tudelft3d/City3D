@@ -44,6 +44,9 @@ set(POLYFIT_eigen_DIR               ${3RD_PARTY_DIR}/3rd_eigen-3.3.7)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
 
 find_package(Boost REQUIRED)
+if (Boost_FOUND)
+        message(STATUS "Found Boost-${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_BUGFIX_VERSION}")
+endif ()
 
 ################################################################################
 
@@ -71,6 +74,6 @@ add_subdirectory(method)
 
 add_subdirectory(Example1)       # command line example
 add_subdirectory(Example2)       # command line example
-add_subdirectory(City3D)        # demo with GUI
+add_subdirectory(City3D)         # demo with GUI
 
 
