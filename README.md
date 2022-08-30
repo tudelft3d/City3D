@@ -83,6 +83,7 @@ If you use the code/program (or part) of City3D in a scientific work, please cit
 
 ## TODOs
 This is an academic prototype of LoD2 building reconstruction from LiDAR point clouds. Many intermediate steps can be improved.
+- [ ] Release the dataset. Expected by Sept. 5th
 - [ ] Integrate with other line segments detector, like [LSD](http://www.ipol.im/pub/art/2012/gjmr-lsd/?utm%20source=doi)
 - [ ] Use more robust plane segmentation methods, like [GoCoPP](https://github.com/Ylannl/GoCoPP)
 
