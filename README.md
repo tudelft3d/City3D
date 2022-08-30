@@ -19,7 +19,7 @@ You can build City3D from the source code˙
 * Dependencies
     - [Qt](https://www.qt.io/) (v5.12 and later). This is required for only the [GUI demo](./City3D) of City3D. Without Qt, you should still be able to build the [commandline example](./Example1) of City3D.
     - [CGAL](http://www.cgal.org/index.html) (v5.4 and later).
-    - [OpenCv](https://opencv.org/releases/) (v4.0 and later, only the main modules are needed).
+    - [OpenCV](https://opencv.org/releases/) (v4.0 and later, only the main modules are needed).
     - [Gurobi](https://www.gurobi.com/) (optional but recommended).
 
 * Build
