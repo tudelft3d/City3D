@@ -29,11 +29,11 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 
 ### Configuration
-set(POLYFIT_ROOT         ${CMAKE_CURRENT_LIST_DIR})
-set(POLYFIT_INCLUDE_DIR  ${POLYFIT_ROOT}  ${CMAKE_CURRENT_BINARY_DIR})
-set(POLYFIT_SOURCE_DIR   ${POLYFIT_ROOT})
+set(CITY3D_ROOT         ${CMAKE_CURRENT_LIST_DIR})
+set(POLYFIT_INCLUDE_DIR  ${CITY3D_ROOT}  ${CMAKE_CURRENT_BINARY_DIR})
+set(POLYFIT_SOURCE_DIR   ${CITY3D_ROOT})
 
-set(3RD_PARTY_DIR   ${POLYFIT_ROOT}/3rd_party)
+set(3RD_PARTY_DIR   ${CITY3D_ROOT}/3rd_party)
 set(POLYFIT_qglviewer_DIR           ${3RD_PARTY_DIR}/3rd_QGLViewer-2.6.3)
 set(POLYFIT_scip_DIR                ${3RD_PARTY_DIR}/3rd_scip)
 set(POLYFIT_soplex_DIR              ${3RD_PARTY_DIR}/3rd_soplex)

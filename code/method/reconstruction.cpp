@@ -369,8 +369,11 @@ Reconstruction::reconstruct(PointSet *pset, Map *foot_print, Map *result, Linear
     ProgressLogger progress(foot_print->size_of_facets());
     KdTreeSearch_var kdtree = new KdTreeSearch;
     kdtree->begin();
+
+    int idx = 0;
     FOR_EACH_FACET(Map, foot_print, it)
     {
+        std::cout << "processing " << (idx + 1) << "/" << foot_print->size_of_facets() << " building..." << std::endl;
         VertexGroup::Ptr g = buildings[it];
         if (!g)
             continue;

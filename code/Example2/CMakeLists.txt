@@ -4,7 +4,7 @@ get_filename_component(PROJECT_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 project(${PROJECT_NAME})
 
 set(${PROJECT_NAME}_SOURCES
-        building_instance.cpp
+        main.cpp
         )
 
 add_executable(${PROJECT_NAME} ${${PROJECT_NAME}_SOURCES})
@@ -17,5 +17,5 @@ target_link_libraries(${PROJECT_NAME} basic math model method)
 target_compile_definitions(
         ${PROJECT_NAME}
         PRIVATE
-        "POLYFIT_ROOT_DIR=\"${POLYFIT_ROOT}\""
+        "CITY3D_ROOT_DIR=\"${CITY3D_ROOT}\""
 )

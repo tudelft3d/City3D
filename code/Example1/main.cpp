@@ -25,7 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
 int main(int argc, char **argv) {
-    const std::string directory = std::string(POLYFIT_ROOT_DIR) + "/data/";
+    const std::string directory = std::string(CITY3D_ROOT_DIR) + "/../data/";
 
     // input point cloud file name
     const std::string input_cloud_file = directory + "002.ply";
@@ -78,6 +78,10 @@ int main(int argc, char **argv) {
             std::cerr << "failed to save reconstruction result to file " << output_file << std::endl;
     } else
         std::cerr << "reconstruction failed" << std::endl;
+
+    delete pset;
+    delete footprint;
+    delete result;
 
     return EXIT_FAILURE;
 }
