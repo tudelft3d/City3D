@@ -80,7 +80,7 @@ if (NOT GUROBI_FOUND)
             "C:\\dev\\gurobi950\\win64\\lib"
             "C:\\dev\\gurobi901\\win64\\lib"
             )
-    
+
     find_path(GUROBI_INCLUDE_DIR gurobi_c++.h
             PATHS ${SEARCH_PATHS_FOR_HEADERS}
             )
