@@ -47,6 +47,7 @@ if (NOT GUROBI_FOUND)
             "/Library/gurobi950/macos_universal2/include"
             "C:\\dev\\gurobi950\\win64\\include"
             "/Library/gurobi951/macos_universal2/include"
+            "/Library/gurobi952/macos_universal2/include"
             )
 
     set(SEARCH_PATHS_FOR_LIBRARIES
@@ -55,6 +56,7 @@ if (NOT GUROBI_FOUND)
             "/Library/gurobi950/macos_universal2/lib"
             "C:\\dev\\gurobi950\\win64\\lib"
             "/Library/gurobi951/macos_universal2/lib"
+            "/Library/gurobi952/macos_universal2/lib"
             )
 
     find_path(GUROBI_INCLUDE_DIR gurobi_c++.h
