@@ -1,4 +1,4 @@
-## City3D: Large-scale Building Reconstruction from Airborne LiDAR Point Clouds
+### City3D: Large-scale Building Reconstruction from Airborne LiDAR Point Clouds
 
 <p align="center"> 
      <img src="./images/scene.png" width="800"> 
