@@ -70,8 +70,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>302</width>
-         <height>629</height>
+         <width>344</width>
+         <height>622</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout">
@@ -461,9 +461,6 @@
    </property>
    <property name="text">
     <string>Reconstruction</string>
-   </property>
-   <property name="shortcutVisibleInContextMenu">
-    <bool>true</bool>
    </property>
   </action>
   <action name="actionProjectionMode">
