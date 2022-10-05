@@ -38,6 +38,10 @@ using Contour_directions =
         CGAL::Shape_regularization::Contours::Multiple_directions_2<Kernel, Contour>;
 
 struct vec2_ind {
+	vec2_ind(int a, int b) {
+		data[0] = a; 
+		data[1] = b;
+	}
     int data[2];
 
     float operator[](int idx) const
@@ -96,8 +100,7 @@ std::vector<int> orient_ply(std::vector<vec2_ind> edges)
             last_edge = target_edge;
         } else
         {
-            vec2_ind new_target({target_edge.data[1], target_edge.data[0]});
-            last_edge = new_target;
+			last_edge = vec2_ind(target_edge.data[1], target_edge.data[0]);
         }
         new_edges.push_back(last_edge);
     }
