@@ -21,8 +21,8 @@ You can build City3D from the source code˙
 
 * Download the [source code](https://github.com/tudelft3d/City3D).
 * Dependencies
-    - [Qt](https://www.qt.io/) (v5.12 and later). This is required by only the [GUI demo](./code/City3D) of City3D. 
-      Without Qt, you should still be able to build the two commandline programs [Example1](./code/Example1) and [Example2](./code/Example2).
+    - [Qt](https://www.qt.io/) (v5.12 and later). This is required by only the [GUI demo](https://github.com/tudelft3d/City3D/tree/main/code/City3D) of City3D. 
+      Without Qt, you should still be able to build the two commandline programs [Example_1](https://github.com/tudelft3d/City3D/tree/main/code/CLI_Example_1) and [Example_2](https://github.com/tudelft3d/City3D/tree/main/code/CLI_Example_2).
     - [CGAL](http://www.cgal.org/index.html) (v5.4 and later).
     - [OpenCV](https://opencv.org/releases/) (v4.0 and later, only the main modules are needed).
     - [Gurobi](https://www.gurobi.com/). **Note for Linux users:** You may have to build the Gurobi library (`libgurobi_c++.a`) 
@@ -47,12 +47,12 @@ You can build City3D from the source code˙
 
 This repository includes three executable programs:
 
-- [Example1](./code/Example1): a commandline program that can reconstruct multiple buildings in a large scene using 
+- [Example_1](https://github.com/tudelft3d/City3D/tree/main/code/CLI_Example_1): a commandline program that can reconstruct multiple buildings in a large scene using 
 both point cloud and footprint as input.
-- [Example2](./code/Example2): a commandline program showing the reconstruction of all the pre-segmented buildings in
+- [Example_2](https://github.com/tudelft3d/City3D/tree/main/code/CLI_Example_2): a commandline program showing the reconstruction of all the pre-segmented buildings in
 a large scene using only the point clouds as input. The individual buildings have already been segmented and each 
 building is stored as a separate point cloud file. Our method generates footprint for each building and then reconstructs it.
-- [City3D](./code/City3D): a demo version of our method with GUI. This demo provides a simple user interface with 
+- [City3D](https://github.com/tudelft3d/City3D/tree/main/code/City3D): a demo version of our method with GUI. This demo provides a simple user interface with 
 a few buttons (with numbered icons). Just click the buttons one by one in the specified order to run the workflow. 
 The UI was adapted from [PolyFit](https://github.com/LiangliangNan/PolyFit).
 
@@ -65,8 +65,8 @@ The UI was adapted from [PolyFit](https://github.com/LiangliangNan/PolyFit).
 ### Data
 Some test data can be found [here](https://github.com/tudelft3d/City3D/tree/main/data).
 Two ways to use our method:
-- Both point cloud and footprint are available (see the [data](https://github.com/tudelft3d/City3D/tree/main/data) directory), see [Example1](./code/Example1).
-- Only point cloud of building instances is available (see the [building_instances](https://github.com/tudelft3d/City3D/tree/main/data/building_instances) directory), the method can generate footprint for each building and then reconstruct it, See [Example2](./code/Example2).
+- Both point cloud and footprint are available (see the [data](https://github.com/tudelft3d/City3D/tree/main/data) directory), see [Example_1](./code/CLI_Example_1).
+- Only point cloud of building instances is available (see the [building_instances](https://github.com/tudelft3d/City3D/tree/main/data/building_instances) directory), the method can generate footprint for each building and then reconstruct it, See [Example_2](./code/CLI_Example_2).
 
 ---
 
