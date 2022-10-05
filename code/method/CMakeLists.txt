@@ -64,7 +64,7 @@ endif ()
 target_include_directories(${PROJECT_NAME} PRIVATE ${POLYFIT_eigen_DIR})
 
 
-find_package(OpenCV REQUIRED)
+find_package(OpenCV REQUIRED core imgproc)
 
 include(../cmake/FindGUROBI.cmake)
 if (GUROBI_FOUND)
