@@ -373,7 +373,7 @@ Reconstruction::reconstruct(PointSet *pset, Map *foot_print, Map *result, Linear
     int idx = 0;
     FOR_EACH_FACET(Map, foot_print, it)
     {
-        std::cout << "processing " << (idx + 1) << "/" << foot_print->size_of_facets() << " building..." << std::endl;
+        std::cout << "processing " << ++idx << "/" << foot_print->size_of_facets() << " building..." << std::endl;
         VertexGroup::Ptr g = buildings[it];
         if (!g)
             continue;
@@ -424,7 +424,6 @@ Reconstruction::reconstruct(PointSet *pset, Map *foot_print, Map *result, Linear
         Logger::warn("-") << "encountered " << num << " non-simple foot print "
                           << (num > 1 ? " polygons." : " polygon.") << std::endl;
 //	Logger::out("-") << "reconstruction done. Time: " << t.elapsed() << " sec." << std::endl;
-	++idx;
 
     return success;
 }
