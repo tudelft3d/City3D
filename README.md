@@ -30,18 +30,35 @@ You can build City3D from the source code˙
       and run `make`. Then replace the original `libgurobi_c++.a` (in the `lib` directory) with your generated file.
 
 * Build
-    - There are many ways to build City3D. Choose one of the following (or whatever you are familiar with):
-        - Option 1: Use any IDE that can directly handle CMakeLists files to open the CMakeLists.txt in the root directory of City3D. Then you should have obtained a usable project and just build. I recommend using [CLion](https://www.jetbrains.com/clion/).
-        - Option 2: Use CMake to generate project files for your IDE. Then load the project to your IDE and build.
-        - Option 3: Use CMake to generate Makefiles and then `make` (on Linux/macOS) or `nmake`(on Windows with Microsoft Visual Studio). For Windows users,  you can also install Linux on Windows with  [WSL](https://docs.microsoft.com/en-us/windows/wsl/install). For Linux or macOS, you can simply
-            ```
-            $ cd City3D
-            $ mkdir Release
-            $ cd Release
-            $ cmake -DCMAKE_BUILD_TYPE=Release ..
-            $ make
-            ```
----
+  
+  There are many options to build City3D. Choose one of the following (not an exhausitive list):
+
+  - Option 1 (purely on command line): Use CMake to generate Makefiles and then `make` (on Linux/macOS) or `nmake`(on Windows with Microsoft 
+  Visual Studio). 
+    - On Linux or macOS
+        ```
+        $ cd City3D
+        $ mkdir Release
+        $ cd Release
+        $ cmake -DCMAKE_BUILD_TYPE=Release ..
+        $ make
+        ```
+    - On Windows with Microsoft Visual Studio
+        ```
+        $ cd City3D
+        $ mkdir Release
+        $ cd Release
+        $ cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release ..
+        $ nmake
+        ```
+  
+  - Option 2: Use any IDE that can directly handle CMakeLists files to open the `CMakeLists.txt` in the **root** directory of 
+  City3D. Then you should have obtained a usable project and just build it. I recommend using 
+[CLion](https://www.jetbrains.com/clion/) or [QtCreator](https://www.qt.io/product).
+  
+  - Option 3: Use CMake-Gui to generate project files for your favorite IDE. Then load the project to your IDE and build it.
+
+  Don't have any experience with C/C++ programming? Then check this <a href="https://github.com/LiangliangNan/Easy3D/blob/main/HowToBuild.md">How to build</a> I wrote for [Easy3D](https://github.com/LiangliangNan/Easy3D).
 
 ### Run City3D
 
