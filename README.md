@@ -42,7 +42,7 @@ You can build City3D from the source code˙
             $ cmake -DCMAKE_BUILD_TYPE=Release ..
             $ make
             ```
-          If you want to use MSVC as compiler but work on the command line, use the option `-G "NMake Makefiles"`, and call `nmake` afterward, i.e.,
+          On Windows with Microsoft Visual Studio, if you want to work purly on the command line (in addition to the above two options), use the option `-G "NMake Makefiles"` and call `nmake` afterward, i.e.,
             ```
             $ cd City3D
             $ mkdir Release
