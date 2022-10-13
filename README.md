@@ -30,16 +30,25 @@ You can build City3D from the source code˙
       and run `make`. Then replace the original `libgurobi_c++.a` (in the `lib` directory) with your generated file.
 
 * Build
-    - There are many ways to build City3D. Choose one of the following (or whatever you are familiar with):
-        - Option 1: Use any IDE that can directly handle CMakeLists files to open the CMakeLists.txt in the root directory of City3D. Then you should have obtained a usable project and just build. I recommend using [CLion](https://www.jetbrains.com/clion/).
-        - Option 2: Use CMake to generate project files for your IDE. Then load the project to your IDE and build.
-        - Option 3: Use CMake to generate Makefiles and then `make` (on Linux/macOS) or `nmake`(on Windows with Microsoft Visual Studio). For Windows users,  you can also install Linux on Windows with  [WSL](https://docs.microsoft.com/en-us/windows/wsl/install). For Linux or macOS, you can simply
+    - There are many ways to build City3D. Choose one of the following (not an exhaustive list):
+        - Option 1: Use any IDE that can directly handle CMakeLists files to open the `CMakeLists.txt` in the **root** directory of City3D. Then you should have obtained a usable project and just build. I recommend using [CLion](https://www.jetbrains.com/clion/).
+        - Option 2 (with GUI tools): Use `CMake-Gui` to generate project files for your IDE. Then load the project to your IDE and build.
+        - Option 3 (purely on commmand line): Use `CMake` to generate Makefiles and then `make` (on Linux/macOS) or `nmake`(on Windows with Microsoft Visual Studio). 
+          For Linux or macOS, you can simply
             ```
             $ cd City3D
             $ mkdir Release
             $ cd Release
             $ cmake -DCMAKE_BUILD_TYPE=Release ..
             $ make
+            ```
+          If you want to use MSVC as compiler but work on the command line, use the option `-G "NMake Makefiles"`, and call `nmake` afterward, i.e.,
+            ```
+            $ cd City3D
+            $ mkdir Release
+            $ cd Release
+            $ cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release ..
+            $ nmake
             ```
 ---
 
