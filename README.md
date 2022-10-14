@@ -43,7 +43,7 @@ You can build City3D from the source code˙
         $ cmake -DCMAKE_BUILD_TYPE=Release ..
         $ make
         ```
-    - On Windows with Microsoft Visual Studio, you must use `x64 Native Tools Command Prompt for VS XXXX` (don't use the x86 version), then
+    - On Windows with Microsoft Visual Studio, use `x64 Native Tools Command Prompt for VS XXXX` (don't use the x86 one), then
         ```
         $ cd path-to-root-dir-of-City3D           
         $ mkdir Release
