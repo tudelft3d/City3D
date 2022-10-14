@@ -20,7 +20,7 @@ This implementation is based on [PolyFit](https://github.com/LiangliangNan/PolyF
 You can build City3D from the source code˙
 
 * Download the [source code](https://github.com/tudelft3d/City3D).
-* Dependencies
+* Dependencies (Attention for Windows users: ALL dependencies must be for `x64`)
     - [Qt](https://www.qt.io/) (v5.12 and later). This is required by only the [GUI demo](https://github.com/tudelft3d/City3D/tree/main/code/City3D) of City3D. 
       Without Qt, you should still be able to build the two commandline programs [Example_1](https://github.com/tudelft3d/City3D/tree/main/code/CLI_Example_1) and [Example_2](https://github.com/tudelft3d/City3D/tree/main/code/CLI_Example_2).
     - [CGAL](http://www.cgal.org/index.html) (v5.4 and later).
@@ -37,15 +37,15 @@ You can build City3D from the source code˙
   Visual Studio). 
     - On Linux or macOS
         ```
-        $ cd City3D
+        $ cd path-to-root-dir-of-City3D
         $ mkdir Release
         $ cd Release
         $ cmake -DCMAKE_BUILD_TYPE=Release ..
         $ make
         ```
-    - On Windows with Microsoft Visual Studio
+    - On Windows with Microsoft Visual Studio, you must use `x64 Native Tools Command Prompt for VS XXXX` (don't use the x86 version), then
         ```
-        $ cd City3D
+        $ cd path-to-root-dir-of-City3D           
         $ mkdir Release
         $ cd Release
         $ cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release ..
@@ -54,9 +54,11 @@ You can build City3D from the source code˙
   
   - Option 2: Use any IDE that can directly handle CMakeLists files to open the `CMakeLists.txt` in the **root** directory of 
   City3D. Then you should have obtained a usable project and just build it. I recommend using 
-[CLion](https://www.jetbrains.com/clion/) or [QtCreator](https://www.qt.io/product).
+[CLion](https://www.jetbrains.com/clion/) or [QtCreator](https://www.qt.io/product). 
+    For Windows users: your IDE must set for `x64`.
   
   - Option 3: Use CMake-Gui to generate project files for your favorite IDE. Then load the project to your IDE and build it.
+    For Windows users: your IDE must set for `x64`.
 
   Don't have any experience with C/C++ programming? Then check this <a href="https://github.com/LiangliangNan/Easy3D/blob/main/HowToBuild.md">How to build</a> I wrote for [Easy3D](https://github.com/LiangliangNan/Easy3D).
 
