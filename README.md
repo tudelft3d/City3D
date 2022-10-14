@@ -55,10 +55,10 @@ You can build City3D from the source code˙
   - Option 2: Use any IDE that can directly handle CMakeLists files to open the `CMakeLists.txt` in the **root** directory of 
   City3D. Then you should have obtained a usable project and just build it. I recommend using 
 [CLion](https://www.jetbrains.com/clion/) or [QtCreator](https://www.qt.io/product). 
-    For Windows users: your IDE must set for `x64`.
+    For Windows users: your IDE must be set for `x64`.
   
   - Option 3: Use CMake-Gui to generate project files for your favorite IDE. Then load the project to your IDE and build it.
-    For Windows users: your IDE must set for `x64`.
+    For Windows users: your IDE must be set for `x64`.
 
   Don't have any experience with C/C++ programming? Then check this <a href="https://github.com/LiangliangNan/Easy3D/blob/main/HowToBuild.md">How to build</a> I wrote for [Easy3D](https://github.com/LiangliangNan/Easy3D).
 
