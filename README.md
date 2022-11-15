@@ -26,7 +26,7 @@ You can build City3D from the source code˙
     - [CGAL](http://www.cgal.org/index.html) (v5.4 and later).
     - [OpenCV](https://opencv.org/releases/) (v4.0 and later, only the main modules are needed).
     - [Gurobi](https://www.gurobi.com/). **Note for Linux users:** You may have to build the Gurobi library (`libgurobi_c++.a`) 
-      because the prebuilt one in the original package might NOT be compatible with your compiler. To do so, go to `src/build` 
+      because the prebuilt one in the original package might NOT be compatible with your compiler. To do so, go to `PATH_TO-GUROBI/src/build` 
       and run `make`. Then replace the original `libgurobi_c++.a` (in the `lib` directory) with your generated file.
 
 * Build
