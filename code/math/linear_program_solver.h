@@ -44,8 +44,7 @@ public:
 
 	// Solves the problem and returns false if fails.
 	// NOTE: Gurobi solver recommended.
-	//		 The SCIP solver is slower than Gurobi but acceptable. 
-	//       GLPK and LPSOLVE may be too slow or even fail for large problems.
+	//		 The SCIP solver is slower than Gurobi but acceptable.
 	bool solve(const LinearProgram* program, SolverName solver);
 
 	// returns the objective value
