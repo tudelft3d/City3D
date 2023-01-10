@@ -88,6 +88,9 @@ Two ways to use our method:
 - Only the point cloud of a building is available (see the [building_instances](https://github.com/tudelft3d/City3D/tree/main/data/building_instances) directory), the method can generate a footprint for each building and then reconstruct it. See [Example_2](./code/CLI_Example_2).
 
 ---
+add
+### Dataset
+The dataset of our paper can be found [here](https://github.com/yidahuang/City3D_dataset).
 
 ### About the solvers
 This demo program can use either the open-source SCIP solver or the commercial solver Gurobi for the [core optimization](https://github.com/tudelft3d/City3D/blob/main/code/method/face_selection_optimization.cpp) step. The entire source code 
@@ -117,7 +120,6 @@ If you use the code/program (or part) of City3D in scientific work, please cite 
 
 ## TODOs
 This is an academic prototype of LoD2 building reconstruction from LiDAR point clouds. Many intermediate steps can be improved.
-- [ ] Release the dataset. 
 - [ ] Support SCIP for [RegularizePolygon](https://github.com/tudelft3d/City3D/blob/main/method/regularize_polygon.cpp) (currently requires Gurobi).
 
 ---
