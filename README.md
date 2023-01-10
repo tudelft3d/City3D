@@ -88,7 +88,6 @@ Two ways to use our method:
 - Only the point cloud of a building is available (see the [building_instances](https://github.com/tudelft3d/City3D/tree/main/data/building_instances) directory), the method can generate a footprint for each building and then reconstruct it. See [Example_2](./code/CLI_Example_2).
 
 ---
-add
 ### Dataset
 The dataset of our paper can be found [here](https://github.com/yidahuang/City3D_dataset).
 
