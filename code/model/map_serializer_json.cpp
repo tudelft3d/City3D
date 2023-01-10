@@ -120,7 +120,7 @@ bool MapSerializer_json::do_read(std::istream& in, AbstractMapBuilder& builder, 
 			extract_polygon(it_coordinates, coordinates);
 
 			builder.begin_facet();
-			for (std::size_t j = 0; j < coordinates.size(); j += 2) {
+			for (std::size_t j = 0; j < coordinates.size()-2; j += 2) {
 				if (!use_provided_offset && first_point) {
 					dx = coordinates[j];
 					dy = coordinates[j + 1];
