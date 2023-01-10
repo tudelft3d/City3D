@@ -87,10 +87,13 @@ Two ways to use our method:
 - Both point cloud and footprint are available (see the [data](https://github.com/tudelft3d/City3D/tree/main/data) directory), see [Example_1](./code/CLI_Example_1).
 - Only the point cloud of a building is available (see the [building_instances](https://github.com/tudelft3d/City3D/tree/main/data/building_instances) directory), the method can generate a footprint for each building and then reconstruct it. See [Example_2](./code/CLI_Example_2).
 
+
 ---
 ### Dataset
 The dataset of our paper can be found [here](https://github.com/yidahuang/City3D_dataset).
 
+
+---
 ### About the solvers
 This demo program can use either the open-source SCIP solver or the commercial solver Gurobi for the [core optimization](https://github.com/tudelft3d/City3D/blob/main/code/method/face_selection_optimization.cpp) step. The entire source code 
 of the SCIP solver is already included in this repository. Note: the [polygon regularization](https://github.com/tudelft3d/City3D/blob/main/code/method/regularize_polygon.cpp) step still requires Gurobi.
