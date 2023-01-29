@@ -79,7 +79,7 @@ void extract_polygon(json::const_iterator it_coordinates, std::vector<double>& c
 
 bool MapSerializer_json::do_read(std::istream& in, AbstractMapBuilder& builder, bool use_provided_offset /* = false */, const vec3& offset /* = vec3(0, 0, 0) */)
 {
-	Logger::warn("-") << "I can handle only simple GeoJSON format!" << std::endl;
+	Logger::warn("-") << "The GeoJSON parser is not fully implemented and it may not handle all files!" << std::endl;
 
 	// read a JSON file
 	json object;
