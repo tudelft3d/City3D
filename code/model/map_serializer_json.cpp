@@ -120,6 +120,10 @@ bool MapSerializer_json::do_read(std::istream& in, AbstractMapBuilder& builder, 
 			extract_polygon(it_coordinates, coordinates);
 
 			builder.begin_facet();
+            // The GeoJSON specification says:
+            //      The first and last positions are equivalent, and they MUST contain
+            //      identical values; their representation SHOULD also be identical.
+            // Thus the "-2", see https://www.rfc-editor.org/rfc/rfc7946.html#section-3.1.6
 			for (std::size_t j = 0; j < coordinates.size()-2; j += 2) {
 				if (!use_provided_offset && first_point) {
 					dx = coordinates[j];
