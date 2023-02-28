@@ -134,8 +134,8 @@ void FaceSelection::IntersectionAdjacency::init(Map* model, const std::vector<Pl
 		if (facet_group[i].size() > 1)
 		{
 			auto f0 = facet_group[i][0];
-            if ( facet_attrib_supporting_point_num_[f0] > 400)
-			max_facet[f0] = true;
+//            if ( facet_attrib_supporting_point_num_[f0] > 400)
+//			max_facet[f0] = true;
 
 		}
 

@@ -64,7 +64,11 @@ endif ()
 target_include_directories(${PROJECT_NAME} PRIVATE ${POLYFIT_eigen_DIR})
 
 
+target_link_libraries(${PROJECT_NAME} basic math model renderer ${OpenCV_LIBS})
 find_package(OpenCV REQUIRED COMPONENTS core imgproc)
+
+
+
 
 include(../cmake/FindGUROBI.cmake)
 if (GUROBI_FOUND)
@@ -75,13 +79,11 @@ if (GUROBI_FOUND)
     target_include_directories(${PROJECT_NAME} PRIVATE ${GUROBI_INCLUDE_DIRS})
     target_link_libraries(${PROJECT_NAME} basic math model renderer ${OpenCV_LIBS} ${GUROBI_LIBRARIES})
 else ()
-    target_link_libraries(${PROJECT_NAME} basic math model renderer ${OpenCV_LIBS})
-	#TODO: allow to use another open-souce solver (to get rid of Gurobi)
-	message(FATAL_ERROR "The current implementation (the polygon regularization step) requires Gurobi. "
-						"Install Gurobi first, and then make sure the headers and libraries of Gurobi "
-						"can be found by CMake by specifying the paths of Gurobi in FindGUROBI.cmake. "
-						"Note: you also need to obtain a license to use Gurobi, which is free for academic use.")
-endif ()
+    find_package(SCIP REQUIRED)
+    target_link_libraries(${PROJECT_NAME} libscip)
+    message(STATUS "The current implementation support scip, but make sure to upgrade it to newest version. ")
+
+endif()
 
 if (MSVC)
     target_compile_definitions(${PROJECT_NAME} PRIVATE

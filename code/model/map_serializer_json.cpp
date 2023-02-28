@@ -79,7 +79,7 @@ void extract_polygon(json::const_iterator it_coordinates, std::vector<double>& c
 
 bool MapSerializer_json::do_read(std::istream& in, AbstractMapBuilder& builder, bool use_provided_offset /* = false */, const vec3& offset /* = vec3(0, 0, 0) */)
 {
-	Logger::warn("-") << "I can handle only simple GeoJSON format!" << std::endl;
+	Logger::warn("-") << "The GeoJSON parser is not fully implemented and it may not handle all files!" << std::endl;
 
 	// read a JSON file
 	json object;
@@ -120,7 +120,11 @@ bool MapSerializer_json::do_read(std::istream& in, AbstractMapBuilder& builder, 
 			extract_polygon(it_coordinates, coordinates);
 
 			builder.begin_facet();
-			for (std::size_t j = 0; j < coordinates.size(); j += 2) {
+            // The GeoJSON specification says:
+            //      The first and last positions are equivalent, and they MUST contain
+            //      identical values; their representation SHOULD also be identical.
+            // Thus the "-2", see https://www.rfc-editor.org/rfc/rfc7946.html#section-3.1.6
+			for (std::size_t j = 0; j < coordinates.size()-2; j += 2) {
 				if (!use_provided_offset && first_point) {
 					dx = coordinates[j];
 					dy = coordinates[j + 1];

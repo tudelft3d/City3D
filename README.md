@@ -66,11 +66,15 @@ You can build City3D from the source code˙
 
 This repository includes three executable programs:
 
-- [Example_1](https://github.com/tudelft3d/City3D/tree/main/code/CLI_Example_1): a command-line program that can reconstruct multiple buildings in a large scene using 
-both point cloud and footprint as input.
-- [Example_2](https://github.com/tudelft3d/City3D/tree/main/code/CLI_Example_2): a command-line program showing the reconstruction of all the pre-segmented buildings in
-a large scene using only the point clouds as input. The individual buildings have already been segmented and each 
+- [CLI_Example_1](https://github.com/tudelft3d/City3D/tree/main/code/CLI_Example_1): a command-line program that can reconstruct multiple buildings in a large scene using 
+*both* point cloud and footprint as input. Some test data is provided in the [data](https://github.com/tudelft3d/City3D/tree/main/data) directory.
+
+- [CLI_Example_2](https://github.com/tudelft3d/City3D/tree/main/code/CLI_Example_2): a command-line program showing the reconstruction of all the pre-segmented buildings in
+a large scene using *only* the point clouds as input. The individual buildings have already been segmented and each 
 building is stored as a separate point cloud file. Our method generates a footprint for each building and then reconstructs it.
+For this example, only the point cloud of a building is needed. See some test data in the [building_instances](https://github.com/tudelft3d/City3D/tree/main/data/building_instances) directory.
+
+
 - [City3D](https://github.com/tudelft3d/City3D/tree/main/code/City3D): a demo version of our method with GUI. This demo provides a simple user interface with 
 a few buttons (with numbered icons). Just click the buttons one by one in the specified order to run the workflow. 
 The UI was adapted from [PolyFit](https://github.com/LiangliangNan/PolyFit).
@@ -82,16 +86,16 @@ The UI was adapted from [PolyFit](https://github.com/LiangliangNan/PolyFit).
 ---
 
 ### Data
-Some test data can be found [here](https://github.com/tudelft3d/City3D/tree/main/data).
-Two ways to use our method:
-- Both point cloud and footprint are available (see the [data](https://github.com/tudelft3d/City3D/tree/main/data) directory), see [Example_1](./code/CLI_Example_1).
-- Only the point cloud of a building is available (see the [building_instances](https://github.com/tudelft3d/City3D/tree/main/data/building_instances) directory), the method can generate a footprint for each building and then reconstruct it. See [Example_2](./code/CLI_Example_2).
+
+The method has been evaluated on ~20K buildings, resulting in a new dataset consisting of the original point clouds 
+and the reconstructed 3D models of all these buildings. The complete dataset can be found [here](https://github.com/yidahuang/City3D_dataset).
+
+This repository has included a few buildings from the above dataset for test, which can be found in the [data](https://github.com/tudelft3d/City3D/tree/main/data) directory.
 
 ---
-
 ### About the solvers
-This demo program can use either the open-source SCIP solver or the commercial solver Gurobi for the [core optimization](https://github.com/tudelft3d/City3D/blob/main/code/method/face_selection_optimization.cpp) step. The entire source code 
-of the SCIP solver is already included in this repository. Note: the [polygon regularization](https://github.com/tudelft3d/City3D/blob/main/code/method/regularize_polygon.cpp) step still requires Gurobi.
+This demo program can use either the open-source [SCIP](https://www.scipopt.org/index.php#download) solver or the commercial solver [Gurobi](https://www.gurobi.com/) for the [core optimization](https://github.com/tudelft3d/City3D/blob/main/code/method/face_selection_optimization.cpp) step. 
+Make sure you have already installed the solver you want to use, and upgrade it to the latest version.
 
 The Gurobi solver is faster than SCIP and is thus highly recommended. To use Gurobi, install it first and make sure 
 the headers and libraries of Gurobi can be found by CMake. This can be done by specifying the paths of Gurobi in [FindGUROBI.cmake](./code/cmake/FindGUROBI.cmake). 
@@ -115,10 +119,8 @@ If you use the code/program (or part) of City3D in scientific work, please cite 
 
 ```
 
-## TODOs
+### TODOs
 This is an academic prototype of LoD2 building reconstruction from LiDAR point clouds. Many intermediate steps can be improved.
-- [ ] Release the dataset. 
-- [ ] Support SCIP for [RegularizePolygon](https://github.com/tudelft3d/City3D/blob/main/method/regularize_polygon.cpp) (currently requires Gurobi).
 
 ---
 

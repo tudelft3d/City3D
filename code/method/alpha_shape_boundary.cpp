@@ -115,11 +115,12 @@ std::vector<int> orient_ply(std::vector<vec2_ind> edges)
 }
 
 
-std::vector<vec2> regulaize_cgal(std::vector<Point_2> contour)
+std::vector<vec2> regularize_cgal(std::vector<Point_2> contour)
 {
 
     // Set parameters.
-    const FT min_length_2 = FT(1.5);
+
+    const FT min_length_2 = FT(1.0);
     const FT max_angle_2 = FT(20);
     const FT max_offset_2 = FT(2.0);
 
@@ -141,7 +142,33 @@ std::vector<vec2> regulaize_cgal(std::vector<Point_2> contour)
     }
     return results;
 }
+std::vector<vec2> remove_collinear_point(std::vector<vec2> regularized)
+{
 
+    std::vector<vec2> regularized_copy=regularized;
+    std::vector<bool> check_linear(regularized.size(), false);
+    for (int i = 0; i < regularized.size(); ++i)
+    {
+        int id = i, ip = (i + 1) % regularized.size(), im = (i + 2) % regularized.size();
+        auto v0 = regularized[id], v1 = regularized[ip], v2 = regularized[im];
+        //compute the cross product of v0v1 and v0v2
+        auto v01 = normalize((v0 - v1)), v12 = normalize((v1 - v2));
+        double cos = std::abs(dot(v01, v12));
+        if (cos > 0.99)
+        {
+            check_linear[ip] = true;
+        }
+    }
+    regularized.clear();
+    for (int i = 0; i < regularized_copy.size(); ++i)
+    {
+        if (!check_linear[i])
+        {
+            regularized.push_back(regularized_copy[i]);
+        }
+    }
+    return regularized;
+}
 std::vector<vec2> regularize_segments(std::vector<Point_2> contour)
 {
 
@@ -165,44 +192,23 @@ std::vector<vec2> regularize_segments(std::vector<Point_2> contour)
     {
         plys.push_back(vec2(contour[i].x(), contour[i].y()));
     }
-
     // Regularize the contour.
     RegularizePolygon rg;
-
     //compare our method with CGAL's method
     std::vector<vec2> regularized = rg.reg_ply(plys);
-    std::vector<vec2> regualized_cgal = regulaize_cgal(contour);
-    //choose the better one, check the intersection area;
-    double area_cgal = intersection_area(plys, regualized_cgal);
-    double area_regualized = intersection_area(plys, regularized);
-    if (area_cgal > area_regualized)
-    {
-        regularized = regualized_cgal;
-    }
+
+    std::vector<vec2> regularized_cgal = regularize_cgal(contour);
     //remove the collinear points
-    std::vector<vec2> regularized_copy=regularized;
-    std::vector<bool> check_linear(regularized.size(), false);
+    regularized = remove_collinear_point(regularized);
+    Polygon_2 regularized_plg;
     for (int i = 0; i < regularized.size(); ++i)
     {
-        int id = i, ip = (i + 1) % regularized.size(), im = (i + 2) % regularized.size();
-        auto v0 = regularized[id], v1 = regularized[ip], v2 = regularized[im];
-        //compute the cross product of v0v1 and v0v2
-        auto v01 = normalize((v0 - v1)), v12 = normalize((v1 - v2));
-        double cos = std::abs(dot(v01, v12));
-        if (cos > 0.99)
-        {
-            check_linear[ip] = true;
-        }
+        regularized_plg.push_back(Point_2(regularized[i].x, regularized[i].y));
     }
-    regularized.clear();
-    for (int i = 0; i < regularized_copy.size(); ++i)
+    if (!regularized_plg.is_simple())
     {
-        if (!check_linear[i])
-        {
-            regularized.push_back(regularized_copy[i]);
-        }
+        regularized= remove_collinear_point(plys);
     }
-
     return regularized;
 }
 

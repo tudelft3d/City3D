@@ -60,8 +60,6 @@ SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY
 ################################################################################
 
 add_subdirectory(3rd_party/3rd_QGLViewer-2.6.3)
-add_subdirectory(3rd_party/3rd_scip)
-add_subdirectory(3rd_party/3rd_soplex)
 add_subdirectory(3rd_party/3rd_glew)
 add_subdirectory(3rd_party/3rd_rply)
 add_subdirectory(3rd_party/3rd_LAStools)

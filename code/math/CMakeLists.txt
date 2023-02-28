@@ -53,9 +53,11 @@ if (GUROBI_FOUND)
     message(STATUS "Gurobi libraries: " ${GUROBI_LIBRARIES})
 
     target_compile_definitions(${PROJECT_NAME} PUBLIC HAS_GUROBI)
-
     target_include_directories(${PROJECT_NAME} PRIVATE ${GUROBI_INCLUDE_DIRS})
-    target_link_libraries(${PROJECT_NAME} PRIVATE ${GUROBI_LIBRARIES})
+    target_link_libraries(${PROJECT_NAME} basic    ${GUROBI_LIBRARIES})
+else ()
+    find_package(SCIP REQUIRED)
+    target_link_libraries(${PROJECT_NAME} basic libscip)
+    message(STATUS "The current implementation support scip, but make sure to upgrade it to newest version. ")
 endif()
 
-target_link_libraries( ${PROJECT_NAME} PRIVATE basic 3rd_scip 3rd_soplex)
