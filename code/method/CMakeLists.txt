@@ -67,7 +67,11 @@ target_include_directories(${PROJECT_NAME} PRIVATE ${POLYFIT_eigen_DIR})
 target_link_libraries(${PROJECT_NAME} basic math model renderer ${OpenCV_LIBS})
 find_package(OpenCV REQUIRED COMPONENTS core imgproc)
 
-
+target_include_directories(${PROJECT_NAME} PRIVATE
+        ${POLYFIT_scip_DIR}
+        ${POLYFIT_scip_DIR}/scip
+        )
+target_link_libraries( ${PROJECT_NAME}  basic 3rd_scip 3rd_soplex)
 
 
 include(../cmake/FindGUROBI.cmake)
@@ -78,11 +82,6 @@ if (GUROBI_FOUND)
     target_compile_definitions(${PROJECT_NAME} PUBLIC HAS_GUROBI)
     target_include_directories(${PROJECT_NAME} PRIVATE ${GUROBI_INCLUDE_DIRS})
     target_link_libraries(${PROJECT_NAME} basic math model renderer ${OpenCV_LIBS} ${GUROBI_LIBRARIES})
-else ()
-    find_package(SCIP REQUIRED)
-    target_link_libraries(${PROJECT_NAME} libscip)
-    message(STATUS "The current implementation support scip, but make sure to upgrade it to newest version. ")
-
 endif()
 
 if (MSVC)

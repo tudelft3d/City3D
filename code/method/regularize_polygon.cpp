@@ -488,12 +488,16 @@ bool RegularizePolygon::optimize_polygon(std::vector<vec2> &polygon, std::vector
         for (std::size_t i = 0; i < scip_var_x.size(); ++i)
             SCIP_CALL(SCIPreleaseVar(scip, &scip_var_x[i]));
         scip_var_x.clear();
-
+        for (int i = 0; i < scip_var_t.size(); ++i)
+        {
+            SCIP_CALL(SCIPreleaseVar(scip, &scip_var_t[i]));
+        }
+        scip_var_t.clear();
         // the same for the constraints
 
         // after releasing all vars and cons we can free the scip problem
         // remember this has always to be the last call to scip
-        SCIP_CALL(SCIPfree(&scip));
+       // SCIP_CALL(SCIPfree(&scip));
 
     }
     catch (std::exception e)
