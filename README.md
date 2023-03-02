@@ -94,8 +94,8 @@ This repository has included a few buildings from the above dataset for test, wh
 
 ---
 ### About the solvers
-This demo program can use either the open-source [SCIP](https://www.scipopt.org/index.php#download) solver or the commercial solver [Gurobi](https://www.gurobi.com/) for the [core optimization](https://github.com/tudelft3d/City3D/blob/main/code/method/face_selection_optimization.cpp) step. 
-Make sure you have already installed the solver you want to use, and upgrade it to the latest version.
+This demo program can use either the  SCIP solver or the commercial solver [Gurobi](https://www.gurobi.com/) for the [core optimization](https://github.com/tudelft3d/City3D/blob/main/code/method/face_selection_optimization.cpp) step.
+The entire source code of the SCIP solver is already included in this repository. 
 
 The Gurobi solver is faster than SCIP and is thus highly recommended. To use Gurobi, install it first and make sure 
 the headers and libraries of Gurobi can be found by CMake. This can be done by specifying the paths of Gurobi in [FindGUROBI.cmake](./code/cmake/FindGUROBI.cmake). 
