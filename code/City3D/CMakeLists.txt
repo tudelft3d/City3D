@@ -69,14 +69,6 @@ target_link_libraries(${PROJECT_NAME} Qt5::Xml)
 
 target_link_libraries(${PROJECT_NAME} basic math model method renderer 3rd_glew 3rd_QGLViewer-2.6.3)
 
-include(../cmake/FindGUROBI.cmake)
-if (GUROBI_FOUND)
-    message(STATUS "Gurobi include dir: " ${GUROBI_INCLUDE_DIRS})
-    message(STATUS "------Gurobi libraries----------: " ${GUROBI_LIBRARIES})
-    target_link_libraries(${PROJECT_NAME} ${GUROBI_LIBRARIES})
-endif()
-
-
 # Note: On macOS, high-DPI support is enabled by settings in the Info.plist file. Make sure they are present.
 # For more information, see: http://doc.qt.io/qt-5/highdpi.html
 # Enable high DPI support by using my Info.plist file in which I added NSHighResolutionCapable to be true.

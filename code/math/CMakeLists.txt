@@ -40,9 +40,6 @@ target_link_libraries( ${PROJECT_NAME} basic 3rd_scip 3rd_soplex)
 
 include(../cmake/FindGUROBI.cmake)
 if (GUROBI_FOUND)
-    message(STATUS "Gurobi include dir: " ${GUROBI_INCLUDE_DIRS})
-    message(STATUS "Gurobi libraries: " ${GUROBI_LIBRARIES})
-
     target_compile_definitions(${PROJECT_NAME} PUBLIC HAS_GUROBI)
     target_include_directories(${PROJECT_NAME} PUBLIC ${GUROBI_INCLUDE_DIRS})
     target_link_libraries(${PROJECT_NAME} basic ${GUROBI_LIBRARIES})
