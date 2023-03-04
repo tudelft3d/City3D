@@ -559,9 +559,8 @@ set(scip_HEADERS
         )
 
 set(scip_SOURCES
-        ${POLYFIT_scip_DIR}/scipbuildflag.c
+        scip/scipbuildflags.c
         symmetry/compute_symmetry_none.cpp
-
         tpi/tpi_none.c
         blockmemshell/memory.c
 #        lpi/lpi_spx1.cpp

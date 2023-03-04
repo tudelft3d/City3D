@@ -59,6 +59,7 @@ vec2_ind find_edges_j(std::vector<vec2_ind> &edge_sets, int j)
             return target;
         }
     }
+    return {-1, -1};
 }
 
 std::vector<int> orient_ply(std::vector<vec2_ind> edges)

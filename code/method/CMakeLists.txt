@@ -63,30 +63,5 @@ endif ()
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${POLYFIT_eigen_DIR})
 
-
-target_link_libraries(${PROJECT_NAME} basic math model renderer ${OpenCV_LIBS})
 find_package(OpenCV REQUIRED COMPONENTS core imgproc)
-
-target_include_directories(${PROJECT_NAME} PRIVATE
-        ${POLYFIT_scip_DIR}
-        ${POLYFIT_scip_DIR}/scip
-        )
-target_link_libraries( ${PROJECT_NAME}  basic 3rd_scip 3rd_soplex)
-
-
-include(../cmake/FindGUROBI.cmake)
-if (GUROBI_FOUND)
-    message(STATUS "Gurobi include dir: " ${GUROBI_INCLUDE_DIRS})
-    message(STATUS "Gurobi libraries: " ${GUROBI_LIBRARIES})
-
-    target_compile_definitions(${PROJECT_NAME} PUBLIC HAS_GUROBI)
-    target_include_directories(${PROJECT_NAME} PRIVATE ${GUROBI_INCLUDE_DIRS})
-    target_link_libraries(${PROJECT_NAME} basic math model renderer ${OpenCV_LIBS} ${GUROBI_LIBRARIES})
-endif()
-
-if (MSVC)
-    target_compile_definitions(${PROJECT_NAME} PRIVATE
-            _CRT_SECURE_NO_WARNINGS
-            _CRT_SECURE_NO_DEPRECATE
-            )
-endif ()
+target_link_libraries(${PROJECT_NAME} basic math model renderer ${OpenCV_LIBS})

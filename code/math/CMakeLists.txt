@@ -28,30 +28,15 @@ set(math_SOURCES
         linear_program_solver_GUROBI.cpp
         )
 
-
-
 add_library(${PROJECT_NAME} STATIC ${math_SOURCES} ${math_HEADERS})
-set_target_properties(${PROJECT_NAME} PROPERTIES
-        FOLDER "City3D")
+set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER "City3D")
 
-
-target_include_directories(${PROJECT_NAME} PRIVATE
+target_include_directories(${PROJECT_NAME} PUBLIC
         ${POLYFIT_scip_DIR}
         ${POLYFIT_scip_DIR}/scip
         )
 
-if (MSVC)
-    target_compile_definitions(${PROJECT_NAME} PRIVATE
-            _CRT_SECURE_NO_WARNINGS
-            _CRT_SECURE_NO_DEPRECATE
-            )
-endif()
-
-target_include_directories(${PROJECT_NAME} PRIVATE
-        ${POLYFIT_scip_DIR}
-        ${POLYFIT_scip_DIR}/scip
-        )
-target_link_libraries( ${PROJECT_NAME}  basic 3rd_scip 3rd_soplex)
+target_link_libraries( ${PROJECT_NAME} basic 3rd_scip 3rd_soplex)
 
 include(../cmake/FindGUROBI.cmake)
 if (GUROBI_FOUND)
@@ -59,7 +44,10 @@ if (GUROBI_FOUND)
     message(STATUS "Gurobi libraries: " ${GUROBI_LIBRARIES})
 
     target_compile_definitions(${PROJECT_NAME} PUBLIC HAS_GUROBI)
-    target_include_directories(${PROJECT_NAME} PRIVATE ${GUROBI_INCLUDE_DIRS})
-    target_link_libraries(${PROJECT_NAME} basic    ${GUROBI_LIBRARIES})
+    target_include_directories(${PROJECT_NAME} PUBLIC ${GUROBI_INCLUDE_DIRS})
+    target_link_libraries(${PROJECT_NAME} basic ${GUROBI_LIBRARIES})
 endif()
 
+if (MSVC)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
+endif()

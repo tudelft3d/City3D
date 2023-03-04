@@ -117,11 +117,6 @@ If you use the code/program (or part) of City3D in scientific work, please cite 
     ARTICLE-NUMBER = {2254},
 }
 
-```
-
-### TODOs
-This is an academic prototype of LoD2 building reconstruction from LiDAR point clouds. Many intermediate steps can be improved.
-
 ---
 
 ### License
