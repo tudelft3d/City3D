@@ -3,8 +3,6 @@ cmake_minimum_required(VERSION 3.1)
 get_filename_component(PROJECT_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 project(${PROJECT_NAME})
 
-
-
 set(scip_HEADERS
         blockmemshell/memory.h
         lpi/lpi.h
@@ -571,8 +569,6 @@ set(scip_SOURCES
         scip/cons_countsols.c
         scip/prop_sync.c
         scip/var.c
-        scip/nlpi_xyz.c
-        scip/benderscut_xyz.c
         scip/cons_sos2.c
         scip/scip_prop.c
         scip/scip_solvingstats.c
@@ -633,7 +629,6 @@ set(scip_SOURCES
         scip/reader_dec.c
         scip/debug.c
         scip/nlhdlr_quadratic.c
-        scip/cons_xyz.c
         scip/scip_benders.c
         scip/scip_validation.c
         scip/cutpool.c
@@ -663,12 +658,10 @@ set(scip_SOURCES
         scip/heur_intdiving.c
         scip/presol_qpkktref.c
         scip/expr_log.c
-        scip/pricer_xyz.c
         scip/sepa_intobj.c
         scip/heur_oneopt.c
         scip/heur_objpscostdiving.c
         scip/presol_milp.cpp
-        scip/prop_xyz.c
         scip/cons_cumulative.c
         scip/reader_bnd.c
         scip/heur_bound.c
@@ -687,18 +680,15 @@ set(scip_SOURCES
         scip/message_default.c
         scip/branch_random.c
         scip/history.c
-        scip/heur_xyz.c
         scip/reader_smps.c
         scip/scip_expr.c
         scip/heur_distributiondiving.c
-        scip/nlhdlr_xyz.c
         scip/relax.c
         scip/heur_ofins.c
         scip/sepa_aggregation.c
         scip/concsolver_scip.c
         scip/scip_branch.c
         scip/prop_rootredcost.c
-        scip/benders_xyz.c
         scip/scip_bandit.c
         scip/heur_zeroobj.c
         scip/expr_pow.c
@@ -716,7 +706,6 @@ set(scip_SOURCES
         scip/branch_fullstrong.c
         scip/cons_benderslp.c
         scip/branch_inference.c
-        scip/dialog_xyz.c
         scip/nodesel_dfs.c
         scip/set.c
         scip/compr.c
@@ -732,8 +721,6 @@ set(scip_SOURCES
         scip/nlpi_ipopt_dummy.c
         scip/heur_trivialnegation.c
         scip/presol_implics.c
-        scip/compr_xyz.c
-        scip/nodesel_xyz.c
         scip/scip_cons.c
         scip/reader_mst.c
         scip/heur_indicator.c
@@ -753,9 +740,7 @@ set(scip_SOURCES
         scip/cons_knapsack.c
         scip/cutsel_hybrid.c
         scip/expr.c
-        scip/table_xyz.c
         scip/scip_heur.c
-        scip/disp_xyz.c
         scip/scip_event.c
         scip/expr_trig.c
         scip/heur_rins.c
@@ -768,7 +753,6 @@ set(scip_SOURCES
         scip/presol_convertinttobin.c
         scip/cons_varbound.c
         scip/nlhdlr_quotient.c
-        scip/branch_xyz.c
         scip/nlhdlr_default.c
         scip/scipshell.c
         scip/nlhdlr_soc.c
@@ -778,7 +762,6 @@ set(scip_SOURCES
         scip/scip_debug.c
         scip/implics.c
         scip/presol_boundshift.c
-        scip/event_xyz.c
         scip/solve.c
         scip/reopt.c
         scip/stat.c
@@ -817,7 +800,6 @@ set(scip_SOURCES
         scip/cons_xor.c
         scip/heur_linesearchdiving.c
         scip/paramset.c
-        scip/presol_xyz.c
         scip/expr_product.c
         scip/event_softtimelimit.c
         scip/presol_stuffing.c
@@ -828,7 +810,6 @@ set(scip_SOURCES
         scip/reader_pbm.c
         scip/expriter.c
         scip/cons_soc.c
-        scip/relax_xyz.c
         scip/scip_conflict.c
         scip/disp_default.c
         scip/presol_domcol.c
@@ -863,7 +844,6 @@ set(scip_SOURCES
         scip/branch_lookahead.c
         scip/cons.c
         scip/retcode.c
-        scip/expr_xyz.c
         scip/bitencode.c
         scip/heur_feaspump.c
         scip/branch_vanillafullstrong.c
@@ -873,12 +853,10 @@ set(scip_SOURCES
         scip/benders_default.c
         scip/expr_varidx.c
         scip/cons_sos1.c
-        scip/sepa_xyz.c
         scip/intervalarith.c
         scip/sepa_oddcycle.c
         scip/prop_dualfix.c
         scip/sepa_convexproj.c
-        scip/cutsel_xyz.c
         scip/reader_tim.c
         scip/heur_shiftandpropagate.c
         scip/nlpi_filtersqp_dummy.c
@@ -915,7 +893,7 @@ set(scip_SOURCES
         scip/reader_fzn.c
         scip/sepa_closecuts.c
         scip/reader_cor.c
-        scip/reader_xyz.c
+       
         scip/fileio.c
         scip/exprinterpret_cppad.cpp
         scip/heur_trysol.c
