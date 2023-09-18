@@ -103,7 +103,6 @@ Note: you need to [obtain a license](https://www.gurobi.com/downloads/end-user-l
 
 ---
 ### TODO
-- [ ] Add the polygonization step from [Easy3d](https://github.com/LiangliangNan/Easy3D/blob/main/easy3d/algo/surface_mesh_polygonization.h) to City3D 
 - [ ] Add the option to output triangulated meshes
 - [ ] Add outputting the model in CityJSON format
 
