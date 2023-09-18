@@ -59,5 +59,14 @@ class Reconstruction
 	int width = 400, height = 400;
 
 
+    std::vector<Polygon3d> add_vertices_polygons(std::vector<Polygon3d> vector1);
+
+    std::vector<vec3> insertVertexIfOnEdge(std::vector<vec3> polygon, vec3 P);
+
+    bool PointOnLineSegment(vec3 A, vec3 B, vec3 P);
+
+    std::vector<vec3> computeBoundaryPoints(Map *model, const Plane3d &ground);
+
+    std::vector<vec3> add_ground_vertices(Map::Facet *footprint, std::vector<vec3> ground_vts);
 };
 
