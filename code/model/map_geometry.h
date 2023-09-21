@@ -116,8 +116,6 @@ namespace Geom {
 
 	void	merge_into_source(Map* source, Map::Facet* f);
 
-    void	merge_into_ground(Map* source, std::vector<vec3> vts);
-
 }
 
 

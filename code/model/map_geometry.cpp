@@ -331,29 +331,6 @@ namespace Geom
 		source->compute_facet_normals();
 	}
 
-    void	merge_into_ground(Map* source, std::vector<vec3> vts)
-    {
-        if (!source)
-            return;
-
-        if (!vts.size())
-            return;
-
-        MapBuilder builder(source);
-        builder.begin_surface();
-        int id =0;
-        builder.begin_facet();
-        for (auto p:vts)
-        {
-            builder.add_vertex(p);
-            builder.add_vertex_to_facet(id);
-            ++id;
-        }
-        builder.end_facet();
-        builder.end_surface();
-        source->compute_facet_normals();
-    }
-
 	void merge_into_source(Map* source, Map::Facet* f)
 	{
 		if (!source)
@@ -381,7 +358,6 @@ namespace Geom
 				auto p = (*it)->vertex()->point();
 				builder.add_vertex(p);
 				builder.add_vertex_to_facet(id);
-                std::cout<<"id:  "<<id<<std::endl;
 				++id;
 
 			}
@@ -393,7 +369,6 @@ namespace Geom
 				const vec3& p = (*it)->vertex()->point();
 				builder.add_vertex(p);
 				builder.add_vertex_to_facet(id);
-                std::cout<<"id:  "<<id<<std::endl;
 				++id;
 			}
 		}

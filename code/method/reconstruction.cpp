@@ -667,81 +667,14 @@ Map *Reconstruction::reconstruct_single_building(PointSet *roof_pset,
     FaceSelection selector(roof_pset, hypothesis);
 
     selector.optimize(&polyfit_info, footprint, v, solver_name);
-    auto vts = computeBoundaryPoints(hypothesis, Geom::facet_plane(footprint));
-    vts = add_ground_vertices(footprint, vts);
 
     extrude_boundary_to_ground(hypothesis, Geom::facet_plane(footprint), &polyfit_info);
 
-    Geom::merge_into_ground(hypothesis, vts);
-    //save vts into a .xyz file
-
-    //Geom::merge_into_source(hypothesis, footprint);
-
+    Geom::merge_into_source(hypothesis, footprint);
     if (hypothesis->size_of_facets() == 0)
         return 0;
 
     return hypothesis;
-}
-
-std::vector<vec3> Reconstruction::computeBoundaryPoints(Map *model, const Plane3d &ground)
-{
-    MapHalfedgeAttribute<bool> is_boundary(model, "is_boundary");
-    std::vector<vec3> vts;
-    FOR_EACH_HALFEDGE(Map, model, it)
-    {
-        if (is_boundary[it])
-        {
-            /*
-            b_______a
-            |       |
-            |       |
-            |_______|
-            c       d
-            */
-            const vec3 &a = it->vertex()->point();
-            const vec3 &b = it->opposite()->vertex()->point();
-            const vec3 &c = ground.projection(b);
-            const vec3 &d = ground.projection(a);
-            auto dis = length(c - d);
-            if (dis > 1e-4)
-            {
-                vts.push_back(c);
-                vts.push_back(d);
-            }
-        }
-    }
-
-    return vts;
-}
-
-std::vector<vec3> Reconstruction::add_ground_vertices(Map::Facet *footprint, std::vector<vec3> ground_vts)
-{
-    auto ply = Geom::facet_polygon(footprint);
-    std::vector<vec3> polg;
-    for (auto p: ply)
-    {
-        polg.push_back(p);
-    }
-    for (auto v: ground_vts)
-    {
-        polg = insertVertexIfOnEdge(polg, v);
-    }
-
-    //use the first three points to check if vts orientation is downward
-    if (polg.size() > 2)
-    {
-        auto p1 = polg[0];
-        auto p2 = polg[1];
-        auto p3 = polg[2];
-        auto v1 = p2 - p1;
-        auto v2 = p3 - p2;
-        auto n = cross(v1, v2);
-        if (n.z < 0)
-        {
-            std::reverse(polg.begin(), polg.end());
-        }
-    }
-    return polg;
 }
 
 #define SIMPLE_EXTRUSION
@@ -782,7 +715,6 @@ void Reconstruction::extrude_boundary_to_ground(Map *model, const Plane3d &groun
 
     if (polygons.empty())
         return;
-    polygons = add_vertices_polygons(polygons);
     MapFacetAttribute<Color> color(model, "color");
     MapBuilder builder(model);
     builder.begin_surface();
@@ -805,21 +737,21 @@ void Reconstruction::extrude_boundary_to_ground(Map *model, const Plane3d &groun
 #endif
 }
 
-Map *Reconstruction::generate_polygon(PointSet *pSet, double footprint_height, double density)
+Map *Reconstruction::generate_polygon(PointSet *pSet, double footprint_height,double density)
 {
     //get the alpha shape of the point set
     auto alpha_boundary = AlphaShapeBoundary::apply(pSet, 1.5);
-    Method::ground_height = footprint_height;
-    Method::point_density = density;
+    Method::ground_height=footprint_height;
+    Method::point_density=density;
 
-    Map *new_foot = new Map;
+    Map* new_foot = new Map;
     MapBuilder builder(new_foot);
     builder.begin_surface();
     builder.begin_facet();
-    int ind = 0;
+    int ind=0;
     for (int i = 0; i < alpha_boundary.size(); ++i)
     {
-        auto p = alpha_boundary[i];
+        auto p=alpha_boundary[i];
         builder.add_vertex(vec3(p.x, p.y, footprint_height));
         builder.add_vertex_to_facet(ind);
         ++ind;
@@ -827,84 +759,6 @@ Map *Reconstruction::generate_polygon(PointSet *pSet, double footprint_height, d
     builder.end_facet();
     builder.end_surface();
     return new_foot;
-}
-
-bool Reconstruction::PointOnLineSegment(vec3 A, vec3 B, vec3 P)
-{
-    vec3 AB, AP;
-
-    // vector AB
-    AB.x = B.x - A.x;
-    AB.y = B.y - A.y;
-    AB.z = B.z - A.z;
-
-    // vector AP
-    AP.x = P.x - A.x;
-    AP.y = P.y - A.y;
-    AP.z = P.z - A.z;
-
-    // If vec3 is on the line, the dot product of AP and AB should be equal to the product of their magnitudes
-    bool onLine = fabs(dot(AP, AB) - (length(AP) * length(AB))) < 1e-8;  // epsilon for floating vec3 comparison
-
-    // Also, the vec3 P should not be outside the segment AB, so its magnitude should be less than or equal to that of AB
-    bool withinSegment = length(AP) <= length(AB);
-
-    return onLine && withinSegment;
-}
-
-std::vector<vec3> Reconstruction::insertVertexIfOnEdge(std::vector<vec3> polygon, vec3 P)
-{
-    for (size_t i = 0; i < polygon.size(); i++)
-    {
-        vec3 A = polygon[i];
-        vec3 B = polygon[(i + 1) % polygon.size()];  // next vec3, or wraps around to first vec3
-        auto distanceAP = std::sqrt((A.x - P.x) * (A.x - P.x) + (A.y - P.y) * (A.y - P.y) + (A.z - P.z) * (A.z - P.z));
-        auto distanceBP = std::sqrt((B.x - P.x) * (B.x - P.x) + (B.y - P.y) * (B.y - P.y) + (B.z - P.z) * (B.z - P.z));
-        if (distanceAP < 1e-8 || distanceBP < 1e-8)
-            return polygon;
-
-        if (PointOnLineSegment(A, B, P))
-        {
-            polygon.insert(polygon.begin() + i + 1, P);
-            break;
-        }
-    }
-    return polygon;
-}
-
-std::vector<Polygon3d> Reconstruction::add_vertices_polygons(std::vector<Polygon3d> polys)
-{
-    std::vector<Polygon3d> new_polys;
-    std::vector<vec3> candidate_vertices;
-
-    //get the candidtate vts
-    for (auto polg: polys)
-    {
-        for (auto v: polg)
-        {
-            candidate_vertices.push_back(v);
-        }
-    }
-
-    //get the polygon
-    for (auto polg: polys)
-    {
-        //add possible vertices to the polygon
-        std::vector<vec3> current_plg = polg;
-        for (auto v: candidate_vertices)
-        {
-            current_plg = insertVertexIfOnEdge(current_plg, v);
-            //   std::cout<<"add a vertex"<<std::endl;
-        }
-        //add vetices to ploygon
-        Polygon3d new_plg;
-        for (auto v: current_plg)
-        {
-            new_plg.push_back(v);
-        }
-        new_polys.push_back(new_plg);
-    }
-    return new_polys;
 }
 
 

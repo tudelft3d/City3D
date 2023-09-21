@@ -102,13 +102,6 @@ the headers and libraries of Gurobi can be found by CMake. This can be done by s
 Note: you need to [obtain a license](https://www.gurobi.com/downloads/end-user-license-agreement-academic/) to use Gurobi, which is free for academic use.
 
 ---
-### TODO
-- [ ] Add the polygonization step from [Easy3d](https://github.com/LiangliangNan/Easy3D/blob/main/easy3d/algo/surface_mesh_polygonization.h) to City3D 
-- [ ] Add the option to output triangulated meshes
-- [ ] Add outputting the model in CityJSON format
-
-
----
 
 ### Citation
 If you use the code/program (or part) of City3D in scientific work, please cite our paper:
