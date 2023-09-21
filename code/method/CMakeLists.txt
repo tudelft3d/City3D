@@ -31,9 +31,7 @@ set(method_SOURCES
         method_global.cpp
         point_set_region_growing.cpp
         regularize_polygon.cpp
-        otr2_edge_simplify.cpp
-        Polygonize.h
-        Polygonize.cpp)
+        otr2_edge_simplify.cpp)
 
 
 add_library(${PROJECT_NAME} STATIC ${method_SOURCES} ${method_HEADERS})
@@ -66,4 +64,4 @@ endif ()
 target_include_directories(${PROJECT_NAME} PRIVATE ${POLYFIT_eigen_DIR})
 
 find_package(OpenCV REQUIRED COMPONENTS core imgproc)
-target_link_libraries(${PROJECT_NAME} basic math model renderer ${OpenCV_LIBS} easy3d::algo_ext easy3d::algo easy3d::core easy3d::util easy3d::fileio)
+target_link_libraries(${PROJECT_NAME} basic math model renderer ${OpenCV_LIBS})

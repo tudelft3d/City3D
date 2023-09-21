@@ -31,9 +31,6 @@
 #include <utility>
 #include <CGAL/Delaunay_triangulation_2.h>
 #include <CGAL/interpolation_functions.h>
-#include "Polygonize.h"
-
-
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
 typedef K::FT FT;
@@ -674,16 +671,16 @@ Map *Reconstruction::reconstruct_single_building(PointSet *roof_pset,
     vts = add_ground_vertices(footprint, vts);
 
     extrude_boundary_to_ground(hypothesis, Geom::facet_plane(footprint), &polyfit_info);
-    Geom::merge_into_ground(hypothesis, vts);
-    MapIO::save( "./ini.obj",hypothesis);
-    PolygonizeMap pm(hypothesis);
-    pm.poly();
-    auto new_hypo=MapIO::read("./2.obj");
 
-    if (new_hypo->size_of_facets() == 0)
+    Geom::merge_into_ground(hypothesis, vts);
+    //save vts into a .xyz file
+
+    //Geom::merge_into_source(hypothesis, footprint);
+
+    if (hypothesis->size_of_facets() == 0)
         return 0;
 
-    return new_hypo;
+    return hypothesis;
 }
 
 std::vector<vec3> Reconstruction::computeBoundaryPoints(Map *model, const Plane3d &ground)

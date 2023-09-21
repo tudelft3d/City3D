@@ -65,7 +65,7 @@ add_subdirectory(3rd_party/3rd_QGLViewer-2.6.3)
 add_subdirectory(3rd_party/3rd_glew)
 add_subdirectory(3rd_party/3rd_rply)
 add_subdirectory(3rd_party/3rd_LAStools)
-add_subdirectory(3rd_party/3rd_easy3d)
+
 add_subdirectory(basic)
 add_subdirectory(math)
 add_subdirectory(model)
