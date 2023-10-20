@@ -187,7 +187,7 @@ inline void AlphaShape::traverse(const Face_handle& pFace, std::map<Face_handle,
 		for (int i = 0; i < 3; i++)
 		{
 			pNeighbor = fh->neighbor(i);
-			CGAL_triangulation_assertion(pNeighbor != NULL);
+            CGAL_assertion(pNeighbor != NULL);
 			if (classify(pNeighbor) == AlphaShape::INTERIOR){
 				int& id = ids[pNeighbor];
 				if (id == -1){
