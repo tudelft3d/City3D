@@ -5,17 +5,22 @@ project(${PROJECT_NAME})
 
 
 set(method_HEADERS
+        alpha_shape.h
+        alpha_shape_boundary.h
         alpha_shape_CGAL5_4.h
         alpha_shape_mesh.h
-        alpha_shape.h
         cgal_types.h
+        dbscan.h
         face_selection.h
         hypothesis_generator.h
+        intersection_area.h
         method_global.h
-        point_set_region_growing.h
         Modified_Otr2.h
-        dbscan.h
         otr2_edge_simplify.h
+        point_set_normals.h
+        point_set_region_growing.h
+        polyfit_info.h
+        reconstruction.h
         regularize_polygon.h
         )
 
