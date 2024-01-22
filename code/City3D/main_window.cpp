@@ -112,7 +112,7 @@ MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags flags)
 	layoutCanvas->addWidget(mainCanvas_);
 
 	//////////////////////////////////////////////////////////////////////////
-	 createRenderingPanel();
+	createRenderingPanel();
 
 	createActions();
 	createStatusBar();
@@ -196,8 +196,6 @@ void MainWindow::dropEvent(QDropEvent *e) {
 
 
 void MainWindow::createActions() {
-	connect(actionOpen, SIGNAL(triggered()), this, SLOT(open()));
-	
 	connect(actionProjectionMode, SIGNAL(toggled(bool)), mainCanvas_, SLOT(setProjectionMode(bool)));
 	mainCanvas_->setProjectionMode(true);
 
@@ -318,6 +316,36 @@ void MainWindow::setManualInputWeights(bool b) {
 
 void MainWindow::createToolBar()
 {
+	// ------------------------------------------------------
+
+	// actions for open
+	QAction* actionOpenPointCloud = new QAction(this);
+	actionOpenPointCloud->setText("Open Point Cloud");
+	connect(actionOpenPointCloud, SIGNAL(triggered()), this, SLOT(openPointCloud()));
+
+	actionOpenFootPrint_ = new QAction(this);
+	actionOpenFootPrint_->setText("Open Foot Print");
+	connect(actionOpenFootPrint_, SIGNAL(triggered()), this, SLOT(openFootPrint()));
+
+	QMenu* openMenu = new QMenu();
+	openMenu->addAction(actionOpenPointCloud);
+	openMenu->addAction(actionOpenFootPrint_);
+	actionOpenFootPrint_->setEnabled(false);
+
+	QToolButton* openToolButton = new QToolButton();
+	openToolButton->setText("Open");
+	openToolButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+	openToolButton->setMenu(openMenu);
+	openToolButton->setPopupMode(QToolButton::InstantPopup);
+	QIcon openIcon;
+	openIcon.addFile(QStringLiteral(":/Resources/fileopen.png"), QSize(), QIcon::Normal, QIcon::Off);
+	openToolButton->setIcon(openIcon);
+
+	toolBarFile->insertWidget(actionSnapshot, openToolButton);
+
+	// ------------------------------------------------------
+
+	// actions for save
 	QAction* actionSaveReconstruction = new QAction(this);
 	actionSaveReconstruction->setText("Save Reconstruction");
 	connect(actionSaveReconstruction, SIGNAL(triggered()), this, SLOT(saveReconstruction()));
@@ -330,22 +358,22 @@ void MainWindow::createToolBar()
 	actionSaveFootPrint->setText("Save Foot Print");
 	connect(actionSaveFootPrint, SIGNAL(triggered()), this, SLOT(saveFootPrint()));
 
-	QMenu *menu = new QMenu();
-	menu->addAction(actionSaveReconstruction);
-	menu->addSeparator();
-	menu->addAction(actionSavePointCloud);
-	menu->addAction(actionSaveFootPrint);
+	QMenu *saveMenu = new QMenu();
+	saveMenu->addAction(actionSaveReconstruction);
+	saveMenu->addSeparator();
+	saveMenu->addAction(actionSavePointCloud);
+	saveMenu->addAction(actionSaveFootPrint);
 
-	QToolButton* toolButton = new QToolButton();
-	toolButton->setText("Save");
-	toolButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-	toolButton->setMenu(menu);
-	toolButton->setPopupMode(QToolButton::InstantPopup);
-	QIcon icon;
-	icon.addFile(QStringLiteral(":/Resources/filesave.png"), QSize(), QIcon::Normal, QIcon::Off);
-	toolButton->setIcon(icon);
-	toolBarFile->insertWidget(actionSnapshot, toolButton);
+	QToolButton* saveToolButton = new QToolButton();
+	saveToolButton->setText("Save");
+	saveToolButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+	saveToolButton->setMenu(saveMenu);
+	saveToolButton->setPopupMode(QToolButton::InstantPopup);
+	QIcon saveIcon;
+	saveIcon.addFile(QStringLiteral(":/Resources/filesave.png"), QSize(), QIcon::Normal, QIcon::Off);
+	saveToolButton->setIcon(saveIcon);
 
+	toolBarFile->insertWidget(actionSnapshot, saveToolButton);
 	toolBarFile->insertSeparator(actionSnapshot);
 }
 
@@ -446,14 +474,23 @@ void MainWindow::setCurrentFile(const QString &fileName)
 }
 
 
-bool MainWindow::open()
-{
+bool MainWindow::openPointCloud() {
 	QString fileName = QFileDialog::getOpenFileName(this,
-		tr("Open file"), curDataDirectory_,
-		tr("Supported Files (*.las *.laz *.geojson *.ply *.obj)\n"
-			"Point Cloud (*.las *.laz *.ply)\n"
-			"Foot Print (*.geojson *.obj)\n"
-			"Mesh (*.obj)")
+		tr("Open point cloud file"), curDataDirectory_,
+		tr("Point Cloud (*.las *.laz *.ply)")
+	);
+
+	if (fileName.isEmpty())
+		return false;
+
+	return doOpen(fileName);
+}
+
+
+bool MainWindow::openFootPrint() {
+	QString fileName = QFileDialog::getOpenFileName(this,
+		tr("Open foot print file"), curDataDirectory_,
+		tr("Foot Print (*.geojson *.obj)")
 	);
 
 	if (fileName.isEmpty())
@@ -568,7 +605,8 @@ bool MainWindow::doOpen(const QString &fileName)
 		if (ext == "geojson") {
 			MapSerializer_json json;
 			const PointSet* pset = canvas()->pointSet();
-			foot = json.read(name, pset, pset ? pset->offset() : vec3(0, 0, 0));
+			const vec3& offset = pset->offset();
+			foot = json.read(name, pset, pset ? vec3(offset.x, offset.y, pset->bbox().z_min()) : vec3(0, 0, 0));
 		}
 		else  // obj
 			foot = MapIO::read(name);
@@ -581,7 +619,7 @@ bool MainWindow::doOpen(const QString &fileName)
 			reconstructionMeshFileName_.truncate(idx);
 			reconstructionMeshFileName_.append(".obj");
 
-			canvas()->fitScreen(foot->bbox());
+			canvas()->fitAll();
 		}
 	}
 	else if (ext == "las" || ext == "laz" || ext == "ply") {
@@ -594,8 +632,8 @@ bool MainWindow::doOpen(const QString &fileName)
 			int idx = fileName.lastIndexOf(".");
 			reconstructionMeshFileName_.truncate(idx);
 			reconstructionMeshFileName_.append(".obj");
-
-			canvas()->fitScreen(pset->bbox());
+			actionOpenFootPrint_->setEnabled(true);
+			canvas()->fitAll();
 		}
 	}
 

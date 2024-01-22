@@ -172,7 +172,7 @@ std::vector<VertexGroup::Ptr> Region_Growing_Dectetor::detect(
 
 	if (vertitces.size() < 3)
 	{
-		Logger::out() << "input has less than 3 points" << std::endl;
+		//Logger::out() << "input has less than 3 points" << std::endl;
 		return results;
 	}
 

@@ -97,7 +97,7 @@ bool MapSerializer_json::do_read(std::istream& in, AbstractMapBuilder& builder, 
 	bool first_point = true;
 	double dx = offset.x;
 	double dy = offset.y;
-	double dz = offset.z;
+	double minz = offset.z; // Note: this is the minimum Z value of the cloud
 	for (std::size_t i = 0; i < it_features->size(); ++i) {
 		const json& ei = it_features->at(i);
 		if (!ei.is_object() || ei["type"] != "Feature")
@@ -131,7 +131,7 @@ bool MapSerializer_json::do_read(std::istream& in, AbstractMapBuilder& builder, 
 					first_point = false;
 				}
 
-				builder.add_vertex(vec3(coordinates[j] - dx, coordinates[j + 1] - dy, 0 - dz));
+				builder.add_vertex(vec3(coordinates[j] - dx, coordinates[j + 1] - dy, minz));
 				
 				builder.add_vertex_to_facet(idx);
 				++idx;

@@ -70,8 +70,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>344</width>
-         <height>622</height>
+         <width>300</width>
+         <height>645</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout">
@@ -371,7 +371,6 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionOpen"/>
    <addaction name="actionSnapshot"/>
    <addaction name="actionProjectionMode"/>
   </widget>
@@ -419,21 +418,6 @@
    </property>
    <property name="iconText">
     <string>Snapshot</string>
-   </property>
-  </action>
-  <action name="actionOpen">
-   <property name="icon">
-    <iconset resource="Resources/City3D.qrc">
-     <normaloff>:/Resources/fileopen.png</normaloff>:/Resources/fileopen.png</iconset>
-   </property>
-   <property name="text">
-    <string>Open</string>
-   </property>
-   <property name="iconText">
-    <string>Open</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+O</string>
    </property>
   </action>
   <action name="actionSegmentation">

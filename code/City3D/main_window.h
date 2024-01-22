@@ -66,7 +66,8 @@ public:
     LinearProgramSolver::SolverName active_solver() const;
 
 public Q_SLOTS:
-	bool open();
+	bool openPointCloud();
+	bool openFootPrint();
 
 	bool saveReconstruction();
 	bool savePointCloud();
@@ -111,6 +112,8 @@ private:
 	QString			curCameraConfigFileDirectory_;
 
 	QProgressBar*	progress_bar_;
+
+	QAction* actionOpenFootPrint_;
 
 	QLabel *statusLabel_,
 		*coordinateUnderMouseLabel_,
