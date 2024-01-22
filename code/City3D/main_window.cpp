@@ -441,7 +441,7 @@ void MainWindow::about()
 
 		"<p>For comments, suggestions, or any issues, please contact me at:<br>"
 		"<a href=\"mailto:J.Huang-1@tudelft.nl\">J.Huang-1@tudelft.nl</a>.</p>"
-		"<p>@July.1, 2022</p>"
+		"<p>@July 1, 2022</p>"
 		);
 
 	QMessageBox::about(this, "About City3D", title + text);

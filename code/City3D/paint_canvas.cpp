@@ -458,10 +458,7 @@ void PaintCanvas::setReconstruction(Map* mesh) {
 
 void PaintCanvas::setPointSet(PointSet* pset) { 
 	if (point_set_)
-    {
-        foot_print_.forget();
-        point_set_.forget();
-    }
+		point_set_.forget();
 
 	if (pset) 
 		point_set_ = pset; 
