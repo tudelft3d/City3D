@@ -1328,7 +1328,7 @@ Alpha_shape_2<Dt,EACT>::number_of_solid_components(const Type_of_alpha& alpha) c
        ++face_it) 
     {
       Face_handle pFace = face_it;
-      CGAL_triangulation_postcondition( pFace != NULL);
+      CGAL_assertion( pFace != NULL);
       
       if (classify(pFace, alpha) == INTERIOR){
 	Data& data = marked_face_set[pFace];

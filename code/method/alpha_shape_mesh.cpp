@@ -40,7 +40,7 @@ Map* AlphaShapeMesh::apply(AlphaShape* as, const Plane3d& plane, double radius) 
 	int current_idx = 0;
 	for (AlphaShape::Finite_faces_iterator fit = as->finite_faces_begin(); fit != as->finite_faces_end(); ++fit) {
 		Face_handle pFace = fit;
-		CGAL_triangulation_postcondition(pFace != NULL);
+		CGAL_assertion(pFace != NULL);
 		if (as->classify(fit) == AlphaShape::INTERIOR) {
 			Triangle tri;
 			for (int i = 0; i < 3; ++i) {

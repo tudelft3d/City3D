@@ -165,7 +165,7 @@ inline std::vector<Face_handle> AlphaShape::get_all_finite_facets()
 
 	for (Finite_faces_iterator fit = finite_faces_begin(); fit != finite_faces_end(); ++fit) {
 		Face_handle pFace = fit;
-		CGAL_triangulation_postcondition(pFace != NULL);
+		CGAL_assertion(pFace != NULL);
 		if (classify(pFace) == AlphaShape::INTERIOR)
 			facets.push_back(pFace);
 	}
@@ -215,7 +215,7 @@ inline int AlphaShape::enumerate_solid_components(std::map<Face_handle, int>& co
 	for (face_it = finite_faces_begin(); face_it != finite_faces_end(); ++face_it)
 	{
 		Face_handle pFace = face_it;
-		CGAL_triangulation_postcondition(pFace != NULL);
+		CGAL_assertion(pFace != NULL);
 
 		if (classify(pFace) == AlphaShape::INTERIOR) {
 			int& id = status[pFace];
