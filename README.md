@@ -13,6 +13,9 @@ Remote Sensing. 14(9), 2254, 2022.
 
 This implementation is based on [PolyFit](https://github.com/LiangliangNan/PolyFit).
 
+
+Despite being a research prototype, City3D has been used to create city-scale building models. [This article](https://research.geodan.nl/the-possibilities-and-limitations-of-city3d-as-large-scale-3d-building-reconstruction-model/) explores its potential and limitations from a user's perspective, comparing results in Dutch and French datasets.
+
 ---
 
 ### Obtaining City3D
