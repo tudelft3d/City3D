@@ -55,6 +55,7 @@ if (NOT GUROBI_FOUND)
             "/home/liangliang/dev/gurobi951/include"
             "/home/liangliang/dev/gurobi950/include"
             "/home/liangliang/dev/gurobi901/include"
+            "D:\\dev\\Gurobi-10.0.3\\win64\\include"
             "D:\\dev\\Gurobi-9.5.2\\win64\\include"
             "C:\\dev\\gurobi951\\win64\\include"
             "C:\\dev\\gurobi950\\win64\\include"
@@ -75,6 +76,7 @@ if (NOT GUROBI_FOUND)
             "/home/liangliang/dev/gurobi951/lib"
             "/home/liangliang/dev/gurobi950/lib"
             "/home/liangliang/dev/gurobi901/lib"
+            "D:\\dev\\Gurobi-10.0.3\\win64\\lib"
             "D:\\dev\\Gurobi-9.5.2\\win64\\lib"
             "C:\\dev\\gurobi951\\win64\\lib"
             "C:\\dev\\gurobi950\\win64\\lib"
@@ -87,7 +89,7 @@ if (NOT GUROBI_FOUND)
 
 
     find_library( GUROBI_C_LIBRARY
-            NAMES gurobi90 gurobi95 libgurobi
+            NAMES gurobi100 gurobi90 gurobi95 libgurobi
             PATHS ${SEARCH_PATHS_FOR_LIBRARIES}
             )
 
