@@ -7,7 +7,6 @@ project(${PROJECT_NAME})
 set(method_HEADERS
         alpha_shape.h
         alpha_shape_boundary.h
-        alpha_shape_CGAL5_4.h
         alpha_shape_mesh.h
         cgal_types.h
         dbscan.h

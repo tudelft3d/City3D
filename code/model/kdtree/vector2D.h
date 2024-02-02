@@ -30,7 +30,8 @@
 #define __VECTOR2D_H_
 
 #pragma warning(disable:4201) // disable anonymous unions warning
-#pragma warning(disable:4244) //disable warning about conversion from double to float
+#pragma warning(disable:4244) // disable warning about conversion from double to float
+#pragma warning(disable:4267) // disable warning about conversion from size_t to int
 #pragma warning(disable:4305) // disable warning about truncation from double to float
 
 #include <cmath>

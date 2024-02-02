@@ -22,7 +22,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
 #include <string>
-#include "alpha_shape_CGAL5_4.h"
 #include "../model/point_set.h"
 #include <vector>
 

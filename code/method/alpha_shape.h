@@ -29,11 +29,8 @@ Constructors offering to build a weighted point from a point(and reversely)
 are still requested by the concept Kernel but must now be marked with the
 explicit specifier.
 */
-#if CGAL_VERSION_NR >= 1041100000 
-#include "alpha_shape_CGAL5_4.h"
-#else
-#include "alpha_shape_CGAL4.10_and_earlier.h"
-#endif
+
+#include <CGAL/Alpha_shape_2.h>
 
 #include <CGAL/Delaunay_triangulation_2.h>
 #include <CGAL/Triangulation_hierarchy_2.h>
@@ -82,9 +79,9 @@ typedef CGAL::Triangulation_face_base_2<Kernel>				Tf;
 typedef CGAL::Alpha_shape_face_base_2<Kernel, Tf>			Af;
 
 typedef CGAL::Triangulation_default_data_structure_2<Kernel, Av, Af>	Tds;
-typedef CGAL::Delaunay_triangulation_2<Kernel, Tds>						Dt;
+typedef CGAL::Delaunay_triangulation_2<Kernel, Tds>			Dt;
 typedef CGAL::Triangulation_hierarchy_2<Dt>					Ht;
-typedef CGAL::Alpha_shape_CGAL<Ht>							CGAL_AlphaShape;
+typedef CGAL::Alpha_shape_2<Ht>							    CGAL_AlphaShape;
 
 typedef CGAL_AlphaShape::Finite_vertices_iterator			Vertices_iterator;
 typedef CGAL_AlphaShape::Finite_faces_iterator				Faces_iterator;
