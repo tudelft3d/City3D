@@ -164,7 +164,7 @@ public:
       }
       else
       {
-        if(m_matrix.isCompressed())
+        if(m_matrix.isCompressed() && nnz!=block_size)
         {
           // no need to realloc, simply copy the tail at its respective position and insert tmp
           matrix.data().resize(start + nnz + tail_size);
@@ -326,46 +326,6 @@ private:
 
 //----------
 
-/** \returns the \a outer -th column (resp. row) of the matrix \c *this if \c *this
-  * is col-major (resp. row-major).
-  */
-template<typename Derived>
-typename SparseMatrixBase<Derived>::InnerVectorReturnType SparseMatrixBase<Derived>::innerVector(Index outer)
-{ return InnerVectorReturnType(derived(), outer); }
-
-/** \returns the \a outer -th column (resp. row) of the matrix \c *this if \c *this
-  * is col-major (resp. row-major). Read-only.
-  */
-template<typename Derived>
-const typename SparseMatrixBase<Derived>::ConstInnerVectorReturnType SparseMatrixBase<Derived>::innerVector(Index outer) const
-{ return ConstInnerVectorReturnType(derived(), outer); }
-
-/** \returns the \a outer -th column (resp. row) of the matrix \c *this if \c *this
-  * is col-major (resp. row-major).
-  */
-template<typename Derived>
-typename SparseMatrixBase<Derived>::InnerVectorsReturnType
-SparseMatrixBase<Derived>::innerVectors(Index outerStart, Index outerSize)
-{
-  return Block<Derived,Dynamic,Dynamic,true>(derived(),
-                                             IsRowMajor ? outerStart : 0, IsRowMajor ? 0 : outerStart,
-                                             IsRowMajor ? outerSize : rows(), IsRowMajor ? cols() : outerSize);
-
-}
-
-/** \returns the \a outer -th column (resp. row) of the matrix \c *this if \c *this
-  * is col-major (resp. row-major). Read-only.
-  */
-template<typename Derived>
-const typename SparseMatrixBase<Derived>::ConstInnerVectorsReturnType
-SparseMatrixBase<Derived>::innerVectors(Index outerStart, Index outerSize) const
-{
-  return Block<const Derived,Dynamic,Dynamic,true>(derived(),
-                                                  IsRowMajor ? outerStart : 0, IsRowMajor ? 0 : outerStart,
-                                                  IsRowMajor ? outerSize : rows(), IsRowMajor ? cols() : outerSize);
-
-}
-
 /** Generic implementation of sparse Block expression.
   * Real-only.
   */
@@ -503,7 +463,6 @@ template<typename ArgType, int BlockRows, int BlockCols, bool InnerPanel>
 class unary_evaluator<Block<ArgType,BlockRows,BlockCols,InnerPanel>, IteratorBased>::InnerVectorInnerIterator
  : public EvalIterator
 {
-  enum { IsRowMajor = unary_evaluator::IsRowMajor };
   const XprType& m_block;
   Index m_end;
 public:
@@ -528,7 +487,6 @@ public:
 template<typename ArgType, int BlockRows, int BlockCols, bool InnerPanel>
 class unary_evaluator<Block<ArgType,BlockRows,BlockCols,InnerPanel>, IteratorBased>::OuterVectorInnerIterator
 {
-  enum { IsRowMajor = unary_evaluator::IsRowMajor };
   const unary_evaluator& m_eval;
   Index m_outerPos;
   const Index m_innerIndex;
