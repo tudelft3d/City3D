@@ -137,8 +137,7 @@ void Reconstruction::extract_building_roof(PointSet *pset,
     std::vector<unsigned int> remaining_ind;
 
     Region_Growing_Dectetor rg;
-    const std::vector<VertexGroup::Ptr>
-            &roofs = rg.detect(pset, p_index, min_support);
+    const std::vector<VertexGroup::Ptr> &roofs = rg.detect(pset, p_index, min_support);
     for (std::size_t j = 0; j < roofs.size(); ++j)
     {
         const Color &c = random_color();
@@ -386,11 +385,11 @@ Reconstruction::reconstruct(PointSet *pset, Map *foot_print, Map *result, Linear
         {
             VertexGroup *g = roofs[i];
         }
-        unsigned int min_support = 30;
+        unsigned int min_support = Method::number_region_growing * 0.75f;
         while (roofs.empty())
         {
-            extract_building_roof(pset, g, min_support);
-            min_support *= 0.7;
+            extract_building_roof(pset, g,  Method::number_region_growing);
+            min_support *= 0.75;
         }
 
         PointSet::Ptr roof_pset = create_roof_point_set(pset, roofs, g);
