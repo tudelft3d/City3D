@@ -35,10 +35,7 @@ std::vector<VertexGroup::Ptr> do_detect(
 	std::vector<Point> pots,
 	std::vector<Vector> nos,
 	std::vector<unsigned int>& unassigned_points,
-	unsigned int min_support,
-	double dist_thresh,
-	double bitmap_reso,
-	double normal_thresh
+	unsigned int min_support
 )
 {
 
@@ -95,10 +92,7 @@ std::vector<VertexGroup::Ptr> do_detect(
 
 std::vector<VertexGroup::Ptr> Region_Growing_Dectetor::detect(
 	PointSet* pset,
-	unsigned int min_support,
-	double dist_thresh,
-	double bitmap_reso,
-	double normal_thresh)
+	unsigned int min_support)
 {
 	std::vector<VertexGroup::Ptr> results;
 	Logger::out() << "entire point set" << std::endl;
@@ -145,21 +139,14 @@ std::vector<VertexGroup::Ptr> Region_Growing_Dectetor::detect(
 		pts,
 		nos,
 		unassigned_points,
-		min_support,
-		dist_thresh,
-		bitmap_reso,
-		normal_thresh);
+		min_support);
 
 }
 
 std::vector<VertexGroup::Ptr> Region_Growing_Dectetor::detect(
 	PointSet* pset,
 	const std::vector<unsigned int>& vertitces,
-	unsigned int min_support,    // the minimal number of points required for a primitive
-	double dist_thresh,    // relative to the bounding box width. NOTE: Internally the distance threshold is taken as 3 * distance_threshold!!!
-	double bitmap_reso,    // relative to the bounding box width. NOTE: This threshold is NOT multiplied internally!
-	double normal_thresh    // the cos of the maximal normal deviation
-
+	unsigned int min_support    // the minimal number of points required for a primitive
 )
 {
 	std::vector<VertexGroup::Ptr> results;
@@ -210,10 +197,7 @@ std::vector<VertexGroup::Ptr> Region_Growing_Dectetor::detect(
 		pts,
 		nos,
 		unassigned_points,
-		min_support,
-		dist_thresh,
-		bitmap_reso,
-		normal_thresh);
+		min_support);
 
 }
 

@@ -133,15 +133,12 @@ void Reconstruction::extract_building_roof(PointSet *pset,
                                            VertexGroup *building,
                                            unsigned int min_support)
 {
-    double dist_thresh = 0.001;
-    double bitmap_reso = 0.05;
-    double normal_thresh = 0.85;        // the cos of the maximal normal deviation
     std::vector<unsigned int> p_index = *building;
     std::vector<unsigned int> remaining_ind;
 
     Region_Growing_Dectetor rg;
     const std::vector<VertexGroup::Ptr>
-            &roofs = rg.detect(pset, p_index, min_support, dist_thresh, bitmap_reso, normal_thresh);
+            &roofs = rg.detect(pset, p_index, min_support);
     for (std::size_t j = 0; j < roofs.size(); ++j)
     {
         const Color &c = random_color();
