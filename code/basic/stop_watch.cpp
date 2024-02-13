@@ -19,8 +19,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "stop_watch.h"
 #include "basic_types.h" // for "round()"
-#include <iostream>
 
+#include <cmath>
+#include <sstream>
+#include <iomanip>
 
 
 //_________________________________________________________
@@ -44,7 +46,7 @@ void StopWatch::start() {
 #endif // WIN32
 }
 
-double StopWatch::elapsed() const {
+double StopWatch::seconds() const {
 #ifdef WIN32
 	LARGE_INTEGER  largeInteger;
 	QueryPerformanceCounter(&largeInteger);
@@ -56,4 +58,31 @@ double StopWatch::elapsed() const {
     double time = (now.tv_sec - start_time_.tv_sec) + (now.tv_usec - start_time_.tv_usec) / 1.0e6;
 #endif  // WIN32
     return truncate_digits(time, 2);
+}
+
+
+std::string StopWatch::time_string(int num_digits /* = 1*/) const {
+	double time = seconds() * 1000;
+	if (std::isnan(time) || std::isinf(time))
+		return "inf";
+
+	std::string suffix = "ms";
+	if (time > 1000) {
+		time /= 1000; suffix = "s";
+		if (time > 60) {
+			time /= 60; suffix = "m";
+			if (time > 60) {
+				time /= 60; suffix = "h";
+				if (time > 12) {
+					time /= 12; suffix = "d";
+				}
+			}
+		}
+	}
+
+	std::ostringstream os;
+	os << std::setprecision(num_digits)
+		<< std::fixed << time << suffix;
+
+	return os.str();
 }

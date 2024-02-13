@@ -52,16 +52,12 @@ class FaceSelection
 	{
 	}
 
-	// optimization using Gurobi solver; This is the default solver
-	virtual void optimize(PolyFitInfo* polyfit_info, Map::Facet* foot_print, std::vector<Plane3d*>& v, LinearProgramSolver::SolverName solver_name);
+	// optimization using the requested solver
+	void optimize(PolyFitInfo* polyfit_info, Map::Facet* foot_print, std::vector<Plane3d*>& v, LinearProgramSolver::SolverName solver_name);
 
-	//virtual void optimize(PolyFitInfo* polyfit_info, Map::Facet* foot_print, std::vector < Plane3d* > v);
-	std::vector<std::vector<Map::Facet*> > find_multi_roofs(Map* mesh,
-		Map::Facet* foot_print,
-		std::vector<Plane3d*>& v);
-	std::vector<Map::Facet*> overlapping_faces(Map::Facet* f,
-                                               const std::vector<Map::Facet*>& faces,
-                                               Map::Facet* foot_print);
+private:
+	std::vector<std::vector<Map::Facet*> > find_multi_roofs(Map* mesh, Map::Facet* foot_print, std::vector<Plane3d*>& v);
+	std::vector<Map::Facet*> overlapping_faces(Map::Facet* f, const std::vector<Map::Facet*>& faces, Map::Facet* foot_print);
 
  private:
 	PointSet* pset_;

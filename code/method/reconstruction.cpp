@@ -369,7 +369,8 @@ Reconstruction::reconstruct(PointSet *pset, Map *foot_print, Map *result, Linear
     int idx = 0;
     FOR_EACH_FACET(Map, foot_print, it)
     {
-        std::cout << "processing " << ++idx << "/" << foot_print->size_of_facets() << " building..." << std::endl;
+        Logger::out("-") << "processing " << ++idx << "/" << foot_print->size_of_facets() << " building..." << std::endl;
+
         VertexGroup::Ptr g = buildings[it];
         if (!g)
             continue;
@@ -386,7 +387,7 @@ Reconstruction::reconstruct(PointSet *pset, Map *foot_print, Map *result, Linear
             VertexGroup *g = roofs[i];
         }
         unsigned int min_support = Method::number_region_growing * 0.75f;
-        while (roofs.empty())
+        while (roofs.empty() && min_support > 6) // Liangliang: the number must be "> 6" to avoid infinite loops
         {
             extract_building_roof(pset, g,  Method::number_region_growing);
             min_support *= 0.75;
@@ -419,7 +420,7 @@ Reconstruction::reconstruct(PointSet *pset, Map *foot_print, Map *result, Linear
     if (num > 0)
         Logger::warn("-") << "encountered " << num << " non-simple foot print "
                           << (num > 1 ? " polygons." : " polygon.") << std::endl;
-//	Logger::out("-") << "reconstruction done. Time: " << t.elapsed() << " sec." << std::endl;
+	Logger::out("-") << "reconstruction done. Time: " << t.time_string() << std::endl;
 
     return success;
 }

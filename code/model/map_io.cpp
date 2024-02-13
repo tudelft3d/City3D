@@ -104,7 +104,7 @@ Map* MapIO::read(const std::string& file_name)
 		Logger::out("-") << "reading file ..." << std::endl;
 
 		if (serializer->serialize_read(file_name, mesh)) {
-			Logger::out("-") << "done. " << w.elapsed() << " sec." << std::endl;
+			Logger::out("-") << "done. " << w.seconds() << " sec." << std::endl;
 
 			remove_duplicated_vertices(mesh);
 			join_colinear_edges(mesh);
@@ -129,7 +129,7 @@ bool MapIO::save(const std::string& file_name, const Map* mesh)
 		Logger::out("-") << "saving file ..." << std::endl;
 
 		if (serializer->serialize_write(file_name, mesh))  {
-			Logger::out("-") << "done. " << w.elapsed() << " sec." << std::endl;
+			Logger::out("-") << "done. " << w.seconds() << " sec." << std::endl;
 			return true;
 		}
 		else {

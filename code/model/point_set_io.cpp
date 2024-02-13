@@ -68,7 +68,7 @@ PointSet* PointSetIO::read(const std::string& file_name)
 		return nil;
 	}
 
-	Logger::out("-") << "done. " << w.elapsed() << " sec." << std::endl;
+	Logger::out("-") << "done. " << w.seconds() << " sec." << std::endl;
 
 	return pset;
 }
@@ -105,6 +105,6 @@ bool PointSetIO::save(const std::string& file_name, const PointSet* point_set) {
 		return false;
 	}
 
-	Logger::out("-") << "done. " << w.elapsed() << " sec." << std::endl;
+	Logger::out("-") << "done. " << w.seconds() << " sec." << std::endl;
 	return true;
 }

@@ -21,13 +21,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define _STOP_WATCH_H_
 
 
-
-
 #ifdef WIN32
 #	include <windows.h>
 #else 
 #	include <sys/time.h>
 #endif // WIN32
+
+#include <string>
 
 //______________________________________________________________________
 
@@ -56,8 +56,11 @@ public :
 
 	void  start() ;
 
-	// returns user elapsed time since the construction / start in sec.
-	double elapsed() const ;
+	// returns user elapsed time (in seconds) since the construction / start.
+	double seconds() const ;
+
+	/// the elapsed time string, e.g., 88ms, 2.3s, 1.7m, 0.1h. This function automatically determines the best unit.
+	std::string time_string(int num_digits = 1) const;
 
 private:
 

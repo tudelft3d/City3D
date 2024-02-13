@@ -243,7 +243,7 @@ void FaceSelection::optimize(PolyFitInfo* polyfit_info,
 			}
 		}
 		double uncovered_area = (facet_attrib_facet_area_[f]);
-   // accumulate vertical face area term,
+		// accumulate vertical face area term,
         double coeff_vertical_coverage = 0.1*total_points * Method::lambda_model_complexity / model_->bbox().area();
         if (v_face)
 		{
@@ -258,6 +258,8 @@ void FaceSelection::optimize(PolyFitInfo* polyfit_info,
 	{
 		program_.add_variable(Variable(Variable::BINARY));
 	}
+
+	Logger::out("    -") << "num total variables: " << total_variables << std::endl;
 
 	//////////////////////////////////////////////////////////////////////////
 
@@ -300,7 +302,8 @@ void FaceSelection::optimize(PolyFitInfo* polyfit_info,
 				break;
 			}
 		}
-//exclude the added vertical planar segments
+
+		//exclude the added vertical planar segments
 		if (!v_face && is_confident_facet[f] )
 		{
 			Constraint constraint;

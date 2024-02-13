@@ -44,6 +44,6 @@ void PointSetNormals::estimate(PointSet* pset, int k /* = 16 */) {
 		progress.next();
 	}
 
-	Logger::out("-") << "estimating normals done. Time: " << t.elapsed() << " sec" << std::endl;
+	Logger::out("-") << "estimating normals done. Time: " << t.seconds() << " sec" << std::endl;
 }
 

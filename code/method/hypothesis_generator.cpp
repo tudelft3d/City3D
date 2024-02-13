@@ -254,12 +254,13 @@ void HypothesisGenerator::collect_valid_planes(PolyFitInfo* polyfit_info,
 	std::vector<vec3> line_segments)
 {
 	std::vector<Plane3d*>& supporting_planes = polyfit_info->planes;
+
 	planar_segments_.clear();
 	added_vertical_faces.clear();
 	vertex_group_plane_.clear();
 	std::vector<VertexGroup::Ptr>& groups = pset_->groups();
 	//////////////////////////////////
-	//add vertical plane
+	//add vertical planes
 	std::vector<vec3> temp_p;
 	std::vector<vec3> temp_id;
 	for (std::size_t i = 0; i < line_segments.size(); i++)
@@ -300,6 +301,8 @@ void HypothesisGenerator::collect_valid_planes(PolyFitInfo* polyfit_info,
 		supporting_planes.push_back(plane);
 		vertex_group_plane_[g] = plane;
 	}
+	Logger::out("    -") << "num added vertical planes: " << added_vertical_faces.size() << std::endl;
+
 	////////////////////////////////
 
 	//add a cut plane
@@ -373,6 +376,7 @@ void HypothesisGenerator::collect_valid_planes(PolyFitInfo* polyfit_info,
 		foot_print_edge_derived_vertex_group[h->opposite()] = g;
 	}
 
+	Logger::out("    -") << "num initial planes:  " << polyfit_info->planes.size() << std::endl;
 }
 
 static void check_source_planes(Map* mesh)
@@ -1187,6 +1191,8 @@ Map* HypothesisGenerator::generate(PolyFitInfo* polyfit_info, Map::Facet* foot_p
 	vertex_source_planes_.unbind();
 	check_source_planes(mesh);
 
+	Logger::out("    -") << "num candidate faces: " << mesh->size_of_facets() << std::endl;
+
 	return mesh;
 }
 
@@ -1229,6 +1235,8 @@ Map* HypothesisGenerator::generate(PolyFitInfo* polyfit_info,
 	edge_source_planes_.unbind();
 	vertex_source_planes_.unbind();
 	check_source_planes(mesh);
+
+	Logger::out("    -") << "num candidate faces: " << mesh->size_of_facets() << std::endl;
 
 	return mesh;
 }
