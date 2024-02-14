@@ -24,23 +24,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifdef HAS_GUROBI
 
 #include <gurobi_c++.h>
-#ifdef WIN32
-#if (_MSC_VER == 1900) // vs 2015
-#pragma comment(lib, "gurobi80.lib")
-#ifdef _DEBUG
-#pragma comment(lib, "gurobi_c++mdd2015.lib")
-#else
-#pragma comment(lib, "gurobi_c++md2015.lib")
-#endif
-#elif (_MSC_VER >= 1910 && _MSC_VER <= 1916) // vs 2017
-#pragma comment(lib, "gurobi95.lib")
-#ifdef _DEBUG
-#pragma comment(lib, "gurobi_c++mdd2017.lib")
-#else
-#pragma comment(lib, "gurobi_c++md2017.lib")
-#endif
-#endif
-#endif
 
 
 bool LinearProgramSolver::_solve_GUROBI(const LinearProgram* program) {
@@ -55,7 +38,7 @@ bool LinearProgramSolver::_solve_GUROBI(const LinearProgram* program) {
 			return false;
 		}
 
-		GRBEnv env = GRBEnv();
+		static GRBEnv env = GRBEnv();
 		env.set(GRB_IntParam_LogToConsole, 0);
 
 		GRBModel model = GRBModel(env);
