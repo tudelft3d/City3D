@@ -133,7 +133,7 @@ private:
 public:
 	WgtRender*	wgtRender_;
 
-    void generate_footprint();
+    bool want_footprint();
 };
 
 #endif // TESTQGLVIEWER_H

@@ -460,8 +460,23 @@ void PaintCanvas::setPointSet(PointSet* pset) {
 	if (point_set_)
 		point_set_.forget();
 
-	if (pset) 
-		point_set_ = pset; 
+	if (pset) {
+		point_set_ = pset;
+		if (foot_print_) {
+			Tessellator::remove_mesh(foot_print_);
+			MeshRender::remove_mesh(foot_print_);
+			foot_print_.forget();
+			Tessellator::invalidate();
+			MeshRender::invalidate();
+		}
+		if (reconstruction_) {
+			Tessellator::remove_mesh(reconstruction_);
+			MeshRender::remove_mesh(reconstruction_);
+			reconstruction_.forget();
+			Tessellator::invalidate();
+			MeshRender::invalidate();
+		}
+	}
 
 	//if (point_set_) {
 	//	hint_text_ = "Next: click \'Refine\' to merge very close and near-parallel planar segments.";
@@ -640,41 +655,46 @@ void PaintCanvas::estimateNormals() {
 
 
 void PaintCanvas::segmentation() {
-	main_window_->wgtRender_->checkBoxPointSet->setChecked(false);
-	main_window_->wgtRender_->checkBoxSegments->setChecked(true);
-	main_window_->checkBoxShowReconstruction->setChecked(false);
     main_window_->updateWeights();
 	Reconstruction recon;
     if (!foot_print_)
     {
-        main_window_->generate_footprint();
-        foot_print_=recon.generate_polygon(point_set_);
+		if (main_window_->want_footprint())
+			foot_print_ = recon.generate_polygon(point_set_);
+		else
+			return;
     }
-	recon.segmentation(point_set_, foot_print_);
+
+	if (foot_print_) {
+		recon.segmentation(point_set_, foot_print_);
+		main_window_->wgtRender_->checkBoxPointSet->setChecked(false);
+	}
+	else
+		main_window_->wgtRender_->checkBoxPointSet->setChecked(true);
+
+	main_window_->wgtRender_->checkBoxSegments->setChecked(true);
+	main_window_->checkBoxShowReconstruction->setChecked(false);
 
 	update_all();
 }
 
 
 void PaintCanvas::extractRoofs() {
-	main_window_->wgtRender_->checkBoxPointSet->setChecked(false);
-	main_window_->wgtRender_->checkBoxSegments->setChecked(true);
-	main_window_->checkBoxShowReconstruction->setChecked(false);
     main_window_->updateWeights();
 	Reconstruction recon;
-	recon.extract_roofs(point_set_, foot_print_);
-
+	auto status = recon.extract_roofs(point_set_, foot_print_);
+	main_window_->wgtRender_->checkBoxPointSet->setChecked(!status);
+	main_window_->wgtRender_->checkBoxSegments->setChecked(true);
+	main_window_->checkBoxShowReconstruction->setChecked(false);
 	update_all();
 }
 
 
 void PaintCanvas::reconstruct() {
-	main_window_->checkBoxShowReconstruction->setChecked(true);
-	main_window_->wgtRender_->checkBoxPointSet->setChecked(false);
-	main_window_->wgtRender_->checkBoxSegments->setChecked(true);
-	main_window_->wgtRender_->checkBoxSurface->setChecked(true);
-	main_window_->wgtRender_->checkBoxPerFaceColor->setChecked(false);
-	main_window_->wgtRender_->checkBoxSharpEdges->setChecked(true);
+	if (!foot_print_) {
+		Logger::warn("-") << "footprint does not exist. You must either load it or generate it by clicking the 'Segmentation' button" << std::endl;
+		return;
+	}
 
 	setReconstruction(new Map);
 	main_window_->updateWeights();
@@ -683,6 +703,13 @@ void PaintCanvas::reconstruct() {
 	bool status = recon.reconstruct(point_set_, foot_print_, reconstruction_, main_window_->active_solver(), show_reconstruction_);
 	if (!status)
 		setReconstruction(nil);
+
+	main_window_->checkBoxShowReconstruction->setChecked(true);
+	main_window_->wgtRender_->checkBoxPointSet->setChecked(false);
+	main_window_->wgtRender_->checkBoxSegments->setChecked(!status);
+	main_window_->wgtRender_->checkBoxSurface->setChecked(true);
+	main_window_->wgtRender_->checkBoxPerFaceColor->setChecked(false);
+	main_window_->wgtRender_->checkBoxSharpEdges->setChecked(true);
 
 	update_all();
 }

@@ -129,7 +129,7 @@ void Reconstruction::segmentation(PointSet *pset, Map *foot_print)
 
 }
 
-void Reconstruction::extract_building_roof(PointSet *pset,
+int Reconstruction::extract_building_roof(PointSet *pset,
                                            VertexGroup *building,
                                            unsigned int min_support)
 {
@@ -144,27 +144,28 @@ void Reconstruction::extract_building_roof(PointSet *pset,
         roofs[j]->set_color(c);
     }
     building->set_children(roofs);
-
+    Logger::out("-") << roofs.size() << " roof planes extracted" << std::endl;
+    return roofs.size();
 }
 
-void Reconstruction::extract_roofs(PointSet *pset, Map *foot_print)
+bool Reconstruction::extract_roofs(PointSet *pset, Map *foot_print)
 {
     if (!pset)
     {
         Logger::warn("-") << "point cloud data does not exist" << std::endl;
-        return;
+        return false;
     }
 
     if (!foot_print)
     {
-        Logger::warn("-") << "foot print data does not exist" << std::endl;
-        return;
+        Logger::warn("-") << "footprint does not exist. You must either load it or generate it by clicking the 'Segmentation' button" << std::endl;
+        return false;
     }
 
     if (!MapFacetAttribute<VertexGroup::Ptr>::is_defined(foot_print, "buildings"))
     {
-        Logger::warn("-") << "please segment the point cloud into buildings" << std::endl;
-        return;
+        Logger::warn("-") << "please first perform segmentation of the point cloud into buildings" << std::endl;
+        return false;
     }
     MapFacetAttribute<VertexGroup::Ptr> buildings(foot_print, "buildings");
 
@@ -177,16 +178,18 @@ void Reconstruction::extract_roofs(PointSet *pset, Map *foot_print)
     StopWatch t;
     t.start();
 
+    int num = 0;
     ProgressLogger progress(foot_print->size_of_facets());
     FOR_EACH_FACET_CONST(Map, foot_print, it)
     {
         VertexGroup::Ptr g = buildings[it];
         if (!g)
             continue;
-        extract_building_roof(pset, g, Method::number_region_growing);
+        num += extract_building_roof(pset, g, Method::number_region_growing);
         progress.next();
     }
 
+    return num > 0;
 }
 
 PointSet *Reconstruction::create_roof_point_set(const PointSet *pset,

@@ -22,7 +22,7 @@ class Reconstruction
 	void segmentation(PointSet* pset, Map* foot_print);
 
     /// extract the roof planes for each building
-	void extract_roofs(PointSet* pset, Map* foot_print);
+	bool extract_roofs(PointSet* pset, Map* foot_print);
 
     /// generate the footprint for single building
     Map *generate_polygon(PointSet *pSet, double footprint_height=-5.97,double denisty=0.2);
@@ -45,7 +45,7 @@ class Reconstruction
 
 	PointSet* create_projected_point_set(const PointSet* pset, const PointSet* roof);
 
-	void extract_building_roof(PointSet* pset,
+	int extract_building_roof(PointSet* pset,
 		VertexGroup* building,
 		unsigned int min_support = 40);
 

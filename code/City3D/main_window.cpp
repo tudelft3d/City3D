@@ -406,15 +406,15 @@ void MainWindow::showCoordinateUnderMouse(const vec3& p, bool found) {
 	coordinateUnderMouseLabel_->setText(coordString);
 }
 
-void MainWindow::generate_footprint() {
-    QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, " ", "No footprint provided, generate  one?",
+bool MainWindow::want_footprint() {
+    auto reply = QMessageBox::question(this, "Generate footprint?", "No footprint provided, generate one?",
                                   QMessageBox::No|QMessageBox::Yes);
     if (reply == QMessageBox::Yes) {
-        qDebug() << "We generate a footprint";
+        Logger::out("-") << "we will generate a footprint..." << std::endl;
+		return true;
     } else {
-        qDebug() << "No footprint provided";
-        QApplication::quit();
+		Logger::out("-") << "no footprint will be generated (reconstruction cannot continue)" << std::endl;
+		return false;
     }
 }
 
