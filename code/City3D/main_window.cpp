@@ -677,10 +677,11 @@ void MainWindow::resetRendering() {
 
 LinearProgramSolver::SolverName MainWindow::active_solver() const {
 #ifdef HAS_GUROBI
-    std::cout << "using the Gurobi solver" << std::endl;
+	Logger::out("-") << "using the Gurobi solver" << std::endl;
     return LinearProgramSolver::GUROBI;
-#endif
+#else
     // default to SCIP
-    std::cout << "using the SCIP solver" << std::endl;
+	Logger::out("-") << "using the SCIP solver" << std::endl;
     return LinearProgramSolver::SCIP;
+#endif
 }
