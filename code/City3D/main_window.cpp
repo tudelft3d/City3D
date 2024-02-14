@@ -54,8 +54,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../basic/attribute_serializer.h"
 
 
-MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags flags)
-: QMainWindow(parent, flags)
+MainWindow::MainWindow(QWidget *parent)
+: QMainWindow(parent)
 , curDataDirectory_(".")
 {	
 	setupUi(this);
