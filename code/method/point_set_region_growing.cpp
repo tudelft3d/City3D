@@ -5,8 +5,9 @@
 #include "../basic/logger.h"
 #include "../math/math_types.h"
 #include <list>
+#include <CGAL/version.h>
 
-#if (CGAL_VERSION_NR < 1050601000)
+#if CGAL_VERSION_NR < 1050601000
 // code using CGAL < 5.6, e.g., (5.5)
 #include <CGAL/IO/read_xyz_points.h>
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
@@ -209,20 +210,21 @@ std::vector<VertexGroup::Ptr> Region_Growing_Dectetor::detect(
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 #include <CGAL/Shape_detection/Region_growing/Region_growing.h>
 #include <CGAL/Shape_detection/Region_growing/Point_set.h>
+
 typedef CGAL::Exact_predicates_inexact_constructions_kernel Kernel;
 typedef Kernel::FT FT;
 typedef Kernel::Point_3 Point;
 typedef Kernel::Vector_3 Vector;
 typedef Kernel::Plane_3 Plane_3;
 // Point with normal, and plane index.
-using Point_set  = CGAL::Point_set_3<Point>;
-using Point_map  = typename Point_set::Point_map;
-using Normal_map = typename Point_set::Vector_map;
-using Neighbor_query = CGAL::Shape_detection::Point_set::Sphere_neighbor_query_for_point_set<Point_set>;
-using Region_type = CGAL::Shape_detection::Point_set::Least_squares_plane_fit_region_for_point_set<Point_set>;
-using Neighbor_query = CGAL::Shape_detection::Point_set::Sphere_neighbor_query_for_point_set<Point_set>;
-using Sorting        = CGAL::Shape_detection::Point_set::Least_squares_plane_fit_sorting_for_point_set<Point_set, Neighbor_query>;
-using Region_growing = CGAL::Shape_detection::Region_growing<Neighbor_query, Region_type>;
+typedef CGAL::Point_set_3<Point> Point_set;
+typedef Point_set::Point_map Point_map;
+typedef Point_set::Vector_map Normal_map;
+typedef CGAL::Shape_detection::Point_set::Sphere_neighbor_query_for_point_set<Point_set> Neighbor_query;
+typedef CGAL::Shape_detection::Point_set::Least_squares_plane_fit_region_for_point_set<Point_set> Region_type;
+typedef CGAL::Shape_detection::Point_set::Sphere_neighbor_query_for_point_set<Point_set> Neighbor_query;
+typedef CGAL::Shape_detection::Point_set::Least_squares_plane_fit_sorting_for_point_set<Point_set, Neighbor_query> Sorting;
+typedef CGAL::Shape_detection::Region_growing<Neighbor_query, Region_type> Region_growing;
 
 std::vector<VertexGroup::Ptr> do_detect(
         PointSet *pset,
@@ -254,7 +256,7 @@ std::vector<VertexGroup::Ptr> do_detect(
                     minimum_region_size(min_region_size));
     // Create an instance of the region growing class.
     Region_growing region_growing(
-            point_set, sorting.ordered(),neighbor_query, region_type);
+            point_set, sorting.ordered(), neighbor_query, region_type);
     std::vector<typename Region_growing::Primitive_and_region> regions;
     region_growing.detect(std::back_inserter(regions));
     for (std::size_t i = 0; i < regions.size(); ++i)
@@ -279,10 +281,10 @@ std::vector<VertexGroup::Ptr> do_detect(
     std::vector<Region_type::Item> unassigned_items;
     region_growing.unassigned_items(point_set, std::back_inserter(unassigned_items));
     auto remaining = unassigned_items.size();
-    Logger::out() <<" CGAL_VERSION_NR <1050601000:   "<<(CGAL_VERSION_NR <1050601000)<<std::endl;
-	//Logger::out() << results.size() << " primitives extracted. " << remaining << " points remained." << std::endl;
+    //Logger::out() << results.size() << " primitives extracted. " << remaining << " points remained." << std::endl;
     return results;
 }
+
 std::vector<VertexGroup::Ptr> Region_Growing_Dectetor::detect(
         PointSet *pset,
         unsigned int min_support)
@@ -325,7 +327,7 @@ std::vector<VertexGroup::Ptr> Region_Growing_Dectetor::detect(
         pts[i] = Point(p.x, p.y, p.z);
         nos[i] = Vector(n.x, n.y, n.z);
         p_index[i] = i;
-        pwn.insert(Point(p.x, p.y, p.z),Vector(n.x, n.y, n.z));
+        pwn.insert(Point(p.x, p.y, p.z), Vector(n.x, n.y, n.z));
     }
     return do_detect(pset,
                      p_index,
@@ -382,7 +384,7 @@ std::vector<VertexGroup::Ptr> Region_Growing_Dectetor::detect(
         pts[index] = Point(p.x, p.y, p.z);
         nos[index] = Vector(n.x, n.y, n.z);
         p_index[index] = idx;
-        pwn.insert(Point(p.x, p.y, p.z),Vector(n.x, n.y, n.z));
+        pwn.insert(Point(p.x, p.y, p.z), Vector(n.x, n.y, n.z));
     }
 
     return do_detect(pset,
