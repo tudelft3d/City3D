@@ -1,23 +1,20 @@
 #include "point_set_region_growing.h"
 #include "../model/point_set.h"
-#include "../model/point_set_geometry.h"
 #include "../basic/logger.h"
-#include "../math/math_types.h"
 #include <CGAL/version.h>
-
-// CGAL v5.6 introduced some breaking changes in the APIs for region growing algorithm
-// See: https://github.com/CGAL/cgal/releases/tag/v5.6
-#if CGAL_VERSION_NR >= 1050601000	// code using CGAL >= 5.6
-#include <CGAL/Point_set_3.h>
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
-#include <CGAL/Shape_detection/Region_growing/Region_growing.h>
-#include <CGAL/Shape_detection/Region_growing/Point_set.h>
-
 typedef CGAL::Exact_predicates_inexact_constructions_kernel Kernel;
 typedef Kernel::FT FT;
 typedef Kernel::Point_3 Point;
 typedef Kernel::Vector_3 Vector;
 typedef Kernel::Plane_3 Plane_3;
+// CGAL v5.6 introduced some breaking changes in the APIs for region growing algorithm
+// See: https://github.com/CGAL/cgal/releases/tag/v5.6
+#if CGAL_VERSION_NR >= 1050601000	// code using CGAL >= 5.6
+#include <CGAL/Point_set_3.h>
+#include <CGAL/Shape_detection/Region_growing/Region_growing.h>
+#include <CGAL/Shape_detection/Region_growing/Point_set.h>
+
 // Point with normal, and plane index.
 typedef CGAL::Point_set_3<Point> Point_set;
 typedef Point_set::Point_map Point_map;
@@ -197,21 +194,14 @@ std::vector<VertexGroup::Ptr> Region_Growing_Dectetor::detect(
 }
 
 #else	// code using CGAL < 5.6, e.g., (5.5, 5.4 have been tested)
-
-#include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 #include <CGAL/property_map.h>
 #include <CGAL/Shape_detection/Region_growing.h>
-typedef CGAL::Exact_predicates_inexact_constructions_kernel Kernel;
-typedef Kernel::FT FT;
-typedef Kernel::Point_3 Point;
-typedef Kernel::Vector_3 Vector;
-typedef Kernel::Plane_3 Plane_3;
+
 // Point with normal, and plane index.
 typedef boost::tuple<Point, Vector, int> PNI;
 typedef std::vector<PNI> Point_vector;
 typedef CGAL::Nth_of_tuple_property_map<0, PNI> Point_map;
 typedef CGAL::Nth_of_tuple_property_map<1, PNI> Normal_map;
-typedef CGAL::Nth_of_tuple_property_map<2, PNI> Plane_index_map;
 typedef CGAL::Shape_detection::Point_set::
 Sphere_neighbor_query<Kernel, Point_vector, Point_map> Neighbor_query;
 typedef CGAL::Shape_detection::Point_set::
