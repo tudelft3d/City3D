@@ -3,11 +3,13 @@
 #include "../basic/logger.h"
 #include <CGAL/version.h>
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
+
 typedef CGAL::Exact_predicates_inexact_constructions_kernel Kernel;
 typedef Kernel::FT FT;
 typedef Kernel::Point_3 Point;
 typedef Kernel::Vector_3 Vector;
 typedef Kernel::Plane_3 Plane_3;
+
 // CGAL v5.6 introduced some breaking changes in the APIs for region growing algorithm
 // See: https://github.com/CGAL/cgal/releases/tag/v5.6
 #if CGAL_VERSION_NR >= 1050601000	// code using CGAL >= 5.6
