@@ -144,7 +144,7 @@ int Reconstruction::extract_building_roof(PointSet *pset,
         roofs[j]->set_color(c);
     }
     building->set_children(roofs);
-    Logger::out("-") << roofs.size() << " roof planes extracted" << std::endl;
+    //Logger::out("-") << roofs.size() << " roof planes extracted" << std::endl;
     return roofs.size();
 }
 
