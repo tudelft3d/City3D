@@ -56,8 +56,6 @@ namespace FileUtils {
 	bool		delete_directory(const std::string& path); // all content will be deleted first
 	bool		delete_contents(const std::string& path);	 // delete contents only
 
-	std::string parent_directory(const std::string& path);
-
 	void		get_directory_entries(const std::string& dir, std::vector<std::string>& entries);
 
 	std::string get_current_working_directory() ;
@@ -65,6 +63,12 @@ namespace FileUtils {
 
 	/** Determines the home path for the current user. */
 	std::string get_home_directory(void);
+
+	/**
+	 * @brief Query the name of *this* executable.
+	 * @return The string representing the full path of this executable, e.g., C:/a/b/c.exe
+	 */
+	std::string executable();
 
 	bool		rename_file(const std::string& old_name, const std::string& new_name);
 
@@ -75,7 +79,7 @@ namespace FileUtils {
 	std::string convert_to_upper_case(const std::string& str);
 
 	/** Gets the parent path from full name (Ex: /a/b/c.Ext => /a/b). */
-	std::string dir_name(const std::string& file_name) ;
+	std::string parent_directory(const std::string& file_name) ;
 	/** Gets the extension without dot (Ex: /a/b/c.Ext => Ext). */
 	std::string extension(const std::string& file_name) ;
 	/** Gets the lowercase extension without dot (Ex: /a/b/c.Ext => ext). */
@@ -130,11 +134,6 @@ namespace FileUtils {
 	void		read_file_to_string(const std::string& filename, std::string& data);
 	void		write_string_to_file(const std::string& data, const std::string& filename);
 	void		write_string_to_file(const char* data, int len, const std::string& filename);
-
-	//////////////////////////////////////////////////////////////////////////
-
-	// this is only for City3D
-	std::string FootPrint_resource_directory();
 }
 
 

@@ -54,7 +54,7 @@ bool MapSerializer_obj::serialize_read(
 									   const std::string& file_name, Map* mesh
 									   ) 
 {
-	current_directory_ = FileUtils::dir_name(file_name) ;
+	current_directory_ = FileUtils::parent_directory(file_name) ;
 	bool flag = MapSerializer::serialize_read(file_name, mesh) ;
 	current_directory_ = "" ;
 	return flag;

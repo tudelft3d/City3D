@@ -46,18 +46,24 @@
 #include <ctime>	    // for get_time_string()
 
 #ifdef WIN32
-#include <windows.h>
 #include <io.h>
 #include <direct.h>   // for _mkdir
 #include <sys/stat.h> // for _stat64
-#include <shlobj.h>   // for SHGetFolderPathA
+#include <ShlObj.h>   // for SHGetFolderPathA
 #else
-#include <sys/types.h>
 #include <sys/stat.h>
 #include <dirent.h>
 #include <unistd.h>
-#include <stdio.h>
+#include <cstdio>
 #include <pwd.h>
+#endif
+
+#ifdef __APPLE__
+#include <libproc.h>
+#endif
+
+#ifndef PATH_MAX
+#define PATH_MAX 1024
 #endif
 
 /*
@@ -185,6 +191,31 @@ namespace FileUtils {
 		return home_path;
 	}
 
+	std::string executable() {
+		char path[PATH_MAX] = { 0 };
+#ifdef _WIN32
+		// When NULL is passed to GetModuleHandle, the handle of the exe itself is returned
+		HMODULE hModule = GetModuleHandle(nullptr);
+		if (hModule) {
+			GetModuleFileName(hModule, path, MAX_PATH);
+			return path;
+		}
+#elif defined (__APPLE__)
+		pid_t pid = getpid();
+		// proc_pidpath() gets the full process name including directories to the
+		// executable and the full executable name.
+		int ret = proc_pidpath(pid, path, sizeof(path));
+		if (ret > 0)
+			return path;
+#else
+		ssize_t count = readlink("/proc/self/exe", path, PATH_MAX);
+		if (count != -1)
+			return path;
+#endif // _WIN32
+		// If failed, simply returns current working directory.
+		return get_current_working_directory();
+	}
+
 	bool rename_file(const std::string& old_name, const std::string& new_name) {
 		if(is_file(new_name)) {
 			return false ;
@@ -293,7 +324,7 @@ namespace FileUtils {
 		return name_less_extension( simpleName );
 	}
 
-	std::string dir_name(const std::string& file_name) {
+	std::string parent_directory(const std::string& file_name) {
 		std::string::size_type slash = file_name.find_last_of(PATH_SEPARATORS);
 		if (slash == std::string::npos) 
 			return std::string();

@@ -62,10 +62,21 @@ MainWindow::MainWindow(QWidget *parent)
 
 	//////////////////////////////////////////////////////////////////////////
 
+	const std::string app_path = FileUtils::executable();
+	std::string log_path = app_path;
+#ifdef __APPLE__
+	// macOS may put the executable file in an application bundle, e.g., "PolyFit.app/Contents/MacOS/PolyFit"
+	std::string::size_type pos = log_path.find(".app");
+	if (pos != std::string::npos)
+		log_path = log_path.substr(0, pos);
+#endif
+	log_path = FileUtils::parent_directory(log_path);
+	std::string full_path_log_file = log_path + "/" + FileUtils::base_name(app_path) + ".log";
+
 	Logger::initialize();
 	Logger::instance()->register_client(this);
 	Logger::instance()->set_value(Logger::LOG_REGISTER_FEATURES, "*"); // log everything
-	Logger::instance()->set_value(Logger::LOG_FILE_NAME, "City3D.log");
+	Logger::instance()->set_value(Logger::LOG_FILE_NAME, full_path_log_file);
 	//Logger::instance()->set_value("log_features",
 	//	"EigenSolver;MapBuilder;MapParameterizer\
 	//	LinearSolver");
