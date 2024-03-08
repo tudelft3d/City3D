@@ -72,7 +72,7 @@ void PointSetSerializer_las::load(PointSet* pset, const std::string& file_name) 
 	double x0 = p0.coordinates[0];
 	double y0 = p0.coordinates[1];
 	double z0 = p0.coordinates[2];
-	Logger::out("-") << "first point (" << x0 << " " << y0 << " " << z0 << ")" << std::endl;
+	Logger::out("Warning") << "the point cloud has been translated with respect to the first point: (" << x0 << " " << y0 << " " << z0 << ")" << std::endl;
 	pset->set_offset(vec3(x0, y0, z0));
 
 	// now we read the remaining points...
