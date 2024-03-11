@@ -12,7 +12,8 @@ typedef Kernel::Plane_3 Plane_3;
 
 // CGAL v5.6 introduced some breaking changes in the APIs for region growing algorithm
 // See: https://github.com/CGAL/cgal/releases/tag/v5.6
-#if CGAL_VERSION_NR >= 1050601000	// code using CGAL >= 5.6
+#if CGAL_VERSION_NR >= 1050600000	// code using CGAL >= 5.6
+                       
 #include <CGAL/Point_set_3.h>
 #include <CGAL/Shape_detection/Region_growing/Region_growing.h>
 #include <CGAL/Shape_detection/Region_growing/Point_set.h>
