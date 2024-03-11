@@ -2,8 +2,13 @@
 #      Copyright (C) 2015 by Liangliang Nan (liangliang.nan@gmail.com)
 #      https://3d.bk.tudelft.nl/liangliang/
 #
-#      This file is part of Easy3D: software for processing and rendering
-#      meshes and point clouds.
+#      This file is part of Easy3D. If it is useful in your research/work,
+#      I would be grateful if you show your appreciation by citing it:
+#       ------------------------------------------------------------------
+#           Liangliang Nan.
+#           Easy3D: a lightweight, easy-to-use, and efficient C++
+#           library for processing and rendering 3D data. 2018.
+#       ------------------------------------------------------------------
 #
 #      Easy3D is free software; you can redistribute it and/or modify
 #      it under the terms of the GNU General Public License Version 3
@@ -43,44 +48,20 @@ if (NOT GUROBI_FOUND)
     # Hardcoded search paths
     set(SEARCH_PATHS_FOR_HEADERS
             "$ENV{GUROBI_HOME}/include"
+            "/Library/gurobi1003/macos_universal2/include"
             "/Library/gurobi952/macos_universal2/include"
-            "/Library/gurobi951/macos_universal2/include"
-            "/Library/gurobi950/macos_universal2/include"
-            "/Library/gurobi901/macos_universal2/include"
-            "/Library/gurobi952/mac64/include"
-            "/Library/gurobi951/mac64/include"
-            "/Library/gurobi950/mac64/include"
-            "/Library/gurobi901/mac64/include"
             "/home/liangliang/dev/gurobi952/include"
-            "/home/liangliang/dev/gurobi951/include"
-            "/home/liangliang/dev/gurobi950/include"
-            "/home/liangliang/dev/gurobi901/include"
             "D:\\dev\\Gurobi-10.0.3\\win64\\include"
             "D:\\dev\\Gurobi-9.5.2\\win64\\include"
-            "C:\\dev\\gurobi951\\win64\\include"
-            "C:\\dev\\gurobi950\\win64\\include"
-            "C:\\dev\\gurobi901\\win64\\include"
             )
 
     set(SEARCH_PATHS_FOR_LIBRARIES
             "$ENV{GUROBI_HOME}/lib"
+            "/Library/gurobi1003/macos_universal2/lib"
             "/Library/gurobi952/macos_universal2/lib"
-            "/Library/gurobi951/macos_universal2/lib"
-            "/Library/gurobi950/macos_universal2/lib"
-            "/Library/gurobi901/macos_universal2/lib"
-            "/Library/gurobi952/mac64/lib"
-            "/Library/gurobi951/mac64/lib"
-            "/Library/gurobi950/mac64/lib"
-            "/Library/gurobi901/mac64/lib"
             "/home/liangliang/dev/gurobi952/lib"
-            "/home/liangliang/dev/gurobi951/lib"
-            "/home/liangliang/dev/gurobi950/lib"
-            "/home/liangliang/dev/gurobi901/lib"
             "D:\\dev\\Gurobi-10.0.3\\win64\\lib"
             "D:\\dev\\Gurobi-9.5.2\\win64\\lib"
-            "C:\\dev\\gurobi951\\win64\\lib"
-            "C:\\dev\\gurobi950\\win64\\lib"
-            "C:\\dev\\gurobi901\\win64\\lib"
             )
 
     find_path(GUROBI_INCLUDE_DIR gurobi_c++.h
@@ -88,17 +69,17 @@ if (NOT GUROBI_FOUND)
             )
 
 
-    find_library( GUROBI_C_LIBRARY
-            NAMES gurobi100 gurobi90 gurobi95 libgurobi
+    find_library(GUROBI_C_LIBRARY
+            NAMES gurobi100 libgurobi
             PATHS ${SEARCH_PATHS_FOR_LIBRARIES}
             )
 
-    find_library( GUROBI_CXX_LIBRARY_DEBUG
+    find_library(GUROBI_CXX_LIBRARY_DEBUG
             NAMES gurobi_c++ gurobi_c++mdd2017
             PATHS ${SEARCH_PATHS_FOR_LIBRARIES}
             )
 
-    find_library( GUROBI_CXX_LIBRARY_RELEASE
+    find_library(GUROBI_CXX_LIBRARY_RELEASE
             NAMES gurobi_c++ gurobi_c++md2017
             PATHS ${SEARCH_PATHS_FOR_LIBRARIES}
             )
@@ -113,7 +94,7 @@ if (NOT GUROBI_FOUND)
             ${GUROBI_C_LIBRARY}
             )
 
-endif()
+endif ()
 
 # Check that Gurobi was successfully found
 include(FindPackageHandleStandardArgs)
@@ -121,4 +102,11 @@ find_package_handle_standard_args(GUROBI DEFAULT_MSG GUROBI_INCLUDE_DIRS)
 find_package_handle_standard_args(GUROBI DEFAULT_MSG GUROBI_LIBRARIES)
 
 # Hide variables from CMake-Gui options
-mark_as_advanced(GUROBI_LIBRARIES GUROBI_INCLUDE_DIRS GUROBI_INCLUDE_DIR)
+mark_as_advanced(
+        GUROBI_INCLUDE_DIRS
+        GUROBI_INCLUDE_DIR
+        GUROBI_LIBRARIES
+        GUROBI_CXX_LIBRARY_DEBUG
+        GUROBI_CXX_LIBRARY_RELEASE
+        GUROBI_C_LIBRARY
+)
