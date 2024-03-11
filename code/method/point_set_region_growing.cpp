@@ -13,7 +13,7 @@ typedef Kernel::Plane_3 Plane_3;
 // CGAL v5.6 introduced some breaking changes in the APIs for region growing algorithm
 // See: https://github.com/CGAL/cgal/releases/tag/v5.6
 #if CGAL_VERSION_NR >= 1050600000	// code using CGAL >= 5.6
-                       
+
 #include <CGAL/Point_set_3.h>
 #include <CGAL/Shape_detection/Region_growing/Region_growing.h>
 #include <CGAL/Shape_detection/Region_growing/Point_set.h>
@@ -30,10 +30,10 @@ typedef CGAL::Shape_detection::Region_growing<Neighbor_query, Region_type> Regio
 
 std::vector<VertexGroup::Ptr> do_detect(
 	PointSet* pset,
-	std::vector<std::size_t> p_index,
-	Point_set point_set,
-	std::vector<Point> pots,
-	std::vector<Vector> nos,
+	const std::vector<std::size_t>& p_index,
+	const Point_set& point_set,
+	const std::vector<Point>& pots,
+	const std::vector<Vector>& nos,
 	std::vector<unsigned int>& unassigned_points,
 	unsigned int min_support
 )
@@ -214,10 +214,10 @@ Region_growing<Point_vector, Neighbor_query, Region_type> Region_growing;
 
 std::vector<VertexGroup::Ptr> do_detect(
 	PointSet* pset,
-	std::vector<std::size_t> p_index,
-	Point_vector points,
-	std::vector<Point> pots,
-	std::vector<Vector> nos,
+	const std::vector<std::size_t>& p_index,
+	const Point_vector& points,
+	const std::vector<Point>& pots,
+	const std::vector<Vector>& nos,
 	std::vector<unsigned int>& unassigned_points,
 	unsigned int min_support
 )
