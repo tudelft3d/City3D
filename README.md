@@ -69,15 +69,12 @@ You can build City3D from the source code˙
 
 This repository includes three executable programs:
 
-- [CLI_Example_1](https://github.com/tudelft3d/City3D/tree/main/code/CLI_Example_1): This is a command-line program capable of reconstructing multiple buildings in a large scene using 
-*both* point cloud and footprint data as input. Some test data is provided in the [data](https://github.com/tudelft3d/City3D/tree/main/data) directory. 
+- [CLI_Example_1](https://github.com/tudelft3d/City3D/tree/main/code/CLI_Example_1): This is a command-line program capable of reconstructing multiple buildings 
+in a large scene using *both* point cloud and footprint data as input. Some test data is provided in the [data](https://github.com/tudelft3d/City3D/tree/main/data) directory. 
 
-   Sources for footprint data may include:
-   - The cadaster of the city/country. Many countries maintain footprint data through their cadaster, which may be publicly available or can be obtained by contacting the relevant authorities.
-   - Open data platforms such as [OpenStreetMap](https://tudelft3d.github.io/3dfier/building_footprints_from_openstreetmap.html) may offer footprint data.
-   - Various published papers addressing instance segmentation of urban buildings from point clouds. You can explore these methods to find one that fits your purpose, and then [CLI_Example_2](https://github.com/tudelft3d/City3D/tree/main/code/CLI_Example_2) will be suitable for the reconstruction.
-   
-- [CLI_Example_2](https://github.com/tudelft3d/City3D/tree/main/code/CLI_Example_2): This command-line program demonstrate the reconstruction of pre-segmented buildings in a large scene using *only* the point cloud data as input. Each building has already been segmented, and individual buildings are stored as separate point cloud files. Our method generates a footprint for each building and then reconstructs it. Test data for this example can be found in the [building_instances](https://github.com/tudelft3d/City3D/tree/main/data/building_instances) directory.
+- [CLI_Example_2](https://github.com/tudelft3d/City3D/tree/main/code/CLI_Example_2): This command-line program demonstrates the reconstruction of pre-segmented buildings 
+in a large scene using *only* the point cloud data as input. Each building has already been segmented, and individual buildings are stored as separate point cloud files. 
+Our method generates a footprint for each building and then reconstructs it. Test data for this example can be found in the [building_instances](https://github.com/tudelft3d/City3D/tree/main/data/building_instances) directory.
 
 - [City3D](https://github.com/tudelft3d/City3D/tree/main/code/City3D): This is a demo version of our method with a graphical user interface (GUI). The demo provides a simple interface with numbered buttons. To run the workflow, click the buttons sequentially as specified. The UI was adapted from [PolyFit](https://github.com/LiangliangNan/PolyFit).
 
@@ -89,12 +86,26 @@ This repository includes three executable programs:
 
 ### Data
 
-The method has been evaluated on ~20K buildings, resulting in a new dataset consisting of the original point clouds 
+The method has been evaluated on approximately 20,000 buildings, resulting in a new dataset consisting of the original point clouds 
 and the reconstructed 3D models of all these buildings. The complete dataset can be found [here](https://github.com/yidahuang/City3D_dataset).
 
-This repository has included a few buildings from the above dataset for test, which can be found in the [data](https://github.com/tudelft3d/City3D/tree/main/data) directory.
+This repository has included a few buildings from the above dataset for testing, which can be found in the [data](https://github.com/tudelft3d/City3D/tree/main/data) directory.
+
+In our implementation, we assume the footprint of a building is a simple polygon. For a set of buildings, their footprint data consists of 
+a set of polygonal faces, and these faces are stored in an [OBJ file](https://en.wikipedia.org/wiki/Wavefront_.obj_file) with Z coordinates set to 0.
+
+Sources of footprint data may include:
+- The cadastre of the city/country. Many countries maintain footprint data through their cadastre, which may be publicly available or can be obtained 
+  by contacting the relevant authorities.
+- Open data platforms such as [OpenStreetMap](https://tudelft3d.github.io/3dfier/building_footprints_from_openstreetmap.html) may offer footprint data.
+
+In case you have a point cloud of a scene containing multiple buildings, but don't have access to the footprint of the buildings, you will need to 
+segment out the individual buildings either manually or using an automatic approach. There are various published papers addressing instance segmentation 
+of urban buildings from point clouds. You can explore these methods to find one that fits your purpose, and then [CLI_Example_2](https://github.com/tudelft3d/City3D/tree/main/code/CLI_Example_2) 
+will be suitable for the reconstruction.
 
 ---
+
 ### About the solvers
 This demo program can use either the  SCIP solver or the commercial solver [Gurobi](https://www.gurobi.com/) for the [core optimization](https://github.com/tudelft3d/City3D/blob/main/code/method/face_selection_optimization.cpp) step.
 The entire source code of the SCIP solver is already included in this repository. 
