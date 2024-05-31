@@ -28,7 +28,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../basic/file_utils.h"
 
 int main(int argc, char **argv) {
-    const std::string directory = std::string(CITY3D_ROOT_DIR) + "/../data/building_instances/";
+    const std::string directory = std::string(CITY3D_ROOT_DIR) + "/../data/building_instances";
     //get the file names of the input point clouds
     std::vector<std::string> all_file_names;
     FileUtils::get_files(directory, all_file_names, false);
@@ -40,7 +40,7 @@ int main(int argc, char **argv) {
 
             // input point cloud file name
             const std::string input_cloud_file = file_name;
-            std::cout << "read input point cloud from file  " << input_cloud_file << std::endl;
+            std::cout << "read input point cloud from file: " << input_cloud_file << std::endl;
 
             // output mesh file name
             std::string output_file = file_name.substr(0, file_name.find(".ply")) + "_result.obj";
