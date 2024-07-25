@@ -1,0 +1,47 @@
+# pre-commit
+.pre-commit-config.yaml
+.secrets.baseline
+
+# versioning
+release_main.config.json
+public
+
+# renovate config
+renovate.json
+
+# git
+.git
+.gitignore
+.github
+README.md
+
+# System Files
+Thumbs.db
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# dotenv environment variables file
+.env
+
+# Tests
+.pytest_cache
+__pycache__
+__snapshot__
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
