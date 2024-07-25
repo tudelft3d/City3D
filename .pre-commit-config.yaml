@@ -1,0 +1,28 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      # - id: trailing-whitespace
+      # - id: end-of-file-fixer
+      - id: detect-private-key
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.18.4
+    hooks:
+      - id: gitleaks
+  - repo: https://github.com/cmake-lint/cmake-lint
+    rev: 1.4.3
+    hooks:
+      - id: cmakelint
+  # - repo: https://github.com/pocc/pre-commit-hooks
+  #   rev: master
+  #   hooks:
+  #     - id: clang-format
+  #       args: [--style=Google]
+  #     - id: clang-tidy
+  #     - id: oclint
+  #     - id: uncrustify
+  #     - id: cppcheck
+  #     - id: cpplint
+  #     - id: include-what-you-use
