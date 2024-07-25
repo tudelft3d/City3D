@@ -16,14 +16,15 @@ repos:
     hooks:
       - id: cmakelint
         args: [--linelength=120]
-  # - repo: https://github.com/pocc/pre-commit-hooks
-  #   rev: master
-  #   hooks:
-  #     - id: clang-format
-  #       args: [--style=Google]
-  #     - id: clang-tidy
-  #     - id: oclint
-  #     - id: uncrustify
-  #     - id: cppcheck
-  #     - id: cpplint
+  - repo: https://github.com/pocc/pre-commit-hooks
+    rev: v1.3.5
+    hooks:
+      # - id: clang-format
+      #   args: [--style=Google]
+      # - id: clang-tidy
+      # - id: oclint
+      # - id: uncrustify
+      # - id: cppcheck
+      - id: cpplint
+        args: [--exclude=./code/3rd_party, --linelength=150]
   #     - id: include-what-you-use

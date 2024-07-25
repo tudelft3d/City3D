@@ -51,3 +51,4 @@ CMakeUserPresets.json
 
 #
 .env
+.vscode
