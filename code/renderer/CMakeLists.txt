@@ -24,13 +24,13 @@ set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER "City3D")
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${CITY3D_ROOT})
 
-set (OpenGL_GL_PREFERENCE GLVND)
+set(OpenGL_GL_PREFERENCE GLVND)
 find_package(OpenGL REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE ${OPENGL_LIBRARIES} basic math model 3rd_glew)
 
-if (MSVC)
+if(MSVC)
     target_compile_definitions(${PROJECT_NAME} PRIVATE
             _CRT_SECURE_NO_WARNINGS
             _CRT_SECURE_NO_DEPRECATE
             )
-endif ()
+endif()

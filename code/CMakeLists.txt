@@ -3,21 +3,24 @@ cmake_minimum_required(VERSION 3.12)
 get_filename_component(PROJECT_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 project(City3D)
 
-if (POLICY CMP0074)
+if(POLICY CMP0074)
         cmake_policy(SET CMP0074 NEW)
-endif ()
+endif()
 
 # One shouldn't generate the BUILD project directly in the SOURCES folder!
-if ( ${CMAKE_CURRENT_BINARY_DIR} STREQUAL ${CMAKE_CURRENT_SOURCE_DIR} )
-        if ( NOT SAME_BUILD_AND_SOURCE_FOLDER_WARNING_ALREADY_ISSUED )
-                message(FATAL_ERROR "It is not advised to BUILD the binaries directly in the SOURCE folder!\n If you want to proceed with this option, just CONFIGURE the project once again" )
-                set( SAME_BUILD_AND_SOURCE_FOLDER_WARNING_ALREADY_ISSUED TRUE )
-        endif()
+if(${CMAKE_CURRENT_BINARY_DIR} STREQUAL ${CMAKE_CURRENT_SOURCE_DIR})
+  if(NOT SAME_BUILD_AND_SOURCE_FOLDER_WARNING_ALREADY_ISSUED)
+    message(
+      FATAL_ERROR
+      "It is not advised to BUILD the binaries directly in the SOURCE folder!\n \
+      If you want to proceed with this option, just CONFIGURE the project once again")
+    set(SAME_BUILD_AND_SOURCE_FOLDER_WARNING_ALREADY_ISSUED TRUE)
+  endif()
 endif()
 
 ################################################################################
 
-set (CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 11)
 
 ################################################################################
 
@@ -48,16 +51,16 @@ set(POLYFIT_eigen_DIR               ${3RD_PARTY_DIR}/3rd_eigen-3.3.7)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
 
 find_package(Boost REQUIRED)
-if (Boost_FOUND)
+if(Boost_FOUND)
         message(STATUS "Found Boost-${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_BUGFIX_VERSION}")
-endif ()
+endif()
 
 ################################################################################
 
-SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY
     ${CMAKE_BINARY_DIR}/lib CACHE
     PATH "Directory where all the .lib files are dumped." FORCE)
-SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY
     ${CMAKE_BINARY_DIR}/bin CACHE
     PATH "Directory where .exe and .dll files are dumped." FORCE)
 

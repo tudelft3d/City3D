@@ -131,7 +131,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER "3rd_party")
 set(LASTOOLS_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/LASzip/src ${CMAKE_CURRENT_LIST_DIR}/LASlib/inc)
 target_include_directories(${PROJECT_NAME} PRIVATE ${LASTOOLS_INCLUDE_DIR})
 
-if (MSVC)
+if(MSVC)
     target_compile_definitions(${PROJECT_NAME} PRIVATE
         _CRT_SECURE_NO_WARNINGS
         _CRT_SECURE_NO_DEPRECATE

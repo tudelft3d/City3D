@@ -51,7 +51,7 @@ set(basic_SOURCES
 add_library(${PROJECT_NAME} STATIC ${basic_SOURCES} ${basic_HEADERS})
 set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER "City3D")
 
-if (MSVC)
+if(MSVC)
     target_compile_definitions(${PROJECT_NAME} PRIVATE
             _CRT_SECURE_NO_WARNINGS
             _CRT_SECURE_NO_DEPRECATE

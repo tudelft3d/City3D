@@ -4,13 +4,13 @@ get_filename_component(PROJECT_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 project(${PROJECT_NAME})
 
 include(../../cmake/UseQt5.cmake)
-if (NOT QT5_FOUND)
-        message(WARNING "${PROJECT_NAME} requires Qt but Qt was not found. You can set 'Qt5_DIR' to the "
-                "directory containing 'Qt5Config.cmake' or 'qt5-config.cmake' in 'CMakeCache.txt'. "
-                "Optionally, you can set the Qt5 root directory 'QT5_ROOT_PATH' to the directory "
-                "containing the 'bin' folder.")
-        return()
-endif ()
+if(NOT QT5_FOUND)
+    message(WARNING "${PROJECT_NAME} requires Qt but Qt was not found. You can set 'Qt5_DIR' to the "
+            "directory containing 'Qt5Config.cmake' or 'qt5-config.cmake' in 'CMakeCache.txt'. "
+            "Optionally, you can set the Qt5 root directory 'QT5_ROOT_PATH' to the directory "
+            "containing the 'bin' folder.")
+    return()
+endif()
 
 find_package(Qt5 COMPONENTS Xml)
 
@@ -88,7 +88,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     )
 
 
-if (MSVC)
+if(MSVC)
     target_compile_definitions(${PROJECT_NAME} PRIVATE
             _CRT_SECURE_NO_WARNINGS
             _CRT_SECURE_NO_DEPRECATE
@@ -103,7 +103,7 @@ target_link_libraries( ${PROJECT_NAME} Qt5::Widgets )
 target_link_libraries( ${PROJECT_NAME} Qt5::OpenGL )
 target_link_libraries( ${PROJECT_NAME} Qt5::Xml )
 
-set (OpenGL_GL_PREFERENCE GLVND)
+set(OpenGL_GL_PREFERENCE GLVND)
 find_package(OpenGL REQUIRED)
 
 target_link_libraries( ${PROJECT_NAME} ${OPENGL_LIBRARIES} )

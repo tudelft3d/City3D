@@ -43,7 +43,7 @@
 
 
 # Is it already configured?
-if (NOT GUROBI_FOUND)
+if(NOT GUROBI_FOUND)
 
     # Hardcoded search paths
     set(SEARCH_PATHS_FOR_HEADERS
@@ -94,7 +94,7 @@ if (NOT GUROBI_FOUND)
             ${GUROBI_C_LIBRARY}
             )
 
-endif ()
+endif()
 
 # Check that Gurobi was successfully found
 include(FindPackageHandleStandardArgs)

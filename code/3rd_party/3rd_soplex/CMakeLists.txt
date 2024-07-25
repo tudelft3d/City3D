@@ -182,9 +182,19 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     ${POLYFIT_lpsolve_DIR}/colamd
     )
 
-target_compile_definitions(${PROJECT_NAME} PRIVATE NO_SIGACTION NO_STRTOK_R _CRT_SECURE_NO_WARNINGS TPI_NONE NPARASCIP WITH_SCIPDEF ROUNDING_FE)
+target_compile_definitions(
+    ${PROJECT_NAME}
+    PRIVATE
+    NO_SIGACTION
+    NO_STRTOK_R
+    _CRT_SECURE_NO_WARNINGS
+    TPI_NONE
+    NPARASCIP
+    WITH_SCIPDEF
+    ROUNDING_FE
+)
 
-if (MSVC)
+if(MSVC)
     target_compile_definitions(${PROJECT_NAME} PRIVATE
         _CRT_SECURE_NO_WARNINGS
         _CRT_SECURE_NO_DEPRECATE

@@ -61,11 +61,11 @@ set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER "City3D")
 set(LASTOOLS_INCLUDE_DIR ${3RD_PARTY_DIR}/3rd_LAStools/LASzip/src ${3RD_PARTY_DIR}/3rd_LAStools/LASlib/inc)
 target_include_directories(${PROJECT_NAME} PRIVATE ${LASTOOLS_INCLUDE_DIR})
 
-if (MSVC)
+if(MSVC)
     target_compile_definitions(${PROJECT_NAME} PRIVATE
             _CRT_SECURE_NO_WARNINGS
             _CRT_SECURE_NO_DEPRECATE
             )
-endif ()
+endif()
 
 target_link_libraries(${PROJECT_NAME} basic math 3rd_LAStools 3rd_rply)

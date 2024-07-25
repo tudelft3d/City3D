@@ -4,13 +4,13 @@ get_filename_component(PROJECT_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 project(${PROJECT_NAME})
 
 include(../cmake/UseQt5.cmake)
-if (NOT QT5_FOUND)
+if(NOT QT5_FOUND)
     message(WARNING "${PROJECT_NAME} requires Qt but Qt was not found. You can set 'Qt5_DIR' to the "
             "directory containing 'Qt5Config.cmake' or 'qt5-config.cmake' in 'CMakeCache.txt'. "
             "Optionally, you can set the Qt5 root directory 'QT5_ROOT_PATH' to the directory "
             "containing the 'bin' folder.")
     return()
-endif ()
+endif()
 
 find_package(Qt5 COMPONENTS Xml)
 
@@ -43,16 +43,35 @@ set(${PROJECT_NAME}_RESOURCES
         Resources/City3D.rc
         )
 
-if (APPLE)
-    add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${${PROJECT_NAME}_HEADERS} ${${PROJECT_NAME}_SOURCES} ${${PROJECT_NAME}_FORMS} ${${PROJECT_NAME}_RESOURCES})
-elseif (MINGW)
+if(APPLE)
+    add_executable(
+        ${PROJECT_NAME}
+        MACOSX_BUNDLE
+        ${${PROJECT_NAME}_HEADERS}
+        ${${PROJECT_NAME}_SOURCES}
+        ${${PROJECT_NAME}_FORMS}
+        ${${PROJECT_NAME}_RESOURCES}
+    )
+elseif(MINGW)
     set(CMAKE_RC_COMPILER_INIT windres)
     enable_language(RC)
     set(CMAKE_RC_COMPILE_OBJECT "<CMAKE_RC_COMPILER> <FLAGS> -O coff <DEFINES> -i <SOURCE> -o <OBJECT>")
-    add_executable(${PROJECT_NAME} ${${PROJECT_NAME}_HEADERS} ${${PROJECT_NAME}_SOURCES} ${${PROJECT_NAME}_FORMS} ${${PROJECT_NAME}_RESOURCES})
-else ()
-    add_executable(${PROJECT_NAME} ${${PROJECT_NAME}_HEADERS} ${${PROJECT_NAME}_SOURCES} ${${PROJECT_NAME}_FORMS} ${${PROJECT_NAME}_RESOURCES})
-endif ()
+    add_executable(
+        ${PROJECT_NAME}
+        ${${PROJECT_NAME}_HEADERS}
+        ${${PROJECT_NAME}_SOURCES}
+        ${${PROJECT_NAME}_FORMS}
+        ${${PROJECT_NAME}_RESOURCES}
+    )
+else()
+    add_executable(
+        ${PROJECT_NAME}
+        ${${PROJECT_NAME}_HEADERS}
+        ${${PROJECT_NAME}_SOURCES}
+        ${${PROJECT_NAME}_FORMS}
+        ${${PROJECT_NAME}_RESOURCES}
+    )
+endif()
 
 
 set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER "City3D")
@@ -77,6 +96,10 @@ target_link_libraries(${PROJECT_NAME} basic math model method renderer 3rd_glew 
 # Note: On macOS, high-DPI support is enabled by settings in the Info.plist file. Make sure they are present.
 # For more information, see: http://doc.qt.io/qt-5/highdpi.html
 # Enable high DPI support by using my Info.plist file in which I added NSHighResolutionCapable to be true.
-if (APPLE)
-    set_target_properties(${PROJECT_NAME} PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/Mac/LOD2.plist)
-endif ()
+if(APPLE)
+    set_target_properties(
+        ${PROJECT_NAME}
+        PROPERTIES MACOSX_BUNDLE_INFO_PLIST
+        ${CMAKE_CURRENT_SOURCE_DIR}/Mac/LOD2.plist
+    )
+endif()

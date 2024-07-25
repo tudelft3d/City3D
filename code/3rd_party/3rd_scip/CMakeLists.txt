@@ -893,7 +893,6 @@ set(scip_SOURCES
         scip/reader_fzn.c
         scip/sepa_closecuts.c
         scip/reader_cor.c
-       
         scip/fileio.c
         scip/exprinterpret_cppad.cpp
         scip/heur_trysol.c
@@ -954,11 +953,22 @@ target_include_directories(${PROJECT_NAME} PRIVATE
         ${POLYFIT_soplex_DIR}/src
         )
 
-target_compile_definitions(${PROJECT_NAME} PUBLIC SCIP_NO_SIGACTION NO_CONFIG_HEADER SCIP_NO_STRTOK_R _CRT_SECURE_NO_WARNINGS TPI_NONE NPARASCIP WITH_SCIPDEF SCIP_ROUNDING_FE)
+target_compile_definitions(
+        ${PROJECT_NAME}
+        PUBLIC
+        SCIP_NO_SIGACTION
+        NO_CONFIG_HEADER
+        SCIP_NO_STRTOK_R
+        _CRT_SECURE_NO_WARNINGS
+        TPI_NONE
+        NPARASCIP
+        WITH_SCIPDEF
+        SCIP_ROUNDING_FE
+)
 
-if (MSVC)
+if(MSVC)
     target_compile_definitions(${PROJECT_NAME} PRIVATE
             _CRT_SECURE_NO_WARNINGS
             _CRT_SECURE_NO_DEPRECATE
             )
-endif ()
+endif()
