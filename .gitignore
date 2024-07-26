@@ -50,5 +50,7 @@ _deps
 CMakeUserPresets.json
 
 #
+build
+Release
 .env
 .vscode
