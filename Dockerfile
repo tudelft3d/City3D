@@ -18,7 +18,9 @@ RUN apt-get update \
 
 FROM build-base as build-step
 
-RUN git clone -b 'main' --single-branch --depth 1 https://github.com/tudelft3d/City3D.git /src
+# RUN git clone -b 'main' --single-branch --depth 1 https://github.com/tudelft3d/City3D.git /src
+COPY ./code /src/code
+COPY ./CMakeLists.txt /src/CMakeLists.txt
 
 WORKDIR /src
 
