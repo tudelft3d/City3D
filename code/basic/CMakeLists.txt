@@ -20,6 +20,7 @@ set(basic_HEADERS
         dlist.h
         file_utils.h
         generic_attributes_io.h
+        input_parser.h
         line_stream.h
         logger.h
         pointer_iterator.h
@@ -41,6 +42,7 @@ set(basic_SOURCES
         basic_types.cpp
         counted.cpp
         file_utils.cpp
+        input_parser.cpp
         logger.cpp
         progress.cpp
         rat.cpp
