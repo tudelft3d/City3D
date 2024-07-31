@@ -68,7 +68,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY
 
 add_subdirectory(3rd_party/3rd_scip)
 add_subdirectory(3rd_party/3rd_soplex)
-add_subdirectory(3rd_party/3rd_QGLViewer-2.6.3)
 add_subdirectory(3rd_party/3rd_glew)
 add_subdirectory(3rd_party/3rd_rply)
 add_subdirectory(3rd_party/3rd_LAStools)
@@ -80,8 +79,3 @@ add_subdirectory(renderer)
 add_subdirectory(method)
 
 add_subdirectory(city3d_cli)  # City3D command line interface
-# add_subdirectory(CLI_Example_1)  # command line example
-# add_subdirectory(CLI_Example_2)  # command line example
-# add_subdirectory(City3D)         # demo with GUI
-
-
