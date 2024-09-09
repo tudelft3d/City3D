@@ -15,7 +15,7 @@ repos:
     rev: 1.4.3
     hooks:
       - id: cmakelint
-        args: [--linelength=120]
+        args: [--linelength=180]
   # - repo: https://github.com/pocc/pre-commit-hooks
   #   rev: v1.3.5
   #   hooks:

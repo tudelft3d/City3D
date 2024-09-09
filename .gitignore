@@ -1,10 +1,20 @@
-# Prerequisites
-*.d
+**/conan-*
+**/cmake_install.cmake
+**/CMakeCache.txt
+**/compressor
+**/Makefile
+**/CMakeFiles
+**/cmake-build-*
+**/deactivate_conanbuildenv*
+
+.DS_Store
+.vscode/
 
 # Compiled Object files
 *.slo
 *.lo
 *.o
+*.obj
 
 # Precompiled Headers
 *.gch
@@ -29,25 +39,46 @@
 *.exe
 *.out
 *.app
-.idea
-cmake-build-debug
-cmake-build-release
-.DS_Store
-Release
 
-# cmake
-CMakeLists.txt.user
-CMakeCache.txt
-CMakeFiles
-CMakeScripts
-Testing
-Makefile
-cmake_install.cmake
-install_manifest.txt
-compile_commands.json
-CTestTestfile.cmake
-_deps
+# Cache
+__pycache__/*
+build/*
+*.pyc
+tmp/
+
+# Virtualenv
+venv/
+.venv/
+
+# IDE
+.idea/*
+.project
+.pydevproject
+.settings/*
+.ropeproject/*
+
+.tox
 CMakeUserPresets.json
+**/generators/**
+**/build/**
+conanbuild*
+conanrun*
+deactivate_conanbuild*
+deactivate_conanrun*
+tutorial/versioning/revisions/intro/chat/*
+tutorial/versioning/revisions/intro/hello/*
+examples/libraries/tensorflow-lite/pose-estimation/pose-estimation
+examples/libraries/imgui/introduction/bindings
+
+# Bazel files
+bazel-*
+examples/tools/google/bazeltoolchain/6_x/string_formatter/conan
+examples/tools/google/bazeltoolchain/7_x/string_formatter/conan
+examples/tools/google/bazeltoolchain/7_x/string_formatter/MODULE.bazel.lock
+
+examples/libraries/libcurl/ascii_art_color/conan/*
+examples/libraries/libcurl/ascii_art_color/asciiartgen/x64/*
+examples/libraries/libcurl/ascii_art_color/x64/Release/*
 
 #
 build

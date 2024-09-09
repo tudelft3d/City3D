@@ -1,65 +1,71 @@
 FROM ubuntu:24.04 as build-base
+ENV DEBIAN_FRONTEND="noninteractive"
 
-RUN apt-get update \
-    && apt-get -y upgrade \
-    # install City3D dependencies
-    && apt-get install -y --no-install-recommends \
+RUN apt-get update && \
+    apt-get -y upgrade && \
+    apt-get install -y --no-install-recommends \
     build-essential \
+    automake \
+    autoconf \
     ca-certificates \
     cmake \
-    libboost-all-dev \
-    libcgal-dev \
-    libopencv-dev \
-    libgl1-mesa-dev \
-    libglu1-mesa-dev \
-    libatlas3-base \
-    libopengl0 \
-    git \
+    pkg-config \
+    libgomp1 libomp-dev \
+    # 
+    clang-format clang-tidy clang-tools clang clangd libc++-dev libc++1 \
+    libc++abi-dev libc++abi1 libclang-dev libclang1 liblldb-dev libllvm-ocaml-dev \
+    libomp-dev libomp5 lld lldb llvm-dev llvm-runtime llvm python3-clang \
+    #
+    libva-dev libvdpau-dev xkb-data \
+    libx11-xcb-dev libfontenc-dev libice-dev libsm-dev libxaw7-dev \
+    libxcomposite-dev libxcursor-dev libxdamage-dev libxext-dev libxfixes-dev \
+    libxi-dev libxinerama-dev libxkbfile-dev libxmu-dev libxmuu-dev libxpm-dev \
+    libxrandr-dev libxrender-dev libxres-dev libxss-dev libxt-dev libxtst-dev \
+    libxv-dev libxxf86vm-dev libxcb-glx0-dev libxcb-render0-dev libxcb-render-util0-dev \
+    libxcb-xkb-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev \
+    libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev libxcb-xfixes0-dev \
+    libxcb-xinerama0-dev libxcb-dri3-dev uuid-dev libxcb-cursor-dev libxcb-dri2-0-dev \
+    libxcb-dri3-dev libxcb-present-dev libxcb-composite0-dev libxcb-ewmh-dev libxcb-res0-dev \
+    libxcb-util-dev libxcb-util0-dev \
+    python3-venv python3-pip && \
     # clean up
-    && rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/*
 
-FROM build-base as build-step
+FROM build-base as conan-step
 
-# RUN git clone -b 'main' --single-branch --depth 1 https://github.com/tudelft3d/City3D.git /src
-COPY ./code /src/code
-COPY ./CMakeLists.txt /src/CMakeLists.txt
+# change to bash (needed for conan to build correctly)
+SHELL ["/bin/bash", "-c"]
 
-WORKDIR /src
-
-RUN mkdir ./build; \
-    cd ./build; \
-    cmake -DCMAKE_BUILD_TYPE=Release ..; \
-    make;
-
-FROM ubuntu:24.04 as main
-
-# copy compiled assets from build-step
-COPY --from=build-step /src/build/bin /city3d
-# copy necessary libs from build-base
-COPY --from=build-base /usr/lib/x86_64-linux-gnu/libopencv_imgproc.so.4.6.0 /usr/local/lib/libopencv_imgproc.so.4.6.0
-COPY --from=build-base /usr/lib/x86_64-linux-gnu/libopencv_core.so.4.6.0 /usr/local/lib/libopencv_core.so.4.6.0
-COPY --from=build-base /usr/lib/x86_64-linux-gnu/libGLX.so.0 /usr/local/lib/libGLX.so.0
-COPY --from=build-base /usr/lib/x86_64-linux-gnu/libatlas.so.3 /usr/local/lib/libatlas.so.3
-COPY --from=build-base /usr/lib/x86_64-linux-gnu/libtbb.so.12 /usr/local/lib/libtbb.so.12
-COPY --from=build-base /usr/lib/x86_64-linux-gnu/liblapack.so.3 /usr/local/lib/liblapack.so.3
-COPY --from=build-base /usr/lib/x86_64-linux-gnu/libblas.so.3 /usr/local/lib/libblas.so.3
-COPY --from=build-base /usr/lib/x86_64-linux-gnu/libX11.so.6 /usr/local/lib/libX11.so.6
-COPY --from=build-base /usr/lib/x86_64-linux-gnu/libGLU.so.1 /usr/local/lib/libGLU.so.1
-COPY --from=build-base /usr/lib/x86_64-linux-gnu/libOpenGL.so.0 /usr/local/lib/libOpenGL.so.0
-COPY --from=build-base /usr/lib/x86_64-linux-gnu/libGLdispatch.so.0 /usr/local/lib/libGLdispatch.so.0
-COPY --from=build-base /usr/lib/x86_64-linux-gnu/libgfortran.so.5 /usr/local/lib/libgfortran.so.5
-COPY --from=build-base /usr/lib/x86_64-linux-gnu/libxcb.so.1 /usr/local/lib/libxcb.so.1
-COPY --from=build-base /usr/lib/x86_64-linux-gnu/libXau.so.6 /usr/local/lib/libXau.so.6
-COPY --from=build-base /usr/lib/x86_64-linux-gnu/libXdmcp.so.6 /usr/local/lib/libXdmcp.so.6
-COPY --from=build-base /usr/lib/x86_64-linux-gnu/libbsd.so.0 /usr/local/lib/libbsd.so.0
-
-RUN apt-get update \
-    && apt-get -y upgrade \
-    # clean up
-    && rm -rf /var/lib/apt/lists/* \
-    # create the necessary links and cache to recently copied shared libraries
-    && ldconfig
+ENV PATH="/venv/bin:$PATH"
 
 WORKDIR /city3d
 
-CMD [ "./CLI_Example_1" ]
+COPY ./src/ ./src
+COPY ./CMakeLists.txt .
+COPY ./conanfile.py .
+
+RUN python3 -m venv /venv && \
+    /venv/bin/pip install conan && \
+    conan profile detect && \
+    #  -c tools.system.package_manager:mode=install 
+    conan install . --build=missing -verror
+
+FROM conan-step as build-step
+# change to bash (needed for conan to build correctly)
+SHELL ["/bin/bash", "-c"]
+
+WORKDIR /city3d/build/Release
+
+RUN ldconfig && \
+    source ./generators/conanbuild.sh && \
+    cmake ../.. -DCMAKE_TOOLCHAIN_FILE=generators/conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release && \
+    cmake --build .
+
+FROM ubuntu:24.04 as city3d
+
+WORKDIR /city3d
+
+# copy compiled assets from build-step
+COPY --from=build-step /city3d/build/Release/bin /city3d
+
+CMD [ "./city3d -h" ]
