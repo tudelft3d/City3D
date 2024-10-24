@@ -31,6 +31,10 @@ class Reconstruction
 	/// Note: the reconstructed models will be merged into 'result'.
 	bool reconstruct(PointSet* pset, Map* foot_print, Map* result, LinearProgramSolver::SolverName solver_name, bool update_display = false);
 
+    /// user provided footprint data may contain dense polylines representing curved structures, which is necessary
+    /// to be simplified before pairwise intersection.
+    Map* simplify_footprint(Map* foot_print) const;
+
  private:
 
     std::vector<std::vector<int>> detect_height_jump(PointSet* pset,
@@ -58,6 +62,7 @@ class Reconstruction
 
 	int width = 400, height = 400;
 
+    std::string cloud_file_name_;
 
 };
 

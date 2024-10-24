@@ -42,6 +42,7 @@ bool LinearProgramSolver::_solve_GUROBI(const LinearProgram* program) {
 		env.set(GRB_IntParam_LogToConsole, 0);
 
 		GRBModel model = GRBModel(env);
+        model.set(GRB_DoubleParam_TimeLimit, 600.0); // time limit of 10 minutes
 
 		// create variables
 		std::vector<GRBVar> X(variables.size());
@@ -137,6 +138,10 @@ bool LinearProgramSolver::_solve_GUROBI(const LinearProgram* program) {
 		case GRB_UNBOUNDED:
 			std::cerr << "model is unbounded" << std::endl;
 			break;
+
+        case GRB_TIME_LIMIT:
+            std::cerr << "process has reached the time limit (" << model.get(GRB_DoubleParam_TimeLimit) << " seconds)" << std::endl;
+                break;
 
 		default:
 			std::cerr << "optimization was stopped with status = " << status << std::endl;

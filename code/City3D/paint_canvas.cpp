@@ -657,10 +657,16 @@ void PaintCanvas::estimateNormals() {
 void PaintCanvas::segmentation() {
     main_window_->updateWeights();
 	Reconstruction recon;
-    if (!foot_print_)
-    {
-		if (main_window_->want_footprint())
-			foot_print_ = recon.generate_polygon(point_set_);
+    if (foot_print_) {
+        auto foot_print = recon.simplify_footprint(foot_print_);
+        if (foot_print)
+            setFootPrint(foot_print);
+    }
+    else {
+		if (main_window_->want_footprint()) {
+            auto foot_print = recon.generate_polygon(point_set_);
+            setFootPrint(foot_print);
+        }
 		else
 			return;
     }

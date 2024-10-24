@@ -165,9 +165,11 @@ bool MapSerializer_obj::do_write(std::ostream& out, const Map* mesh) const {
 	Attribute<Vertex, int>	vertex_id(mesh->vertex_attribute_manager());
 	MapEnumerator::enumerate_vertices(const_cast<Map*>(mesh), vertex_id, 1);
 
+    const auto& offset = mesh->offset();
+
 	// Output Vertices
 	FOR_EACH_VERTEX_CONST(Map, mesh, it) {
-		out << "v " << it->point() << std::endl ;
+		out << "v " << it->point() + offset << std::endl ;
 	} 
 
 	// Output facets
@@ -352,9 +354,11 @@ bool MapSerializer_eobj::do_write(std::ostream& output, const Map* mesh) const {
 	// Obj files numbering starts with 1 (instead of 0)
 	MapEnumerator::enumerate_vertices(const_cast<Map*>(mesh), vertex_id, 1) ;
 
+    const auto& offset = mesh->offset();
+
 	// Output Vertices
 	{ FOR_EACH_VERTEX_CONST(Map, mesh, it) {
-		output << "v " << it->point() << std::endl ;
+		output << "v " << it->point() + offset << std::endl ;
 	}} 
 
 	// Output facets

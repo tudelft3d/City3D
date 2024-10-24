@@ -91,8 +91,11 @@ and the reconstructed 3D models of all these buildings. The complete dataset can
 
 This repository has included a few buildings from the above dataset for testing, which can be found in the [data](https://github.com/tudelft3d/City3D/tree/main/data) directory.
 
-In our implementation, we assume the footprint of a building is a simple polygon. For a set of buildings, their footprint data consists of 
-a set of polygonal faces, and these faces are stored in an [OBJ file](https://en.wikipedia.org/wiki/Wavefront_.obj_file) with Z coordinates set to 0.
+City3D assumes the footprint of a building is a simple polygon. For a set of buildings, their footprint data consists of 
+the same number of polygons. In this research prototype, City3D supports two file formats of footprint data:
+- [OBJ file](https://en.wikipedia.org/wiki/Wavefront_.obj_file): each polygon is stored as a 3D polygon (with Z coordinates set to 0) in a polygonal mesh.
+- [GeoJSON](https://en.wikipedia.org/wiki/GeoJSON): an open standard format for representing simple geographical features and their attributes. In City3D, only polygon features are parsed to represent footprints.
+In case your footprints are store in the [shapefile format](https://en.wikipedia.org/wiki/Shapefile), please check [Converting shapefiles to geojson](https://gist.github.com/YKCzoli/b7f5ff0e0f641faba0f47fa5d16c4d8d).
 
 Sources of footprint data may include:
 - The cadastre of the city/country. Many countries maintain footprint data through their cadastre, which may be publicly available or can be obtained 

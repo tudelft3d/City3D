@@ -82,7 +82,7 @@ MainWindow::MainWindow(QWidget *parent)
 	//	LinearSolver");
 
 	// Liangliang: added the time stamp in the log file
-	std::string tstr = String::from_current_time();
+	std::string tstr = String::current_time();
 	Logger::out("") << "--- started at: " << tstr << " ---" << std::endl;
 	
 	Progress::instance()->set_client(this) ;
@@ -616,8 +616,15 @@ bool MainWindow::doOpen(const QString &fileName)
 		if (ext == "geojson") {
 			MapSerializer_json json;
 			const PointSet* pset = canvas()->pointSet();
-			const vec3& offset = pset->offset();
-			foot = json.read(name, pset, pset ? vec3(offset.x, offset.y, pset->bbox().z_min()) : vec3(0, 0, 0));
+            if (pset) {
+                const vec3 &offset = pset->offset();
+                foot = json.read(name, pset, vec3(offset.x, offset.y, pset->bbox().z_min()));
+                foot->set_offset(vec3(offset.x, offset.y, -pset->bbox().z_min()));
+            } else {
+                foot = json.read(name, pset, vec3(0, 0, 0));
+                foot->set_offset(vec3(0, 0, 0));
+            }
+			foot->set_name(fileName.toStdString());
 		}
 		else  // obj
 			foot = MapIO::read(name);

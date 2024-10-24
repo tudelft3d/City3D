@@ -272,8 +272,15 @@ namespace String {
 
 	std::string quote(const std::string& s, char quotes = '\"') ;
 
-	// format example: "Fri Jan 09 11:39:32 2015"
-	std::string from_current_time() ;
+    /**
+     * @brief Gets the time string, e.g., "Fri Jan 09 11:39:32 2015"
+     */
+    std::string current_time();
+    /**
+     * @brief Gets the detailed current time as a string, e.g., "2024-10-24-17-41-16-753".
+     * \details Different from current_time(), this method also includes the millisecond part.
+     */
+    std::string current_time_detailed();
 } 
 
 //_______________________________________________________________________

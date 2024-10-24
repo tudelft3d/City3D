@@ -7,6 +7,7 @@
 #include "../basic/logger.h"
 #include "../basic/progress.h"
 #include "../basic/stop_watch.h"
+#include "../basic/file_utils.h"
 #include "../model/kdtree_search.h"
 #include "../model/map_geometry.h"
 #include "../model/map_io.h"
@@ -50,6 +51,8 @@ void Reconstruction::segmentation(PointSet *pset, Map *foot_print)
         Logger::warn("-") << "point cloud data does not exist" << std::endl;
         return;
     }
+    cloud_file_name_ = pset->name();
+
     if (!foot_print)
     {
         Logger::warn("-") << "foot print data does not exist" << std::endl;
@@ -155,6 +158,7 @@ bool Reconstruction::extract_roofs(PointSet *pset, Map *foot_print)
         Logger::warn("-") << "point cloud data does not exist" << std::endl;
         return false;
     }
+    cloud_file_name_ = pset->name();
 
     if (!foot_print)
     {
@@ -358,12 +362,12 @@ Reconstruction::reconstruct(PointSet *pset, Map *foot_print, Map *result, Linear
         Logger::warn("-") << "point cloud data does not exist" << std::endl;
         return false;
     }
+    cloud_file_name_ = pset->name();
 
     MapFacetAttribute<VertexGroup::Ptr> buildings(foot_print, "buildings");
 
     bool success = false;
     StopWatch t;
-    t.start();
     std::size_t num = 0;
     ProgressLogger progress(foot_print->size_of_facets());
     KdTreeSearch_var kdtree = new KdTreeSearch;
@@ -373,6 +377,7 @@ Reconstruction::reconstruct(PointSet *pset, Map *foot_print, Map *result, Linear
     FOR_EACH_FACET(Map, foot_print, it)
     {
         Logger::out("-") << "processing " << ++idx << "/" << foot_print->size_of_facets() << " building..." << std::endl;
+        StopWatch t_single;
 
         VertexGroup::Ptr g = buildings[it];
         if (!g)
@@ -415,6 +420,7 @@ Reconstruction::reconstruct(PointSet *pset, Map *foot_print, Map *result, Linear
                 MeshRender::invalidate();
             }
             success = true;
+            Logger::out("-") << "done. Time: " << t_single.time_string() << std::endl;
         }
         roofs.clear();
         progress.next();
@@ -424,6 +430,7 @@ Reconstruction::reconstruct(PointSet *pset, Map *foot_print, Map *result, Linear
         Logger::warn("-") << "encountered " << num << " non-simple foot print "
                           << (num > 1 ? " polygons." : " polygon.") << std::endl;
 	Logger::out("-") << "reconstruction done. Time: " << t.time_string() << std::endl;
+    result->set_offset(pset->offset());
 
     return success;
 }
@@ -660,6 +667,13 @@ Map *Reconstruction::reconstruct_single_building(PointSet *roof_pset,
     Map *hypothesis = hypo.generate(&polyfit_info, footprint, line_segments);
     if (!hypothesis)
         return nil;
+    if (hypothesis->size_of_facets() > 30000) {
+        const std::string file_name = FileUtils::name_less_extension(cloud_file_name_) + "_" + String::current_time_detailed() + ".obj";
+        Logger::err("-") << "too many (" << hypothesis->size_of_facets() << ") candidate faces for this building (reconstruction aborted, or it would take too much time). "
+        << "The footprint of this buildings has been saved into '"<< file_name << "', which can be used for further investigation" << std::endl;
+        return nil;
+    }
+
     std::vector<Plane3d *> v = hypo.get_vertical_planes();
     // generate quality measures
     polyfit_info.generate(roof_pset, hypothesis, v, false);
@@ -763,4 +777,53 @@ Map *Reconstruction::generate_polygon(PointSet *pSet, double footprint_height,do
 
 
 
+#include <CGAL/Polyline_simplification_2/simplify.h>
+namespace PS = CGAL::Polyline_simplification_2;
 
+typedef CGAL::Polygon_2<Kernel>              Polygon_2;
+typedef PS::Stop_above_cost_threshold        Stop;
+typedef PS::Squared_distance_cost            Cost;
+
+Map* Reconstruction::simplify_footprint(Map* foot_print) const{
+    Map* new_footprint = new Map;
+    new_footprint->set_name(foot_print->name());
+    new_footprint->set_offset(foot_print->offset());
+
+    MapBuilder builder(new_footprint);
+    builder.begin_surface();
+
+    int ind=0;
+    FOR_EACH_FACET_CONST(Map, foot_print, it) {
+        const Polygon3d &plg = it->to_polygon();
+        Polygon_2 plg2d;
+
+        for (std::size_t i = 0; i < plg.size(); ++i) {
+            const vec3 &p = plg[i];
+            plg2d.push_back(Point_2(p.x, p.y));
+        }
+        const auto& bbox = plg2d.bbox();
+        const auto max_allowed_error = std::min(bbox.x_span(), bbox.y_span()) / 50.0;
+
+        std::stringstream ss;
+        ss << "footprint simplified: " << plg2d.size() << " -> ";
+        Cost cost;
+        plg2d = PS::simplify(plg2d, cost, Stop(max_allowed_error));
+        ss << plg2d.size();
+        Logger::out("-") << ss.str() << std::endl;
+
+        builder.begin_facet();
+        for (std::size_t i = 0; i < plg2d.size(); ++i) {
+            const auto& p = plg2d[i];
+            builder.add_vertex(vec3(p.x(), p.y(), -foot_print->offset().z));
+            builder.add_vertex_to_facet(ind);
+            ++ind;
+        }
+        builder.end_facet();
+    }
+    builder.end_surface();
+
+    const std::string file_name = FileUtils::name_less_extension(foot_print->name()) + "-SIMPLIFIED.obj";
+    MapIO::save(file_name, new_footprint);
+    Logger::out("-") << "simplified footprint data saved to '" << file_name << "'" << std::endl;
+    return new_footprint;
+}
