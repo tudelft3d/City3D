@@ -613,9 +613,9 @@ bool MainWindow::doOpen(const QString &fileName)
 	Map* result = nil;
 	PointSet* pset = nil;
 	if (ext == "geojson" || ext == "obj") {
+        const PointSet* pset = canvas()->pointSet();
 		if (ext == "geojson") {
 			MapSerializer_json json;
-			const PointSet* pset = canvas()->pointSet();
             if (pset) {
                 const vec3 &offset = pset->offset();
                 foot = json.read(name, pset, vec3(offset.x, offset.y, pset->bbox().z_min()));
@@ -624,13 +624,22 @@ bool MainWindow::doOpen(const QString &fileName)
                 foot = json.read(name, pset, vec3(0, 0, 0));
                 foot->set_offset(vec3(0, 0, 0));
             }
-			foot->set_name(fileName.toStdString());
 		}
-		else  // obj
-			foot = MapIO::read(name);
+		else {// obj
+            foot = MapIO::read(name);
+            if (pset) {
+                const vec3 &offset = pset->offset();
+                foot->set_offset(vec3(offset.x, offset.y, -pset->bbox().z_min()));
+                FOR_EACH_VERTEX(Map, foot, it) {
+                    it->set_point(it->point() - offset);
+                }
+            } else
+                foot->set_offset(vec3(0, 0, 0));
+        }
 
 		if (foot) {
 			footPrintMeshFileName_ = fileName;
+            foot->set_name(fileName.toStdString());
 			canvas()->setFootPrint(foot);
 			reconstructionMeshFileName_ = footPrintMeshFileName_;
 			int idx = fileName.lastIndexOf(".");

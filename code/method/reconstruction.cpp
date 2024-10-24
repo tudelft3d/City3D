@@ -402,7 +402,9 @@ Reconstruction::reconstruct(PointSet *pset, Map *foot_print, Map *result, Linear
         }
 
         PointSet::Ptr roof_pset = create_roof_point_set(pset, roofs, g);
+        roof_pset->set_offset(pset->offset());
         PointSet::Ptr image_pset = create_projected_point_set(pset, roof_pset);
+        image_pset->set_offset(pset->offset());
 
         if (roof_pset->num_points() < 20)
         {
@@ -668,7 +670,17 @@ Map *Reconstruction::reconstruct_single_building(PointSet *roof_pset,
     if (!hypothesis)
         return nil;
     if (hypothesis->size_of_facets() > 30000) {
-        const std::string file_name = FileUtils::name_less_extension(cloud_file_name_) + "_" + String::current_time_detailed() + ".obj";
+        const std::string file_name = FileUtils::name_less_extension(cloud_file_name_) + "-SKIPPED-" + String::current_time_detailed() + ".obj";
+
+        Polygon3d plg;
+        Map::Halfedge* h = footprint->halfedge() ;
+        do {
+            plg.push_back(h->vertex()->point());
+            h = h->next() ;
+        } while(h != footprint->halfedge()) ;
+        Map* footprint_mesh = Geom::copy_to_mesh(plg);
+        footprint_mesh->set_offset(roof_pset->offset());
+        MapIO::save(file_name, footprint_mesh);
         Logger::err("-") << "too many (" << hypothesis->size_of_facets() << ") candidate faces for this building (reconstruction aborted, or it would take too much time). "
         << "The footprint of this buildings has been saved into '"<< file_name << "', which can be used for further investigation" << std::endl;
         return nil;
