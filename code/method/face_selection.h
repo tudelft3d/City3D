@@ -53,7 +53,8 @@ class FaceSelection
 	}
 
 	// optimization using the requested solver
-	void optimize(PolyFitInfo* polyfit_info, Map::Facet* foot_print, std::vector<Plane3d*>& v, LinearProgramSolver::SolverName solver_name);
+    // return false if failed or error occurred.
+	bool optimize(PolyFitInfo* polyfit_info, Map::Facet* foot_print, std::vector<Plane3d*>& v, LinearProgramSolver::SolverName solver_name);
 
 private:
 	std::vector<std::vector<Map::Facet*> > find_multi_roofs(Map* mesh, Map::Facet* foot_print, std::vector<Plane3d*>& v);

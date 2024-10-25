@@ -101,37 +101,36 @@ std::vector<std::vector<Map::Facet*> > FaceSelection::find_multi_roofs(Map* mesh
 	return multiple_roofs;
 }
 
-void FaceSelection::optimize(PolyFitInfo* polyfit_info,
+bool FaceSelection::optimize(PolyFitInfo* polyfit_info,
 	Map::Facet* foot_print,
 	std::vector<Plane3d*>& v, LinearProgramSolver::SolverName solver_name)
 {
 	if (pset_ == 0 || model_ == 0)
-		return;
+		return false;
 
 	facet_attrib_supporting_vertex_group_.bind_if_defined(model_, Method::facet_attrib_supporting_vertex_group);
 	if (!facet_attrib_supporting_vertex_group_.is_bound())
 	{
-		Logger::err("-") << "attribute " << Method::facet_attrib_supporting_vertex_group << " doesn't exist"
-						 << std::endl;
-		return;
+		Logger::err("-") << "attribute " << Method::facet_attrib_supporting_vertex_group << " doesn't exist" << std::endl;
+        return false;
 	}
 	facet_attrib_supporting_point_num_.bind_if_defined(model_, Method::facet_attrib_supporting_point_num);
 	if (!facet_attrib_supporting_point_num_.is_bound())
 	{
 		Logger::err("-") << "attribute " << Method::facet_attrib_supporting_point_num << " doesn't exist" << std::endl;
-		return;
+        return false;
 	}
 	facet_attrib_facet_area_.bind_if_defined(model_, Method::facet_attrib_facet_area);
 	if (!facet_attrib_facet_area_.is_bound())
 	{
 		Logger::err("-") << "attribute " << Method::facet_attrib_facet_area << " doesn't exist" << std::endl;
-		return;
+        return false;
 	}
 	facet_attrib_covered_area_.bind_if_defined(model_, Method::facet_attrib_covered_area);
 	if (!facet_attrib_covered_area_.is_bound())
 	{
 		Logger::err("-") << "attribute " << Method::facet_attrib_covered_area << " doesn't exist" << std::endl;
-		return;
+        return false;
 	}
 
 	facet_attrib_supporting_plane_.bind_if_defined(model_, "FacetSupportingPlane");
@@ -434,9 +433,8 @@ void FaceSelection::optimize(PolyFitInfo* polyfit_info,
 	//////////////////////////////////////////////////////////////////////////
 
 	LinearProgramSolver solver;
-	if (solver.solve(&program_, solver_name))
-	{
-
+    bool success = solver.solve(&program_, solver_name);
+	if (success) {
 		// mark results
 		const std::vector<double>& X = solver.get_result();
 		std::vector<Map::Facet*> to_delete;
@@ -495,14 +493,17 @@ void FaceSelection::optimize(PolyFitInfo* polyfit_info,
 			normal[it] = facet_attrib_supporting_plane_[it]->normal();
 		}
 	}
-	else
-	{
-		Logger::out("-") << "solving the binary program failed." << std::endl;
-	}
 
 	facet_attrib_supporting_vertex_group_.unbind();
 	facet_attrib_supporting_point_num_.unbind();
 	facet_attrib_facet_area_.unbind();
 	facet_attrib_covered_area_.unbind();
 	facet_attrib_supporting_plane_.unbind();
+
+    if (success)
+        return true;
+    else {
+        Logger::warn("-") << "solving the binary program failed." << std::endl;
+        return false;
+    }
 }

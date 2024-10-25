@@ -720,20 +720,30 @@ Map *Reconstruction::reconstruct_single_building(PointSet *roof_pset,
 
     FaceSelection selector(roof_pset, hypothesis);
 
-    selector.optimize(&polyfit_info, footprint, v, solver_name);
+    bool success = selector.optimize(&polyfit_info, footprint, v, solver_name);
+    if (success) {
+        extrude_boundary_to_ground(hypothesis, Geom::facet_plane(footprint), &polyfit_info);
 
-    extrude_boundary_to_ground(hypothesis, Geom::facet_plane(footprint), &polyfit_info);
+        Geom::merge_into_source(hypothesis, footprint);
+        if (hypothesis->size_of_facets() == 0) {
+            delete hypothesis;
+            return nullptr;
+        }
 
-    Geom::merge_into_source(hypothesis, footprint);
-    if (hypothesis->size_of_facets() == 0)
-        return nullptr;
-
-    if (compromised) {
-        const std::string reconstruction_file_name = Method::intermediate_dir + "/" + time_string + "_Reconstruction.obj";
-        hypothesis->set_offset(roof_pset->offset());
-        MapIO::save(reconstruction_file_name, hypothesis);
+        if (compromised) {
+            const std::string reconstruction_file_name = Method::intermediate_dir + "/" + time_string + "_Reconstruction.obj";
+            hypothesis->set_offset(roof_pset->offset());
+            MapIO::save(reconstruction_file_name, hypothesis);
+        }
+        return hypothesis;
     }
-    return hypothesis;
+    else {
+        const std::string candidate_faces_file_name = Method::intermediate_dir + "/" + time_string + "_Failed_CandidateFaces.obj";
+        hypothesis->set_offset(roof_pset->offset());
+        MapIO::save(candidate_faces_file_name, hypothesis);
+        delete hypothesis;
+        return nullptr;
+    }
 }
 
 #define SIMPLE_EXTRUSION
