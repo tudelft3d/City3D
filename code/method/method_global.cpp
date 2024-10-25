@@ -15,6 +15,9 @@ namespace Method
 
 	double coincident_threshold = 1e-7;
 
+    //we don't have a solver to handle cases with too many candidate faces
+    int max_allowed_candidate_faces = 30000;
+
 	//________________ names for various quality measures ____________________
 
 	std::string facet_attrib_supporting_vertex_group = "facet_supporting_vertex_group";

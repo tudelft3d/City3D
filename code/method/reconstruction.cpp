@@ -670,13 +670,12 @@ Map *Reconstruction::reconstruct_single_building(PointSet *roof_pset,
     if (!hypothesis)
         return nullptr;
 
-    int max_allowed_candidate_faces = 30000;
     bool compromised = false;
     const std::string time_string = String::current_time_detailed();
 
     // in case huge number of candidate faces, we may skip the reconstruction (because no solver can solve the involved
     // optimization problem within a reasonable time window).
-    if (hypothesis->size_of_facets() > max_allowed_candidate_faces) {
+    if (hypothesis->size_of_facets() > Method::max_allowed_candidate_faces) {
         const std::string footprint_file_name     = Method::intermediate_dir + "/" + time_string + "_Footprint.obj";
         const std::string line_segments_file_name = Method::intermediate_dir + "/" + time_string + "_DetectedLineSegments.xyz";
 
@@ -705,10 +704,9 @@ Map *Reconstruction::reconstruct_single_building(PointSet *roof_pset,
         delete hypothesis;
         std::vector<vec3> detected_line_segments = {};
         hypothesis = hypo.generate(&polyfit_info, footprint, detected_line_segments);
-        if (hypothesis->size_of_facets() > max_allowed_candidate_faces) {
+        if (hypothesis->size_of_facets() > Method::max_allowed_candidate_faces) { // still too many
             Logger::warn("-") << "too many candidate faces (" << initial_num_candidate_faces << " -> " << hypothesis->size_of_facets() << " by excluding detected lines). Reconstruction skipped, or it would take too much time" << std::endl;
             return nullptr;
-
         }
         else {
             Logger::warn("-") << "too many candidate faces (" << initial_num_candidate_faces << " -> " << hypothesis->size_of_facets() << " by excluding detected lines). Reconstruction compromised" << std::endl;

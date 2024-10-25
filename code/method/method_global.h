@@ -22,6 +22,9 @@ namespace Method {
 	// - a point considered to be on a plane, etc.
 	extern double coincident_threshold;
 
+    //we don't have a solver to handle cases with too many candidate faces
+    extern int max_allowed_candidate_faces;
+
 	//________________ names for various quality measures ____________________
 
 	extern std::string facet_attrib_supporting_vertex_group;
