@@ -18,9 +18,11 @@ namespace Method {
     extern double point_density;
     extern double ground_height;
 
-	// - two points considered as coincident; 
+	// - two points considered coincident
 	// - a point considered to be on a plane, etc.
 	extern double coincident_threshold;
+    // - a face considered degenerate if its area is too small
+    extern double degenerate_face_area_threshold;
 
     //we don't have a solver to handle cases with too many candidate faces
     extern int max_allowed_candidate_faces;
