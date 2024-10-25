@@ -738,7 +738,7 @@ Map *Reconstruction::reconstruct_single_building(PointSet *roof_pset,
         return hypothesis;
     }
     else {
-        const std::string candidate_faces_file_name = Method::intermediate_dir + "/" + time_string + "_Failed_CandidateFaces.obj";
+        const std::string candidate_faces_file_name = Method::intermediate_dir + "/" + time_string + "_CandidateFaces(ReconstructionFailed).obj";
         hypothesis->set_offset(roof_pset->offset());
         MapIO::save(candidate_faces_file_name, hypothesis);
         delete hypothesis;
