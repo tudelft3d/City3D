@@ -53,7 +53,7 @@ class Reconstruction
 		VertexGroup* building,
 		unsigned int min_support = 40);
 
-	Map* reconstruct_single_building(PointSet* roof_pset, std::vector<vec3> line_segments, Map::Facet* footprint,
+	Map* reconstruct_single_building(PointSet* roof_pset, const std::vector<vec3>& line_segments, Map::Facet* footprint,
                                      LinearProgramSolver::SolverName solver_name);
 
 	std::vector<vec3> compute_line_segment(PointSet* seg_pset, PointSet* roof_pset, Map::Facet* footprint);

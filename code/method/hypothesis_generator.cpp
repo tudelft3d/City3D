@@ -251,7 +251,7 @@ void HypothesisGenerator::refine_planes()
 
 void HypothesisGenerator::collect_valid_planes(PolyFitInfo* polyfit_info,
 	Map::Facet* foot_print,
-	std::vector<vec3> line_segments)
+	const std::vector<vec3>& line_segments)
 {
 	std::vector<Plane3d*>& supporting_planes = polyfit_info->planes;
 
@@ -265,7 +265,7 @@ void HypothesisGenerator::collect_valid_planes(PolyFitInfo* polyfit_info,
 	std::vector<vec3> temp_id;
 	for (std::size_t i = 0; i < line_segments.size(); i++)
 	{
-		vec3 p = line_segments[i];
+		const vec3& p = line_segments[i];
 		if (p[0] != 2)
 		{
 			temp_p.push_back(p);
@@ -1153,7 +1153,7 @@ bool HypothesisGenerator::query_intersection(Plane3d* plane1, Plane3d* plane2, P
 	return true;
 }
 
-Map* HypothesisGenerator::generate(PolyFitInfo* polyfit_info, Map::Facet* foot_print, std::vector<vec3> line_segments)
+Map* HypothesisGenerator::generate(PolyFitInfo* polyfit_info, Map::Facet* foot_print, const std::vector<vec3>& line_segments)
 {
 	if (!pset_)
 		return nil;
@@ -1199,7 +1199,7 @@ Map* HypothesisGenerator::generate(PolyFitInfo* polyfit_info, Map::Facet* foot_p
 Map* HypothesisGenerator::generate(PolyFitInfo* polyfit_info,
 	Map* inter_result,
 	Map::Facet* foot_print,
-	std::vector<vec3> line_segments)
+	const std::vector<vec3>& line_segments)
 {
 	if (!pset_)
 		return nil;

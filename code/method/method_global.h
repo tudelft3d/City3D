@@ -29,6 +29,8 @@ namespace Method {
 	extern std::string facet_attrib_facet_area;
 	extern std::string facet_attrib_covered_area;
 
+    //________________ intermediate temp direction ____________________
+    extern std::string intermediate_dir;
 }
 
 

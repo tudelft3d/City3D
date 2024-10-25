@@ -155,6 +155,25 @@ namespace FileUtils {
 		return (::unlink(filename.c_str()) == 0) ;  // you can also use "remove()"
 	}
 
+    bool delete_contents(const std::string& path) {
+        if (!is_directory(path))
+            return true; // no need to delete
+
+        std::vector<std::string> entries;
+        get_directory_entries(path, entries, false);
+        for (const auto& e : entries) {
+            const std::string& entry = path + "/" + e;
+            if (is_directory(entry)) {
+                if (!delete_directory(entry))
+                    return false;
+            }
+            else {
+                if (!delete_file(entry))
+                    return false;
+            }
+        }
+        return true;
+    }
 
 	std::string get_current_working_directory() {
 		char buff[1024] ;

@@ -54,7 +54,7 @@ namespace FileUtils {
 	bool		create_directory(const std::string& path); // Warning: path should be absolute.
 
 	bool		delete_directory(const std::string& path); // all content will be deleted first
-	bool		delete_contents(const std::string& path);	 // delete contents only
+	bool		delete_contents(const std::string& path);  // delete contents only
 
 	void		get_directory_entries(const std::string& dir, std::vector<std::string>& entries);
 

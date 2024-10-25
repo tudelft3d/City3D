@@ -657,7 +657,7 @@ std::vector<vec3> Reconstruction::compute_line_segment(PointSet *seg_pset,
 }
 
 Map *Reconstruction::reconstruct_single_building(PointSet *roof_pset,
-                                                 std::vector<vec3> line_segments,
+                                                 const std::vector<vec3>& line_segments,
                                                  Map::Facet *footprint,
                                                  LinearProgramSolver::SolverName solver_name)
 {
@@ -668,10 +668,19 @@ Map *Reconstruction::reconstruct_single_building(PointSet *roof_pset,
     PolyFitInfo polyfit_info;
     Map *hypothesis = hypo.generate(&polyfit_info, footprint, line_segments);
     if (!hypothesis)
-        return nil;
-    if (hypothesis->size_of_facets() > 30000) {
-        const std::string file_name = FileUtils::name_less_extension(cloud_file_name_) + "-SKIPPED-" + String::current_time_detailed() + ".obj";
+        return nullptr;
 
+    int max_allowed_candidate_faces = 30000;
+    bool compromised = false;
+    const std::string time_string = String::current_time_detailed();
+
+    // in case huge number of candidate faces, we may skip the reconstruction (because no solver can solve the involved
+    // optimization problem within a reasonable time window).
+    if (hypothesis->size_of_facets() > max_allowed_candidate_faces) {
+        const std::string footprint_file_name     = Method::intermediate_dir + "/" + time_string + "_Footprint.obj";
+        const std::string line_segments_file_name = Method::intermediate_dir + "/" + time_string + "_DetectedLineSegments.xyz";
+
+        // save footprint
         Polygon3d plg;
         Map::Halfedge* h = footprint->halfedge() ;
         do {
@@ -680,10 +689,31 @@ Map *Reconstruction::reconstruct_single_building(PointSet *roof_pset,
         } while(h != footprint->halfedge()) ;
         Map* footprint_mesh = Geom::copy_to_mesh(plg);
         footprint_mesh->set_offset(roof_pset->offset());
-        MapIO::save(file_name, footprint_mesh);
-        Logger::err("-") << "too many (" << hypothesis->size_of_facets() << ") candidate faces for this building (reconstruction aborted, or it would take too much time). "
-        << "The footprint of this buildings has been saved into '"<< file_name << "', which can be used for further investigation" << std::endl;
-        return nil;
+        MapIO::save(footprint_file_name, footprint_mesh);
+
+        // save detected lines
+        std::ofstream output(line_segments_file_name.c_str());
+        if (output.fail())
+            Logger::err("-") << "could not create file for saving: " << line_segments_file_name;
+        else {
+            for (auto p: line_segments)
+                output << p << std::endl;
+        }
+
+        int initial_num_candidate_faces = hypothesis->size_of_facets();
+        // we may compromise: exclude the detected vertical planes and use only those derived from the footprint.
+        delete hypothesis;
+        std::vector<vec3> detected_line_segments = {};
+        hypothesis = hypo.generate(&polyfit_info, footprint, detected_line_segments);
+        if (hypothesis->size_of_facets() > max_allowed_candidate_faces) {
+            Logger::warn("-") << "too many candidate faces (" << initial_num_candidate_faces << " -> " << hypothesis->size_of_facets() << " by excluding detected lines). Reconstruction skipped, or it would take too much time" << std::endl;
+            return nullptr;
+
+        }
+        else {
+            Logger::warn("-") << "too many candidate faces (" << initial_num_candidate_faces << " -> " << hypothesis->size_of_facets() << " by excluding detected lines). Reconstruction compromised" << std::endl;
+            compromised = true;
+        }
     }
 
     std::vector<Plane3d *> v = hypo.get_vertical_planes();
@@ -698,8 +728,13 @@ Map *Reconstruction::reconstruct_single_building(PointSet *roof_pset,
 
     Geom::merge_into_source(hypothesis, footprint);
     if (hypothesis->size_of_facets() == 0)
-        return 0;
+        return nullptr;
 
+    if (compromised) {
+        const std::string reconstruction_file_name = Method::intermediate_dir + "/" + time_string + "_Reconstruction.obj";
+        hypothesis->set_offset(roof_pset->offset());
+        MapIO::save(reconstruction_file_name, hypothesis);
+    }
     return hypothesis;
 }
 
@@ -834,7 +869,8 @@ Map* Reconstruction::simplify_footprint(Map* foot_print) const{
     }
     builder.end_surface();
 
-    const std::string file_name = FileUtils::name_less_extension(foot_print->name()) + "-SIMPLIFIED.obj";
+    const std::string file_name = Method::intermediate_dir + "/" + FileUtils::base_name(foot_print->name()) + "_SimplifiedFootPrint.obj";
+
     MapIO::save(file_name, new_footprint);
     Logger::out("-") << "simplified footprint data saved to '" << file_name << "'" << std::endl;
     return new_footprint;

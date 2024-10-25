@@ -22,5 +22,6 @@ namespace Method
 	std::string facet_attrib_facet_area = "facet_area";
 	std::string facet_attrib_covered_area = "facet_covered_area";
 
-
+    //________________ intermediate temp direction ____________________
+    std::string intermediate_dir = ".";
 }

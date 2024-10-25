@@ -476,15 +476,18 @@ void PaintCanvas::setPointSet(PointSet* pset) {
 			Tessellator::invalidate();
 			MeshRender::invalidate();
 		}
+
+        // setup intermediate directory
+        Method::intermediate_dir = FileUtils::name_less_extension(pset->name()) + "_TEMP";
+        if (FileUtils::is_directory(Method::intermediate_dir)) {
+            if (!FileUtils::delete_contents(Method::intermediate_dir))
+                Logger::err("-") << "failed to delete existing contents from the intermediate directory: " << Method::intermediate_dir << std::endl;
+        }
+        else {
+            if (!FileUtils::create_directory(Method::intermediate_dir))
+                Logger::err("-") << "failed to create intermediate directory: " << Method::intermediate_dir << std::endl;
+        }
 	}
-
-	//if (point_set_) {
-	//	hint_text_ = "Next: click \'Refine\' to merge very close and near-parallel planar segments.";
-	//	hint_text2nd_ = "";
-	//}
-
-	//// now I have model, show the mouse hint
-	//show_mouse_hint_ = true;
 }
 
 

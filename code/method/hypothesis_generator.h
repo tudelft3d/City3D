@@ -51,14 +51,13 @@ class HypothesisGenerator
 
 	void refine_planes();
 
-	Map* generate(PolyFitInfo* polyfit_info, Map::Facet* foot_print, std::vector<vec3> line_segments);
-	Map* generate(PolyFitInfo* polyfit_info,
-		Map* inter_result,
-		Map::Facet* foot_print,
-		std::vector<vec3> line_segments);
+	Map* generate(PolyFitInfo* polyfit_info, Map::Facet* foot_print, const std::vector<vec3>& line_segments);
+	Map* generate(PolyFitInfo* polyfit_info, Map* inter_result, Map::Facet* foot_print, const std::vector<vec3>& line_segments);
+
 	std::vector<Plane3d*> get_vertical_planes();
+
  private:
-	void collect_valid_planes(PolyFitInfo* polyfit_info, Map::Facet* foot_print, std::vector<vec3> line_segments);
+	void collect_valid_planes(PolyFitInfo* polyfit_info, Map::Facet* foot_print, const std::vector<vec3>& line_segments);
 
 	Map* compute_proxy_mesh(PolyFitInfo* polyfit_info, Map::Facet* foot_print);
 
