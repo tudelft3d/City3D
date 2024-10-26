@@ -31,9 +31,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <CGAL/Projection_traits_xy_3.h>
 #include <algorithm>
 
-#define    REMOVE_DEGENERATE_FACES
+#define REMOVE_DEGENERATE_FACES  1
 
-#ifdef REMOVE_DEGENERATE_FACES
+#if REMOVE_DEGENERATE_FACES
 
 static void remove_degenerated_facets(Map* mesh)
 {
@@ -48,8 +48,7 @@ static void remove_degenerated_facets(Map* mesh)
     {
         degenerated_facet_found = false;
         FOR_EACH_EDGE(Map, mesh, it) {
-            double len = Geom::edge_length(it);
-            if (len <= Method::coincident_threshold) {
+            if (Geom::edge_length(it) < Method::coincident_threshold) {
                 degenerated_facet_found = true;
                 if (editor.collapse_edge(it)) {
                     ++count;
@@ -59,47 +58,13 @@ static void remove_degenerated_facets(Map* mesh)
         }
     } while (degenerated_facet_found);
 
-    do // by checking face area
-    {
-        degenerated_facet_found = false;
-        FOR_EACH_FACET(Map, mesh, it) {
-            if (Geom::facet_area(it) < Method::degenerate_face_area_threshold) {
-                degenerated_facet_found = true;
-
-                Map::Halfedge* h = it->halfedge();
-                Map::Halfedge* shortest_edge = h;
-                double shortest_length = Geom::edge_length(h);
-                h = h->next();
-                do {
-                    double len = Geom::edge_length(h);
-                    if (len < shortest_length) {
-                        shortest_length = len;
-                        shortest_edge = h;
-                    }
-                    h = h->next();
-                } while(h != it->halfedge());
-#if 0
-                std::cerr << "shortest edge of a degenerate face: " << shortest_length << std::endl;
-                h = it->halfedge();
-                do {
-                    std::cerr << h->vertex()->point() << std::endl;
-                    h = h->next();
-                } while(h != it->halfedge());
-                std::cerr << std::endl << std::endl;
+#if 1
+    FOR_EACH_EDGE(Map, mesh, it) {
+        const auto len = Geom::edge_length(it);
+        if (len < Method::coincident_threshold)
+            Logger::out("-") << count << "very short edge detected. length: " << len << std::endl;
+    }
 #endif
-                if (shortest_length <= 1e-4) {
-                    if (editor.collapse_edge(shortest_edge)) {
-                        ++count;
-                        break;  // Liangliang: only one edge can be collapsed (one may affect others)
-                    }
-                } else {
-                    // strange configurations (e.g., all edges are long, but face area almost zero)
-                    // ToDo: insert a new edge between the closest two vertices, and then collapse this edge
-                }
-            }
-        }
-    } while (degenerated_facet_found);
-
 
 	if (count > 0)
 		Logger::out("-") << count << " degenerate edges collapsed" << std::endl;
@@ -1204,7 +1169,7 @@ Map* HypothesisGenerator::generate(PolyFitInfo* polyfit_info, Map::Facet* foot_p
 	pairwise_cut(mesh);
 
 
-#ifdef REMOVE_DEGENERATE_FACES
+#if REMOVE_DEGENERATE_FACES
 	remove_degenerated_facets(mesh);
 #endif
 
@@ -1244,7 +1209,7 @@ Map* HypothesisGenerator::generate(PolyFitInfo* polyfit_info,
 	triplet_intersection(polyfit_info->planes);
 	pairwise_cut(mesh);
 
-#ifdef REMOVE_DEGENERATE_FACES
+#if REMOVE_DEGENERATE_FACES
 	remove_degenerated_facets(mesh);
 #endif
 
