@@ -44,8 +44,8 @@ int main(int argc, char **argv) {
             std::cout << "read input point cloud from file: " << input_cloud_file << std::endl;
 
             // output mesh file name
-            std::string result_file = file_name.substr(0, file_name.find(".ply")) + "_result.obj";
-            std::string footprint_file = file_name.substr(0, file_name.find(".ply")) + "_footprint.obj";
+            std::string result_file = file_name.substr(0, file_name.find(".ply")) + "_ReconstructedModel.obj";
+            std::string footprint_file = file_name.substr(0, file_name.find(".ply")) + "_GeneratedFootprint.obj";
 
             // load input point cloud
             std::cout << "loading input point cloud data..." << std::endl;
