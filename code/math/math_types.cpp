@@ -38,8 +38,6 @@
 
 #include "math_types.h"
 #include "compare.h"
-#include "../basic/basic_types.h"
-#include "../basic/assertions.h"
 
 #include <algorithm>
 

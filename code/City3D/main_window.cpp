@@ -614,29 +614,13 @@ bool MainWindow::doOpen(const QString &fileName)
 	PointSet* pset = nil;
 	if (ext == "geojson" || ext == "obj") {
         const PointSet* pset = canvas()->pointSet();
-		if (ext == "geojson") {
-			MapSerializer_json json;
-            if (pset) {
-                const vec3 &offset = pset->offset();
-                footprint = json.read(name, pset, vec3(offset.x, offset.y, pset->bbox().z_min()));
-                footprint->set_offset(vec3(offset.x, offset.y, -pset->bbox().z_min()));
-            } else {
-                footprint = json.read(name, pset, vec3(0, 0, 0));
-                footprint->set_offset(vec3(0, 0, 0));
-            }
-		}
-		else {// obj
-            footprint = MapIO::read(name);
-            if (pset) {
-                const vec3 &offset = pset->offset();
-                footprint->set_offset(vec3(offset.x, offset.y, -pset->bbox().z_min()));
-                FOR_EACH_VERTEX(Map, footprint, it) {
-                    it->set_point(it->point() - offset);
-                }
-            } else
-                footprint->set_offset(vec3(0, 0, 0));
+        if (!pset) {
+            Logger::err("-") << "point cloud doesn't exist. Please load point cloud first" << std::endl;
+            return false;
         }
 
+        const vec3& offset = pset->offset();
+        footprint = MapIO::read(name, vec3(offset.x, offset.y, -pset->bbox().z_min()));
 		if (footprint) {
 			footPrintMeshFileName_ = fileName;
             footprint->set_name(fileName.toStdString());
@@ -654,7 +638,6 @@ bool MainWindow::doOpen(const QString &fileName)
 		if (pset) {
 			pointCloudFileName_ = fileName;
 			canvas()->setPointSet(pset);
-
 			reconstructionMeshFileName_ = pointCloudFileName_;
 			int idx = fileName.lastIndexOf(".");
 			reconstructionMeshFileName_.truncate(idx);

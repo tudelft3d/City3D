@@ -46,7 +46,8 @@ int main(int argc, char **argv)
 
     // load input footprint data
     std::cout << "loading input footprint data from file: " << input_footprint_file << std::endl;
-    Map *footprint = MapIO::read(input_footprint_file);
+    const vec3& offset = pset->offset();
+    Map *footprint = MapIO::read(input_footprint_file, vec3(offset.x, offset.y, -pset->bbox().z_min()));
     if (!footprint) {
         std::cerr << "failed loading footprint data from file: " << input_footprint_file << std::endl;
         return EXIT_FAILURE;

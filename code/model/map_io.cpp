@@ -46,6 +46,8 @@
 #include "../basic/stop_watch.h"
 #include "map_serializer.h"
 #include "map_serializer_obj.h"
+#include "map_serializer_json.h"
+
 
 void join_colinear_edges(Map* mesh) {
 	bool colinear_found = false;
@@ -93,7 +95,7 @@ void remove_duplicated_vertices(Map* mesh) {
 }
 
 
-Map* MapIO::read(const std::string& file_name)
+Map* MapIO::read(const std::string& file_name, const vec3& offset)
 {
 	MapSerializer_var serializer = resolve_serializer(file_name);
 	if (!serializer.is_nil()) {
@@ -105,9 +107,12 @@ Map* MapIO::read(const std::string& file_name)
 
 		if (serializer->serialize_read(file_name, mesh)) {
 			Logger::out("-") << "done. " << w.seconds() << " sec." << std::endl;
-
 			remove_duplicated_vertices(mesh);
 			join_colinear_edges(mesh);
+
+            mesh->set_offset(offset);
+            FOR_EACH_VERTEX(Map, mesh, it)
+                it->set_point(it->point() - offset);
 
 			return mesh;
 		}
@@ -157,6 +162,8 @@ MapSerializer* MapIO::resolve_serializer(const std::string& file_name) {
 		serializer = new MapSerializer_obj();
 	else if ( extension == "eobj" )
 		serializer = new MapSerializer_eobj();
+    else if (extension == "geojson")
+        serializer = new MapSerializer_json();
 	else { 	
 		Logger::err("-") << "unknown file format" << std::endl;
 		return nil;

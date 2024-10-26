@@ -12,29 +12,12 @@ using json = nlohmann::json;
 
 MapSerializer_json::MapSerializer_json()
 {
+    read_supported_ = true ;
+    write_supported_ = false ;
 }
 
-Map* MapSerializer_json::read(const std::string& file_name, bool use_provided_offset /* = false */, const vec3& offset /* = vec3(0, 0, 0) */ )
-{
-	std::fstream::openmode mode = std::fstream::in;
-
-	std::ifstream input(file_name.c_str(), mode);
-	if (input.fail()) {
-		Logger::err("-")
-			<< "Could not open file \'"
-			<< file_name << "\'"
-			<< std::endl;
-		return nullptr;
-	}
-
-	Map* mesh = new Map;
-	MapBuilder builder(mesh);
-	if (do_read(input, builder, use_provided_offset, offset))
-		return mesh;
-	else {
-		delete mesh;
-		return nullptr;
-	}
+bool MapSerializer_json::binary() const {
+    return false;
 }
 
 
@@ -77,7 +60,7 @@ void extract_polygon(json::const_iterator it_coordinates, std::vector<double>& c
 }
 
 
-bool MapSerializer_json::do_read(std::istream& in, AbstractMapBuilder& builder, bool use_provided_offset /* = false */, const vec3& offset /* = vec3(0, 0, 0) */)
+bool MapSerializer_json::do_read(std::istream& in, AbstractMapBuilder& builder)
 {
 	Logger::warn("-") << "The GeoJSON parser is not fully implemented and it may not handle all files!" << std::endl;
 
@@ -94,10 +77,6 @@ bool MapSerializer_json::do_read(std::istream& in, AbstractMapBuilder& builder, 
 	if (!it_features->is_array())
 		return false;
 
-	bool first_point = true;
-	double dx = offset.x;
-	double dy = offset.y;
-	double minz = offset.z; // Note: this is the minimum Z value of the cloud
 	for (std::size_t i = 0; i < it_features->size(); ++i) {
 		const json& ei = it_features->at(i);
 		if (!ei.is_object() || ei["type"] != "Feature")
@@ -125,14 +104,7 @@ bool MapSerializer_json::do_read(std::istream& in, AbstractMapBuilder& builder, 
             //      identical values; their representation SHOULD also be identical.
             // Thus the "-2", see https://www.rfc-editor.org/rfc/rfc7946.html#section-3.1.6
 			for (std::size_t j = 0; j < coordinates.size()-2; j += 2) {
-				if (!use_provided_offset && first_point) {
-					dx = coordinates[j];
-					dy = coordinates[j + 1];
-					first_point = false;
-				}
-
-				builder.add_vertex(vec3(coordinates[j] - dx, coordinates[j + 1] - dy, minz));
-				
+				builder.add_vertex(vec3(coordinates[j], coordinates[j + 1], 0));
 				builder.add_vertex_to_facet(idx);
 				++idx;
 			}

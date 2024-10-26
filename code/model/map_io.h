@@ -40,7 +40,7 @@
 #define _MAP_IO_H_
 
 
-#include "../basic/basic_types.h"
+#include "../math/math_types.h"
 
 #include <string>
 
@@ -51,7 +51,7 @@ class MapSerializer;
 class MapIO
 {
 public:
-	static Map*	read(const std::string& file_name);
+	static Map*	read(const std::string& file_name, const vec3& offset);  // default: vec3(0, 0, 0)
 	static bool	save(const std::string& file_name, const Map* mesh) ;
 
 	static MapSerializer* resolve_serializer(const std::string& file_name) ;
