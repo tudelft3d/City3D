@@ -60,13 +60,11 @@ void Reconstruction::segmentation(PointSet* pset, Map *footprint, bool simplify_
     // setup intermediate directory
     Method::intermediate_dir = FileUtils::name_less_extension(pset->name()) + "_TEMP";
     if (FileUtils::is_directory(Method::intermediate_dir)) {
-        if (!FileUtils::delete_contents(Method::intermediate_dir))
-            Logger::err("-") << "failed to delete existing contents from the intermediate directory: " << Method::intermediate_dir << std::endl;
+        if (!FileUtils::delete_directory(Method::intermediate_dir))
+            Logger::err("-") << "failed to delete existing intermediate directory: " << Method::intermediate_dir << std::endl;
     }
-    else {
-        if (!FileUtils::create_directory(Method::intermediate_dir))
-            Logger::err("-") << "failed to create intermediate directory: " << Method::intermediate_dir << std::endl;
-    }
+    if (!FileUtils::create_directory(Method::intermediate_dir))
+        Logger::err("-") << "failed to create intermediate directory: " << Method::intermediate_dir << std::endl;
 
     if (footprint) {
         if (simplify_footprint)
@@ -450,6 +448,12 @@ Reconstruction::reconstruct(PointSet *pset, Map *footprint, Map *result, LinearP
                           << (num > 1 ? " polygons." : " polygon.") << std::endl;
 	Logger::out("-") << "reconstruction done. Time: " << t.time_string() << std::endl;
     result->set_offset(pset->offset());
+
+    // delete intermediate directory if the reconstruction was successful
+    if (success && FileUtils::is_directory(Method::intermediate_dir)) {
+        if (!FileUtils::delete_directory(Method::intermediate_dir))
+            Logger::err("-") << "failed to delete intermediate directory: " << Method::intermediate_dir << std::endl;
+    }
 
     return success;
 }

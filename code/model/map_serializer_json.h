@@ -20,7 +20,7 @@ public:
     virtual bool binary() const override;
 
 protected:
-	virtual bool do_read(std::istream& in, AbstractMapBuilder& builder) ;
+	virtual bool do_read(std::istream& in, AbstractMapBuilder& builder) override;
 } ;
 
 

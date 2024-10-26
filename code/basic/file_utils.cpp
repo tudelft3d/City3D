@@ -88,42 +88,44 @@ namespace FileUtils {
 
 
 	bool is_file(const std::string& filename) {
+        struct stat statbuf{};
+        if (::stat(filename.c_str(), &statbuf) != 0)
+            return false;   // path does not exist
 #ifdef _WIN32
-		struct _stat statbuf;
-		if (::_stat(filename.c_str(), &statbuf) < 0)  // use '_wstat()' for Multi-Byte Character Set
-			return false;
-
-		if (!(statbuf.st_mode & _S_IFREG))
-			return false;
-#else // _WIN32
-		struct stat statbuf;
-		if (::stat(filename.c_str(), &statbuf) < 0)
-			return false;
-
-		if (!S_ISREG(statbuf.st_mode))
-			return false;
-#endif // _WIN32
-
-		return true;
+        return (statbuf.st_mode & S_IFREG);
+#else
+        return S_ISREG(statbuf.st_mode);
+#endif
 	}
 
+    std::string path_root(const std::string& path) {
+        // Test for unix root
+        if (path.empty())
+            return "";
+        if (path[0] == '/')
+            return "/";
+        // Now test for Windows root
+        if (path.length() < 2)
+            return "";
+        if (path[1] == ':') {
+            // We should check that path[0] is a letter, but as ':' is invalid in paths in other cases, that's not a problem.
+            return path.substr(0, 2);
+        }
+
+        return "";
+    }
 
 	bool is_directory(const std::string& path) {
+        if (path == path_root(path)) // already the root of the path
+            return true;
+        struct stat statbuf{};
+        if (::stat(path.c_str(), &statbuf) != 0)
+            return false;   // path does not exist
 #ifdef _WIN32
-		struct _stat statbuf;
-		if (::_stat(path.c_str(), &statbuf) < 0)  // use '_wstat()' for Multi-Byte Character Set
-			return false;
-
-		if (!(statbuf.st_mode & _S_IFDIR))
-			return false;
-#else // _WIN32
-		struct stat statbuf;
-		if (::stat(path.c_str(), &statbuf) < 0)
-			return false;
-
-		if (!S_ISDIR(statbuf.st_mode))
-			return false;
-#endif // _WIN32
+        return (statbuf.st_mode & S_IFDIR);
+#else
+        return S_ISDIR(statbuf.st_mode);
+#endif
 
 		return true;
 	}
@@ -147,12 +149,26 @@ namespace FileUtils {
 		return true ;
 	}
 
-	bool delete_directory(const std::string& path) {
-		return (::rmdir(path.c_str()) == 0) ;
-	}
+    bool delete_directory(const std::string& path) {
+        if (!is_directory(path))
+            return true; // no need to delete
+
+        // delete contents first
+        delete_contents(path);
+
+#ifdef WIN32
+        return (::_rmdir(path.c_str()) == 0);
+#else
+        return (::rmdir(path.c_str()) == 0);
+#endif
+    }
 
 	bool delete_file(const std::string& filename) {
-		return (::unlink(filename.c_str()) == 0) ;  // you can also use "remove()"
+#ifdef WIN32
+        return (::_unlink(filename.c_str()) == 0);  // you can also use "remove()"
+#else
+        return (::unlink(filename.c_str()) == 0);  // you can also use "remove()"
+#endif
 	}
 
     bool delete_contents(const std::string& path) {
@@ -164,12 +180,14 @@ namespace FileUtils {
         for (const auto& e : entries) {
             const std::string& entry = path + "/" + e;
             if (is_directory(entry)) {
-                if (!delete_directory(entry))
+                if (!delete_directory(entry)) {
                     return false;
+                }
             }
             else {
-                if (!delete_file(entry))
+                if (!delete_file(entry)) {
                     return false;
+                }
             }
         }
         return true;
@@ -263,36 +281,35 @@ namespace FileUtils {
 
 
 	void get_directory_entries(const std::string& dir, std::vector<std::string>& contents) {
-		if (!is_directory(dir)) {
-			std::cerr << "directory \'" << dir << " \' does not exist" << std::endl; 
-		}
+        if (!is_directory(dir))
+            return;
 
 #if defined(WIN32) && !defined(__CYGWIN__)
 
-		std::string path = dir + "/*.*";
-		_finddata_t data;
-		intptr_t handle = _findfirst(path.c_str(), &data);
-		if (handle != -1) {
-			do {
-				std::string name = data.name;
-				if (name != "." && name != "..") // "." and ".." seems always there
-					contents.push_back(name);
-			}
-			while (_findnext(handle, &data) != -1);
+        std::string path = dir + "/*.*";
+            _finddata_t data;
+            intptr_t handle = _findfirst(path.c_str(), &data);
+            if (handle != -1) {
+                do {
+                    // "." and ".." seems always there on Windows
+                    if (std::strcmp(data.name, ".") != 0 && std::strcmp(data.name, "..") != 0)
+                        contents.push_back(data.name);
+                } while (_findnext(handle, &data) != -1);
 
-			_findclose(handle);
-		}
+                _findclose(handle);
+            }
 #else
-		DIR *handle = opendir(dir.c_str());
-		if (handle)
-		{
-			dirent *rc;
-			while((rc = readdir(handle))!=NULL)
-			{
-				contents.push_back(rc->d_name);
-			}
-			closedir(handle);
-		}
+        DIR *handle = opendir(dir.c_str());
+        if (handle)
+        {
+            dirent *rc;
+            while ((rc = readdir(handle)) != nullptr) {
+                // some OSs (e.g., macOS) may include ".", "..", and ".DS_Store" in directory entries
+                if (std::strcmp(rc->d_name, ".") != 0 && std::strcmp(rc->d_name, "..") != 0 && std::strcmp(rc->d_name, ".DS_Store") != 0)
+                    contents.emplace_back(rc->d_name);
+            }
+            closedir(handle);
+        }
 #endif
 	}
 
@@ -511,18 +528,20 @@ namespace FileUtils {
 		const std::string& dir, std::vector<std::string>& result, bool recursive
 		) 
 	{
-		get_directory_entries(dir, result) ;
-		if(recursive) {
-			for(unsigned int i=0; i<result.size(); i++) {
-				std::string path = dir + "/" + result[i];
-				if(is_directory(path)) {
-					std::vector<std::string> entries;
-					get_directory_entries(path, entries) ;
-					for (unsigned int j=0; j<entries.size(); ++j) 
-						result.push_back(result[i] + "/" + entries[j]);
-				}
-			}
-		}
+        get_directory_entries(dir, result);
+        if (recursive) {
+            for (unsigned int i = 0; i < result.size(); i++) {
+                const std::string path = dir + "/" + result[i];
+                if (is_directory(path)) {
+                    std::vector<std::string> entries;
+                    // no need recursion because 'result' is continuously growing and
+                    // the new entries are continuously be checked.
+                    get_directory_entries(path, entries);
+                    for (const auto& e : entries)
+                        result.push_back(result[i] + "/" + e);
+                }
+            }
+        }
 	}
 
 	void get_files(const std::string& dir, std::vector<std::string>& result, bool recursive) {
