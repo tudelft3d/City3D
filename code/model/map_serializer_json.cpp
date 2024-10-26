@@ -21,7 +21,7 @@ Map* MapSerializer_json::read(const std::string& file_name, bool use_provided_of
 	std::ifstream input(file_name.c_str(), mode);
 	if (input.fail()) {
 		Logger::err("-")
-			<< "Could not open file\'"
+			<< "Could not open file \'"
 			<< file_name << "\'"
 			<< std::endl;
 		return nullptr;

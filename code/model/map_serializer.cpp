@@ -80,7 +80,7 @@ bool MapSerializer::serialize_read(
 	std::ifstream input(file_name.c_str(), mode) ;
 	if(input.fail()) {
 		Logger::err("MapSerializer") 
-			<< "Could not open file\'" 
+			<< "Could not open file \'"
 			<< file_name << "\'" 
 			<< std::endl ;
 		return false ;
@@ -112,7 +112,7 @@ bool MapSerializer::serialize_write(
 	std::ofstream output(file_name.c_str(), mode) ;
 
 	if(output.fail()) {
-		Logger::err("MapSerializer") << "Could not open file\'" 
+		Logger::err("MapSerializer") << "Could not open file \'"
 			<< file_name << "\'" << std::endl ;
 		return false ;
 	}

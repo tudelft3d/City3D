@@ -30,27 +30,25 @@ int main(int argc, char **argv)
     const std::string directory = std::string(CITY3D_ROOT_DIR) + "/../data/";
 
     // input point cloud file name
-    const std::string input_cloud_file = directory + "/002.ply";
+    const std::string input_cloud_file = directory + "002.ply";
     // input footprint file name
-    const std::string input_footprint_file = directory + "/002_footprint.obj";
+    const std::string input_footprint_file = directory + "002_footprint.obj";
     // output mesh file name
-    const std::string output_file = directory + "/002_result.obj";
+    const std::string output_file = directory + "002_result.obj";
 
     // load input point cloud
-    std::cout << "loading input point cloud data... (from file: " << input_cloud_file << ")" << std::endl;
+    std::cout << "loading input point cloud data from file: " << input_cloud_file << std::endl;
     PointSet *pset = PointSetIO::read(input_cloud_file);
-    if (!pset)
-    {
-        std::cerr << "failed loading point cloud data from file " << input_cloud_file << std::endl;
+    if (!pset) {
+        std::cerr << "failed loading point cloud data from file: " << input_cloud_file << std::endl;
         return EXIT_FAILURE;
     }
 
     // load input footprint data
-    std::cout << "loading input footprint data..." << std::endl;
+    std::cout << "loading input footprint data from file: " << input_footprint_file << std::endl;
     Map *footprint = MapIO::read(input_footprint_file);
-    if (!footprint)
-    {
-        std::cerr << "failed loading footprint data from file " << input_footprint_file << std::endl;
+    if (!footprint) {
+        std::cerr << "failed loading footprint data from file: " << input_footprint_file << std::endl;
         return EXIT_FAILURE;
     }
 
@@ -80,10 +78,10 @@ int main(int argc, char **argv)
     {
         if (MapIO::save(output_file, result))
         {
-            std::cout << "reconstruction result saved to file " << output_file << std::endl;
+            std::cout << "reconstruction result saved to file: " << output_file << std::endl;
             return EXIT_SUCCESS;
         } else
-            std::cerr << "failed to save reconstruction result to file " << output_file << std::endl;
+            std::cerr << "failed to save reconstruction result to file: " << output_file << std::endl;
     } else
         std::cerr << "reconstruction failed" << std::endl;
 

@@ -476,17 +476,6 @@ void PaintCanvas::setPointSet(PointSet* pset) {
 			Tessellator::invalidate();
 			MeshRender::invalidate();
 		}
-
-        // setup intermediate directory
-        Method::intermediate_dir = FileUtils::name_less_extension(pset->name()) + "_TEMP";
-        if (FileUtils::is_directory(Method::intermediate_dir)) {
-            if (!FileUtils::delete_contents(Method::intermediate_dir))
-                Logger::err("-") << "failed to delete existing contents from the intermediate directory: " << Method::intermediate_dir << std::endl;
-        }
-        else {
-            if (!FileUtils::create_directory(Method::intermediate_dir))
-                Logger::err("-") << "failed to create intermediate directory: " << Method::intermediate_dir << std::endl;
-        }
 	}
 }
 
@@ -660,14 +649,9 @@ void PaintCanvas::estimateNormals() {
 void PaintCanvas::segmentation() {
     main_window_->updateWeights();
 	Reconstruction recon;
-    if (foot_print_) {
-        auto foot_print = recon.simplify_footprint(foot_print_);
-        if (foot_print)
-            setFootPrint(foot_print);
-    }
-    else {
+    if (!foot_print_) {
 		if (main_window_->want_footprint()) {
-            auto foot_print = recon.generate_polygon(point_set_);
+            auto foot_print = recon.generate_footprint(point_set_);
             setFootPrint(foot_print);
         }
 		else
@@ -677,7 +661,18 @@ void PaintCanvas::segmentation() {
 	if (foot_print_) {
 		recon.segmentation(point_set_, foot_print_);
 		main_window_->wgtRender_->checkBoxPointSet->setChecked(false);
-	}
+
+        // foot_print may have been simplified in segmentation, so update the viewer
+        Tessellator::remove_mesh(foot_print_);
+        MeshRender::remove_mesh(foot_print_);
+        MapFacetAttribute<Color> color(foot_print_, "color");
+        FOR_EACH_FACET(Map, foot_print_, it)
+            color[it] = random_color();
+        Tessellator::add_mesh(foot_print_);
+        MeshRender::add_mesh(foot_print_);
+        Tessellator::invalidate();
+        MeshRender::invalidate();
+    }
 	else
 		main_window_->wgtRender_->checkBoxPointSet->setChecked(true);
 

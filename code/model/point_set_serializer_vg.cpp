@@ -74,7 +74,7 @@ void PointSetSerializer_vg::save_vg(const PointSet* pset, const std::string& fil
 	// open file
 	std::ofstream output(file_name.c_str());
 	if (output.fail()) {
-		Logger::err("-") << "could not open file\'" << file_name << "\'" << std::endl;
+		Logger::err("-") << "could not open file \'" << file_name << "\'" << std::endl;
 		return;
 	}
 	output.precision(16);
@@ -164,7 +164,7 @@ void PointSetSerializer_vg::write_ascii_group(std::ostream& output, VertexGroup*
 void PointSetSerializer_vg::load_vg(PointSet* pset, const std::string& file_name) {
 	std::ifstream input(file_name.c_str());
 	if (input.fail()) {
-		Logger::err("-") << "could not open file\'" << file_name << "\'" << std::endl;
+		Logger::err("-") << "could not open file \'" << file_name << "\'" << std::endl;
 		return;
 	}
 
@@ -277,7 +277,7 @@ VertexGroup* PointSetSerializer_vg::read_ascii_group(std::istream& input) {
 void PointSetSerializer_vg::load_bvg(PointSet* pset, const std::string& file_name) {
 	std::ifstream input(file_name.c_str(), std::fstream::binary);
 	if (input.fail()) {
-		Logger::err("-") << "could not open file\'" << file_name << "\'" << std::endl;
+		Logger::err("-") << "could not open file \'" << file_name << "\'" << std::endl;
 		return;
 	}
 
@@ -347,7 +347,7 @@ void PointSetSerializer_vg::save_bvg(const PointSet* pset, const std::string& fi
 	// open file
 	std::ofstream output(file_name.c_str(), std::fstream::binary);
 	if (output.fail()) {
-		Logger::err("-") << "could not open file\'" << file_name << "\'" << std::endl;
+		Logger::err("-") << "could not open file \'" << file_name << "\'" << std::endl;
 		return;
 	}
 
