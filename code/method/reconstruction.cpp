@@ -821,7 +821,7 @@ void Reconstruction::extrude_boundary_to_ground(Map *model, const Plane3d &groun
 #endif
 }
 
-Map *Reconstruction::generate_polygon(PointSet *pSet)
+Map *Reconstruction::generate_footprint(PointSet *pSet)
 {
     //get the alpha shape of the point set
     auto alpha_boundary = AlphaShapeBoundary::apply(pSet, 1.5);

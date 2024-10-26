@@ -61,7 +61,7 @@ int main(int argc, char **argv) {
             Reconstruction recon;
 
             // Step 1:  generate the footprint  for  individual buildings
-            Map *footprint = recon.generate_polygon(pset);
+            Map *footprint = recon.generate_footprint(pset);
             MapIO::save(output_file1, footprint);
 
             // Step 2: segmentation to obtain point clouds of individual buildings
