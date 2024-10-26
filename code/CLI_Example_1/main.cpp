@@ -47,6 +47,9 @@ int main(int argc, char **argv)
     // load input footprint data
     std::cout << "loading input footprint data from file: " << input_footprint_file << std::endl;
     const vec3& offset = pset->offset();
+    /// ToDo: in this demo the Z coordinate of the footprint/ground is set to the min_Z of the point cloud.
+    ///       This is not optimal. In practice, the Z coordinate of each building should be determined
+    ///       by extracting local ground planes, or directly from available DTM or DSM data.
     Map *footprint = MapIO::read(input_footprint_file, vec3(offset.x, offset.y, -pset->bbox().z_min()));
     if (!footprint) {
         std::cerr << "failed loading footprint data from file: " << input_footprint_file << std::endl;
@@ -58,9 +61,7 @@ int main(int argc, char **argv)
     // Step 1: segmentation to obtain point clouds of individual buildings
     std::cout << "segmenting individual buildings..." << std::endl;
     recon.segmentation(pset, footprint);
-    //user defined number_region_growing, density
-    Method::number_region_growing = 40;
-    Method::point_density = 0.15;
+
     // Step 2: extract planes from the point cloud of each building (for all buildings)
     std::cout << "extracting roof planes..." << std::endl;
     recon.extract_roofs(pset, footprint);

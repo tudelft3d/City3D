@@ -54,10 +54,7 @@ int main(int argc, char **argv) {
                 std::cerr << "failed loading point cloud data from file " << input_cloud_file << std::endl;
                 return EXIT_FAILURE;
             }
-            //user-defined ground height,number_region_growing, density
-            Method::ground_height = -6;
-            Method::number_region_growing = 40;
-            Method::point_density = 0.15;
+
             Reconstruction recon;
 
             // Step 1:  generate the footprint  for  individual buildings

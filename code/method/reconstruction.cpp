@@ -825,10 +825,10 @@ Map *Reconstruction::generate_footprint(PointSet *pset)
 {
     //get the alpha shape of the point set
     auto alpha_boundary = AlphaShapeBoundary::apply(pset, 1.5);
-    auto footprint_height=Method::ground_height;
+    const double footprint_height = pset->bbox().z_min();
 
-    Map* new_foot = new Map;
-    MapBuilder builder(new_foot);
+    Map* footprint = new Map;
+    MapBuilder builder(footprint);
     builder.begin_surface();
     builder.begin_facet();
     int ind=0;
@@ -841,7 +841,9 @@ Map *Reconstruction::generate_footprint(PointSet *pset)
     }
     builder.end_facet();
     builder.end_surface();
-    return new_foot;
+
+    footprint->set_offset(pset->offset());
+    return footprint;
 }
 
 

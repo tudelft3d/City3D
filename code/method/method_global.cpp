@@ -11,8 +11,6 @@ namespace Method
     double number_region_growing=40;
     double point_density=0.15;
 
-    double ground_height=0;
-
 	double coincident_threshold = 1e-7;
 
     // - a face considered degenerate if its area is too small
