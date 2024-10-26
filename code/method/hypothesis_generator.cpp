@@ -58,11 +58,11 @@ static void remove_degenerated_facets(Map* mesh)
         }
     } while (degenerated_facet_found);
 
-#if 1
+#if 0
     FOR_EACH_EDGE(Map, mesh, it) {
         const auto len = Geom::edge_length(it);
         if (len < Method::coincident_threshold)
-            Logger::out("-") << count << "very short edge detected. length: " << len << std::endl;
+            Logger::warn("-") << count << "very short edge detected. length: " << len << std::endl;
     }
 #endif
 
