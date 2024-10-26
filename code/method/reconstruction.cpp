@@ -843,6 +843,7 @@ Map *Reconstruction::generate_footprint(PointSet *pset)
     builder.end_surface();
 
     footprint->set_offset(pset->offset());
+    footprint->set_name(FileUtils::replace_extension(pset->name(), "obj"));
     return footprint;
 }
 
@@ -879,7 +880,7 @@ void Reconstruction::footprint_simplification(Map* footprint) const{
         plg2d = PS::simplify(plg2d, cost, Stop(max_allowed_error));
         ss << plg2d.size();
         Logger::out("-") << ss.str() << std::endl;
-        if (plg2d.is_clockwise_oriented())
+        if (plg2d.is_counterclockwise_oriented())
             plg2d.reverse_orientation();
 
         builder.begin_facet();

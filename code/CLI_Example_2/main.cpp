@@ -44,22 +44,22 @@ int main(int argc, char **argv) {
             std::cout << "read input point cloud from file: " << input_cloud_file << std::endl;
 
             // output mesh file name
-            std::string output_file = file_name.substr(0, file_name.find(".ply")) + "_result.obj";
-            std::string output_file1 = file_name.substr(0, file_name.find(".ply")) + "_footprint.obj";
+            std::string result_file = file_name.substr(0, file_name.find(".ply")) + "_result.obj";
+            std::string footprint_file = file_name.substr(0, file_name.find(".ply")) + "_footprint.obj";
 
             // load input point cloud
             std::cout << "loading input point cloud data..." << std::endl;
             PointSet *pset = PointSetIO::read(input_cloud_file);
             if (!pset) {
-                std::cerr << "failed loading point cloud data from file " << input_cloud_file << std::endl;
+                std::cerr << "failed loading point cloud data from file: " << input_cloud_file << std::endl;
                 return EXIT_FAILURE;
             }
 
             Reconstruction recon;
 
-            // Step 1:  generate the footprint  for  individual buildings
+            // Step 1: generate footprint for the building
             Map *footprint = recon.generate_footprint(pset);
-            MapIO::save(output_file1, footprint);
+            MapIO::save(footprint_file, footprint);
 
             // Step 2: segmentation to obtain point clouds of individual buildings
 
@@ -82,12 +82,12 @@ bool status = recon.reconstruct(pset, footprint, result, LinearProgramSolver::SC
 #endif
 
             if (status && result->size_of_facets() > 0) {
-                if (MapIO::save(output_file, result)) {
-                    std::cout << "reconstruction result saved to file " << output_file << std::endl;
+                if (MapIO::save(result_file, result)) {
+                    std::cout << "reconstruction result saved to file: " << result_file << std::endl;
                 } else
-                    std::cerr << "failed to save reconstruction result to file " << output_file << std::endl;
+                    std::cerr << "failed to save reconstruction result to file: " << result_file << std::endl;
             } else
-                std::cerr << "reconstruction failed" << std::endl;
+                std::cerr << "reconstruction failed. Input point cloud from file: " << input_cloud_file << std::endl;
 
             delete pset;
             delete result;
