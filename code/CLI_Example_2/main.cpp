@@ -34,24 +34,24 @@ int main(int argc, char **argv) {
     std::vector<std::string> all_file_names;
     FileUtils::get_files(directory, all_file_names, false);
     for (std::size_t i = 0; i < all_file_names.size(); ++i) {
-        std::cout << "processing " << i + 1 << "/" << all_file_names.size() << " file..." << std::endl;
+        std::cout << "- processing " << i + 1 << "/" << all_file_names.size() << " file..." << std::endl;
         const std::string &file_name = all_file_names[i];
 
         if (file_name.find("ply") != std::string::npos) {
 
             // input point cloud file name
             const std::string input_cloud_file = file_name;
-            std::cout << "read input point cloud from file: " << input_cloud_file << std::endl;
+            std::cout << "\tread input point cloud from file: " << input_cloud_file << std::endl;
 
             // output mesh file name
             std::string result_file = file_name.substr(0, file_name.find(".ply")) + "_ReconstructedModel.obj";
             std::string footprint_file = file_name.substr(0, file_name.find(".ply")) + "_GeneratedFootprint.obj";
 
             // load input point cloud
-            std::cout << "loading input point cloud data..." << std::endl;
+            std::cout << "\tloading input point cloud data..." << std::endl;
             PointSet *pset = PointSetIO::read(input_cloud_file);
             if (!pset) {
-                std::cerr << "failed loading point cloud data from file: " << input_cloud_file << std::endl;
+                std::cerr << "\tfailed loading point cloud data from file: " << input_cloud_file << std::endl;
                 return EXIT_FAILURE;
             }
 
@@ -63,34 +63,34 @@ int main(int argc, char **argv) {
 
             // Step 2: segmentation to obtain point clouds of individual buildings
 
-            std::cout << "segmenting individual buildings..." << std::endl;
+            std::cout << "\tsegmenting individual buildings..." << std::endl;
             recon.segmentation(pset, footprint);
 
             // Step 3: extract planes from the point cloud of each building
-            std::cout << "extracting roof planes..." << std::endl;
+            std::cout << "\textracting roof planes..." << std::endl;
 
             if (!recon.extract_roofs(pset, footprint)) {
-                std::cerr << "no roofs could be extracted from the point cloud" << std::endl;
+                std::cerr << "\tno roofs could be extracted from the point cloud" << std::endl;
                 continue;
             }
 
             // Step 4: reconstruct  the buildings one by one
             Map *result = new Map;
 #ifdef HAS_GUROBI
-            std::cout << "reconstructing the buildings (using the Gurobi solver)..." << std::endl;
+            std::cout << "\treconstructing the buildings (using the Gurobi solver)..." << std::endl;
             bool status = recon.reconstruct(pset, footprint, result, LinearProgramSolver::GUROBI);
 #else
-            std::cout << "reconstructing the buildings (using the SCIP solver)..." << std::endl;
+            std::cout << "\treconstructing the buildings (using the SCIP solver)..." << std::endl;
             bool status = recon.reconstruct(pset, footprint, result, LinearProgramSolver::SCIP);
 #endif
 
             if (status && result->size_of_facets() > 0) {
-                if (MapIO::save(result_file, result)) {
-                    std::cout << "reconstruction result saved to file: " << result_file << std::endl;
-                } else
-                    std::cerr << "failed to save reconstruction result to file: " << result_file << std::endl;
+                if (MapIO::save(result_file, result))
+                    std::cout << "\treconstruction result saved to file: " << result_file << std::endl;
+                else
+                    std::cerr << "\tfailed to save reconstruction result to file: " << result_file << std::endl;
             } else
-                std::cerr << "reconstruction failed. Input point cloud from file: " << input_cloud_file << std::endl;
+                std::cerr << "\treconstruction failed. Input point cloud from file: " << input_cloud_file << std::endl;
 
             delete pset;
             delete result;
