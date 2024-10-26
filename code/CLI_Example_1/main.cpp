@@ -63,7 +63,10 @@ int main(int argc, char **argv)
 
     // Step 2: extract planes from the point cloud of each building (for all buildings)
     std::cout << "extracting roof planes..." << std::endl;
-    recon.extract_roofs(pset, footprint);
+    if (!recon.extract_roofs(pset, footprint)) {
+        std::cerr << "no roofs could be extracted from the point cloud" << std::endl;
+        return EXIT_FAILURE;
+    }
 
     // Step 3: reconstruction of all the buildings in the scene
     Map *result = new Map;

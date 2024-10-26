@@ -868,8 +868,9 @@ void Reconstruction::footprint_simplification(Map* footprint) const{
     int ind=0;
     FOR_EACH_FACET_CONST(Map, footprint, it) {
         const Polygon3d &plg = it->to_polygon();
-        Polygon_2 plg2d;
+        double z = plg[0].z;
 
+        Polygon_2 plg2d;
         for (std::size_t i = 0; i < plg.size(); ++i) {
             const vec3 &p = plg[i];
             plg2d.push_back(Point_2(p.x, p.y));
@@ -889,7 +890,7 @@ void Reconstruction::footprint_simplification(Map* footprint) const{
         builder.begin_facet();
         for (std::size_t i = 0; i < plg2d.size(); ++i) {
             const auto& p = plg2d[i];
-            builder.add_vertex(vec3(p.x(), p.y(), -footprint->offset().z));
+            builder.add_vertex(vec3(p.x(), p.y(), z));
             builder.add_vertex_to_facet(ind);
             ++ind;
         }

@@ -69,9 +69,8 @@ int main(int argc, char **argv) {
             // Step 3: extract planes from the point cloud of each building
             std::cout << "extracting roof planes..." << std::endl;
 
-            int num_roofs = recon.extract_roofs(pset, footprint);
-            if (num_roofs == 0) {
-                std::cerr << "no roofs could be extracted for this building" << std::endl;
+            if (!recon.extract_roofs(pset, footprint)) {
+                std::cerr << "no roofs could be extracted from the point cloud" << std::endl;
                 continue;
             }
 
