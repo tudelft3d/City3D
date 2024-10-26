@@ -22,9 +22,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../model/map_io.h"
 #include "../model/point_set_io.h"
 #include "../method/reconstruction.h"
+#include "../method/method_global.h"
 
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
     const std::string directory = std::string(CITY3D_ROOT_DIR) + "/../data/";
 
     // input point cloud file name
@@ -37,7 +39,8 @@ int main(int argc, char **argv) {
     // load input point cloud
     std::cout << "loading input point cloud data... (from file: " << input_cloud_file << ")" << std::endl;
     PointSet *pset = PointSetIO::read(input_cloud_file);
-    if (!pset) {
+    if (!pset)
+    {
         std::cerr << "failed loading point cloud data from file " << input_cloud_file << std::endl;
         return EXIT_FAILURE;
     }
@@ -45,7 +48,8 @@ int main(int argc, char **argv) {
     // load input footprint data
     std::cout << "loading input footprint data..." << std::endl;
     Map *footprint = MapIO::read(input_footprint_file);
-    if (!footprint) {
+    if (!footprint)
+    {
         std::cerr << "failed loading footprint data from file " << input_footprint_file << std::endl;
         return EXIT_FAILURE;
     }
@@ -55,7 +59,9 @@ int main(int argc, char **argv) {
     // Step 1: segmentation to obtain point clouds of individual buildings
     std::cout << "segmenting individual buildings..." << std::endl;
     recon.segmentation(pset, footprint);
-
+    //user defined number_region_growing, density
+    Method::number_region_growing = 40;
+    Method::point_density = 0.15;
     // Step 2: extract planes from the point cloud of each building (for all buildings)
     std::cout << "extracting roof planes..." << std::endl;
     recon.extract_roofs(pset, footprint);
@@ -70,8 +76,10 @@ int main(int argc, char **argv) {
     bool status = recon.reconstruct(pset, footprint, result, LinearProgramSolver::SCIP);
 #endif
 
-    if (status && result->size_of_facets() > 0) {
-        if (MapIO::save(output_file, result)) {
+    if (status && result->size_of_facets() > 0)
+    {
+        if (MapIO::save(output_file, result))
+        {
             std::cout << "reconstruction result saved to file " << output_file << std::endl;
             return EXIT_SUCCESS;
         } else

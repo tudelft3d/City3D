@@ -140,6 +140,7 @@ int Reconstruction::extract_building_roof(PointSet *pset,
     std::vector<unsigned int> remaining_ind;
 
     Region_Growing_Dectetor rg;
+    std::cout<<"min_support: "<<min_support<<std::endl;
     const std::vector<VertexGroup::Ptr> &roofs = rg.detect(pset, p_index, min_support);
     for (std::size_t j = 0; j < roofs.size(); ++j)
     {
@@ -806,12 +807,11 @@ void Reconstruction::extrude_boundary_to_ground(Map *model, const Plane3d &groun
 #endif
 }
 
-Map *Reconstruction::generate_polygon(PointSet *pSet, double footprint_height,double density)
+Map *Reconstruction::generate_polygon(PointSet *pSet)
 {
     //get the alpha shape of the point set
     auto alpha_boundary = AlphaShapeBoundary::apply(pSet, 1.5);
-    Method::ground_height=footprint_height;
-    Method::point_density=density;
+    auto footprint_height=Method::ground_height;
 
     Map* new_foot = new Map;
     MapBuilder builder(new_foot);

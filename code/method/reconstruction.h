@@ -25,7 +25,7 @@ class Reconstruction
 	bool extract_roofs(PointSet* pset, Map* foot_print);
 
     /// generate the footprint for single building
-    Map *generate_polygon(PointSet *pSet, double footprint_height=-5.97,double denisty=0.2);
+    Map *generate_polygon(PointSet *pSet);
 
 	/// reconstruct mesh models of the buildings in the scene.
 	/// Note: the reconstructed models will be merged into 'result'.

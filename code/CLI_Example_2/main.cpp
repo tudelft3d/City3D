@@ -26,6 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../model/point_set_io.h"
 #include "../method/reconstruction.h"
 #include "../basic/file_utils.h"
+#include "../method/method_global.h"
 
 int main(int argc, char **argv) {
     const std::string directory = std::string(CITY3D_ROOT_DIR) + "/../data/building_instances";
@@ -53,14 +54,14 @@ int main(int argc, char **argv) {
                 std::cerr << "failed loading point cloud data from file " << input_cloud_file << std::endl;
                 return EXIT_FAILURE;
             }
-            //set the ground height and point density(0.15-0.25)
-            double ground_height = -5.97;
-            double density = 0.2;
-
+            //user-defined ground height,number_region_growing, density
+            Method::ground_height = -6;
+            Method::number_region_growing = 40;
+            Method::point_density = 0.15;
             Reconstruction recon;
 
             // Step 1:  generate the footprint  for  individual buildings
-            Map *footprint = recon.generate_polygon(pset, ground_height, density);
+            Map *footprint = recon.generate_polygon(pset);
             MapIO::save(output_file1, footprint);
 
             // Step 2: segmentation to obtain point clouds of individual buildings
@@ -70,6 +71,7 @@ int main(int argc, char **argv) {
 
             // Step 3: extract planes from the point cloud of each building
             std::cout << "extracting roof planes..." << std::endl;
+
             recon.extract_roofs(pset, footprint);
 
             // Step 4: reconstruct  the buildings one by one
