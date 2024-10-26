@@ -609,7 +609,7 @@ bool MainWindow::doOpen(const QString &fileName)
 	std::string ext = FileUtils::extension(name);
 	String::to_lowercase(ext);
 
-	Map* foot = nil;
+	Map* footprint = nil;
 	Map* result = nil;
 	PointSet* pset = nil;
 	if (ext == "geojson" || ext == "obj") {
@@ -618,29 +618,29 @@ bool MainWindow::doOpen(const QString &fileName)
 			MapSerializer_json json;
             if (pset) {
                 const vec3 &offset = pset->offset();
-                foot = json.read(name, pset, vec3(offset.x, offset.y, pset->bbox().z_min()));
-                foot->set_offset(vec3(offset.x, offset.y, -pset->bbox().z_min()));
+                footprint = json.read(name, pset, vec3(offset.x, offset.y, pset->bbox().z_min()));
+                footprint->set_offset(vec3(offset.x, offset.y, -pset->bbox().z_min()));
             } else {
-                foot = json.read(name, pset, vec3(0, 0, 0));
-                foot->set_offset(vec3(0, 0, 0));
+                footprint = json.read(name, pset, vec3(0, 0, 0));
+                footprint->set_offset(vec3(0, 0, 0));
             }
 		}
 		else {// obj
-            foot = MapIO::read(name);
+            footprint = MapIO::read(name);
             if (pset) {
                 const vec3 &offset = pset->offset();
-                foot->set_offset(vec3(offset.x, offset.y, -pset->bbox().z_min()));
-                FOR_EACH_VERTEX(Map, foot, it) {
+                footprint->set_offset(vec3(offset.x, offset.y, -pset->bbox().z_min()));
+                FOR_EACH_VERTEX(Map, footprint, it) {
                     it->set_point(it->point() - offset);
                 }
             } else
-                foot->set_offset(vec3(0, 0, 0));
+                footprint->set_offset(vec3(0, 0, 0));
         }
 
-		if (foot) {
+		if (footprint) {
 			footPrintMeshFileName_ = fileName;
-            foot->set_name(fileName.toStdString());
-			canvas()->setFootPrint(foot);
+            footprint->set_name(fileName.toStdString());
+			canvas()->setFootPrint(footprint);
 			reconstructionMeshFileName_ = footPrintMeshFileName_;
 			int idx = fileName.lastIndexOf(".");
 			reconstructionMeshFileName_.truncate(idx);
@@ -664,13 +664,13 @@ bool MainWindow::doOpen(const QString &fileName)
 		}
 	}
 
-	if (pset || foot || result) {
+	if (pset || footprint || result) {
 		updateStatusBar();
 		setCurrentFile(fileName);
 		setWindowTitle(tr("%1[*] - %2").arg(strippedName(fileName)).arg(tr("City3D")));
 		status_message("File loaded", 500);
 
-		if (pset || foot) {
+		if (pset || footprint) {
 			canvas()->setReconstruction(nil);
 			resetRendering();
 		}

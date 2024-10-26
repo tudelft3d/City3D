@@ -21,7 +21,6 @@ set(model_HEADERS
         map_serializer.h
         map.h
         point_set_io.h
-        point_set_serializer_vg.h
         point_set_serializer_ply.h
         point_set_serializer_las.h
         point_set.h
@@ -47,7 +46,6 @@ set(model_SOURCES
         map_serializer.cpp
         map.cpp
         point_set_io.cpp
-        point_set_serializer_vg.cpp
         point_set_serializer_ply.cpp
         point_set_serializer_las.cpp
         point_set.cpp

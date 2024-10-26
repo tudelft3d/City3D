@@ -18,7 +18,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 #include "point_set_io.h"
-#include "point_set_serializer_vg.h"
 #include "point_set_serializer_las.h"
 #include "point_set_serializer_ply.h"
 #include "../model/point_set.h"
@@ -49,10 +48,6 @@ PointSet* PointSetIO::read(const std::string& file_name)
 	pset->set_name(file_name);
 	if (ext == "ply")
 		PointSetSerializer_ply::load(pset, file_name);
-	else if (ext == "vg")
-		PointSetSerializer_vg::load_vg(pset, file_name);
-	else if (ext == "bvg")
-		PointSetSerializer_vg::load_bvg(pset, file_name);
 	else if (ext == "las" || ext == "laz")
 		PointSetSerializer_las::load(pset, file_name);
 
@@ -95,11 +90,6 @@ bool PointSetIO::save(const std::string& file_name, const PointSet* point_set) {
 
 	if (ext == "ply")
 		PointSetSerializer_ply::save(point_set, file_name);
- 	else if (ext == "vg")
-		PointSetSerializer_vg::save_vg(point_set, file_name);
-	else if (ext == "bvg")
-		PointSetSerializer_vg::save_bvg(point_set, file_name);
-
 	else {
 		Logger::err("-") << "saving file failed (unknown file format)" << std::endl;
 		return false;
