@@ -26,7 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../model/point_set_io.h"
 #include "../method/reconstruction.h"
 #include "../basic/file_utils.h"
-#include "../method/method_global.h"
+
 
 int main(int argc, char **argv) {
     const std::string directory = std::string(CITY3D_ROOT_DIR) + "/../data/building_instances";
@@ -69,7 +69,11 @@ int main(int argc, char **argv) {
             // Step 3: extract planes from the point cloud of each building
             std::cout << "extracting roof planes..." << std::endl;
 
-            recon.extract_roofs(pset, footprint);
+            int num_roofs = recon.extract_roofs(pset, footprint);
+            if (num_roofs == 0) {
+                std::cerr << "no roofs could be extracted for this building" << std::endl;
+                continue;
+            }
 
             // Step 4: reconstruct  the buildings one by one
             Map *result = new Map;
@@ -78,7 +82,7 @@ int main(int argc, char **argv) {
             bool status = recon.reconstruct(pset, footprint, result, LinearProgramSolver::GUROBI);
 #else
             std::cout << "reconstructing the buildings (using the SCIP solver)..." << std::endl;
-bool status = recon.reconstruct(pset, footprint, result, LinearProgramSolver::SCIP);
+            bool status = recon.reconstruct(pset, footprint, result, LinearProgramSolver::SCIP);
 #endif
 
             if (status && result->size_of_facets() > 0) {

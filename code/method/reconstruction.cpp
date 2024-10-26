@@ -160,6 +160,9 @@ int Reconstruction::extract_building_roof(PointSet *pset,
     Region_Growing_Dectetor rg;
     //std::cout<<"min_support: "<<min_support<<std::endl;
     const std::vector<VertexGroup::Ptr> &roofs = rg.detect(pset, p_index, min_support);
+    if (roofs.empty())
+        Logger::err("-") << "no roofs planes can be extracted";
+
     for (std::size_t j = 0; j < roofs.size(); ++j)
     {
         const Color &c = random_color();
