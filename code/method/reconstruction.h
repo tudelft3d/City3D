@@ -22,20 +22,20 @@ class Reconstruction
 	void segmentation(PointSet* pset, Map* footprint, bool simplify_footprint = true);
 
     /// extract the roof planes for each building
-	bool extract_roofs(PointSet* pset, Map* foot_print);
+	bool extract_roofs(PointSet* pset, Map* footprint);
 
     /// generate the footprint for single building
-    Map *generate_footprint(PointSet *pSet);
+    Map *generate_footprint(PointSet *pset);
 
 	/// reconstruct mesh models of the buildings in the scene.
 	/// Note: the reconstructed models will be merged into 'result'.
-	bool reconstruct(PointSet* pset, Map* foot_print, Map* result, LinearProgramSolver::SolverName solver_name, bool update_display = false);
+	bool reconstruct(PointSet* pset, Map* footprint, Map* result, LinearProgramSolver::SolverName solver_name, bool update_display = false);
 
  private:
 
     // user provided footprint data may contain dense polylines representing curved structures, which is necessary
     // to be simplified before pairwise intersection.
-    void footprint_simplification(Map* foot_print) const;
+    void footprint_simplification(Map* footprint) const;
 
     std::vector<std::vector<int>> detect_height_jump(PointSet* pset,
                                                      Map::Facet* footprint,
