@@ -107,6 +107,10 @@ This parameter defines the granularity of plane detection:
 #### 3. **Ground** (Footprint Generation)
 The **Ground** parameter defines the Z-value (height) of the footprint polygon, applicable only if no pre-existing footprint data is available.
 
+**Adjustment Guidelines**:
+- If you have access to the complete raw point cloud data, including both the roof and ground points, it would be advisable to directly inspect the data and set the ground height based on the actual ground points.
+- If no ground-level data is available, an alternative approach is to experiment with different values. You can start with value of 0.0 and adjust as needed.
+
 
 #### Parameter Adjustment in GUI Mode
 In GUI mode, parameters can be adjusted interactively:
