@@ -690,6 +690,23 @@ std::vector<vec3> Reconstruction::compute_line_segment(PointSet *seg_pset,
     return line_segments;
 }
 
+
+bool save_footprint(PointSet *roof_pset, Map::Facet *footprint, const std::string footprint_file_name) {
+    // save footprint
+    Polygon3d plg;
+    Map::Halfedge* h = footprint->halfedge() ;
+    do {
+        plg.push_back(h->vertex()->point());
+        h = h->next() ;
+    } while(h != footprint->halfedge()) ;
+    Map* footprint_mesh = Geom::copy_to_mesh(plg);
+    footprint_mesh->set_offset(roof_pset->offset());
+    bool status = MapIO::save(footprint_file_name, footprint_mesh);
+    delete footprint_mesh;
+    return status;
+}
+
+
 // 'status' returns one of the following values:
 //      1: successful
 //      0: compromised (due to, e.g., too complex, detected inner wall excluded)
@@ -703,33 +720,28 @@ Map *Reconstruction::reconstruct_single_building(PointSet *roof_pset,
 {
     status = -1; // default to failed
 
+    const std::string footprint_file_name  = Method::intermediate_dir + "/" + index_string + "_Footprint.obj";
+
     // refine planes
     HypothesisGenerator hypo(roof_pset);
     hypo.refine_planes();
     // generate candidate faces
     PolyFitInfo polyfit_info;
     Map *hypothesis = hypo.generate(&polyfit_info, footprint, line_segments);
-    if (!hypothesis)
+    if (!hypothesis) {
+        if (!save_footprint(roof_pset, footprint, footprint_file_name))
+            Logger::err("-") << "failed to save footprint as mesh into file: " << footprint_file_name;
         return nullptr;
+    }
 
     // in case huge number of candidate faces, we may skip the reconstruction (because no solver can solve the involved
     // optimization problem within a reasonable time window).
     if (hypothesis->size_of_facets() > Method::max_allowed_candidate_faces) {
-        const std::string footprint_file_name     = Method::intermediate_dir + "/" + index_string + "_Footprint.obj";
-        const std::string line_segments_file_name = Method::intermediate_dir + "/" + index_string + "_DetectedLineSegments.xyz";
-
         // save footprint
-        Polygon3d plg;
-        Map::Halfedge* h = footprint->halfedge() ;
-        do {
-            plg.push_back(h->vertex()->point());
-            h = h->next() ;
-        } while(h != footprint->halfedge()) ;
-        Map* footprint_mesh = Geom::copy_to_mesh(plg);
-        footprint_mesh->set_offset(roof_pset->offset());
-        MapIO::save(footprint_file_name, footprint_mesh);
-
+        if (!save_footprint(roof_pset, footprint, footprint_file_name))
+            Logger::err("-") << "failed to save footprint as mesh into file: " << footprint_file_name;
         // save detected lines
+        const std::string line_segments_file_name = Method::intermediate_dir + "/" + index_string + "_DetectedLineSegments.xyz";
         std::ofstream output(line_segments_file_name.c_str());
         if (output.fail())
             Logger::err("-") << "could not create file for saving: " << line_segments_file_name;
@@ -766,6 +778,8 @@ Map *Reconstruction::reconstruct_single_building(PointSet *roof_pset,
         if (hypothesis->size_of_facets() == 0) {
             delete hypothesis;
             status = -1;
+            if (!save_footprint(roof_pset, footprint, footprint_file_name))
+                Logger::err("-") << "failed to save footprint as mesh into file: " << footprint_file_name;
             return nullptr;
         }
 
@@ -779,6 +793,9 @@ Map *Reconstruction::reconstruct_single_building(PointSet *roof_pset,
         return hypothesis;
     }
     else {
+        if (!save_footprint(roof_pset, footprint, footprint_file_name))
+            Logger::err("-") << "failed to save footprint as mesh into file: " << footprint_file_name;
+
         const std::string candidate_faces_file_name = Method::intermediate_dir + "/" + index_string + "_Failed_JustCandidateFaces.obj";
         hypothesis->set_offset(roof_pset->offset());
         MapIO::save(candidate_faces_file_name, hypothesis);
