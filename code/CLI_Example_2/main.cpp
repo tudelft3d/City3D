@@ -62,7 +62,6 @@ int main(int argc, char **argv) {
             MapIO::save(footprint_file, footprint);
 
             // Step 2: segmentation to obtain point clouds of individual buildings
-
             std::cout << "\tsegmenting individual buildings..." << std::endl;
             recon.segmentation(pset, footprint);
 
@@ -97,5 +96,5 @@ int main(int argc, char **argv) {
         }
     }
 
-    return EXIT_FAILURE;
+    return EXIT_SUCCESS;
 }
