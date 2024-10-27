@@ -207,7 +207,7 @@ bool Reconstruction::extract_roofs(PointSet *pset, Map *footprint)
         std::vector<VertexGroup::Ptr> &roofs = g->children();
         unsigned int min_support = Method::number_region_growing;
         num += extract_building_roof(pset, g, min_support);
-        while (roofs.empty() && min_support > 6) // Liangliang: the number must be "> 6" to avoid infinite loops
+        while (roofs.empty() && min_support > 3) // Liangliang: the number must be "> 3" to avoid infinite loops
         {
             num += extract_building_roof(pset, g,  min_support);
             min_support *= 0.75;
@@ -928,7 +928,7 @@ void Reconstruction::footprint_simplification(Map* footprint) const{
             plg2d.push_back(Point_2(p.x, p.y));
         }
         const auto& bbox = plg2d.bbox();
-        const auto max_allowed_error = std::min(bbox.x_span(), bbox.y_span()) / 50.0;
+        const auto max_allowed_error = std::min(bbox.x_span(), bbox.y_span()) / 120.0;
 
         std::stringstream ss;
         ss << "footprint simplified: " << plg2d.size() << " -> ";
