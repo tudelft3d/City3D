@@ -204,7 +204,14 @@ bool Reconstruction::extract_roofs(PointSet *pset, Map *footprint)
         VertexGroup::Ptr g = buildings[it];
         if (!g)
             continue;
-        num += extract_building_roof(pset, g, Method::number_region_growing);
+        std::vector<VertexGroup::Ptr> &roofs = g->children();
+        unsigned int min_support = Method::number_region_growing;
+        num += extract_building_roof(pset, g, min_support);
+        while (roofs.empty() && min_support > 6) // Liangliang: the number must be "> 6" to avoid infinite loops
+        {
+            num += extract_building_roof(pset, g,  min_support);
+            min_support *= 0.75;
+        }
         progress.next();
     }
 
@@ -402,17 +409,6 @@ Reconstruction::reconstruct(PointSet *pset, Map *footprint, Map *result, LinearP
         }
 
         std::vector<VertexGroup::Ptr> &roofs = g->children();
-        for (std::size_t i = 0; i < roofs.size(); ++i)
-        {
-            VertexGroup *g = roofs[i];
-        }
-        unsigned int min_support = Method::number_region_growing * 0.75f;
-        while (roofs.empty() && min_support > 6) // Liangliang: the number must be "> 6" to avoid infinite loops
-        {
-            extract_building_roof(pset, g,  Method::number_region_growing);
-            min_support *= 0.75;
-        }
-
         PointSet::Ptr roof_pset = create_roof_point_set(pset, roofs, g);
         roof_pset->set_offset(pset->offset());
         PointSet::Ptr image_pset = create_projected_point_set(pset, roof_pset);
