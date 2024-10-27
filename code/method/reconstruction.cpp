@@ -368,8 +368,8 @@ bool is_simple_polygon(const Map::Facet *f)
     return plg.is_simple();
 }
 
-bool
-Reconstruction::reconstruct(PointSet *pset, Map *footprint, Map *result, LinearProgramSolver::SolverName solver_name, bool update_display)
+
+bool Reconstruction::reconstruct(PointSet *pset, Map *footprint, Map *result, LinearProgramSolver::SolverName solver_name, bool update_display)
 {
     if (!pset) {
         Logger::warn("-") << "point cloud data does not exist" << std::endl;
@@ -378,9 +378,12 @@ Reconstruction::reconstruct(PointSet *pset, Map *footprint, Map *result, LinearP
 
     MapFacetAttribute<VertexGroup::Ptr> buildings(footprint, "buildings");
 
-    bool success = false;
+    int num_successful = 0;
+    int num_compromised = 0;
+    int num_failed = 0;
+
     StopWatch t;
-    std::size_t num = 0;
+    std::size_t num_complex_footprint = 0;
     ProgressLogger progress(footprint->size_of_facets());
     KdTreeSearch_var kdtree = new KdTreeSearch;
     kdtree->begin();
@@ -392,12 +395,17 @@ Reconstruction::reconstruct(PointSet *pset, Map *footprint, Map *result, LinearP
         StopWatch t_single;
 
         VertexGroup::Ptr g = buildings[it];
-        if (!g)
+        if (!g) {
+            ++num_failed;
+            Logger::err("-") << "building not segmented (reconstruction skipped)" << std::endl;
             continue;
+        }
         //ensure the footprint is manifold
         if (!is_simple_polygon(it))
         {
-            ++num;
+            ++num_complex_footprint;
+            ++num_failed;
+            Logger::err("-") << "non-simple footprint polygon (reconstruction skipped)" << std::endl;
             continue;
         }
 
@@ -418,44 +426,53 @@ Reconstruction::reconstruct(PointSet *pset, Map *footprint, Map *result, LinearP
         PointSet::Ptr image_pset = create_projected_point_set(pset, roof_pset);
         image_pset->set_offset(pset->offset());
 
-        if (roof_pset->num_points() < 20)
+        if (roof_pset->num_points() < 20) {
+            ++num_failed;
+            Logger::err("-") << "too few (" << roof_pset->num_points() << ") roof points (reconstruction skipped)" << std::endl;
             continue;
+        }
 
         const auto line_segs = compute_line_segment(image_pset, roof_pset, it);
-
         const int length = std::to_string(footprint->size_of_facets()).length();
         std::stringstream ss;
         ss << std::setfill('0') << std::setw(length) << idx;
-        Map *building = reconstruct_single_building(roof_pset, line_segs, it, solver_name, ss.str());
 
-        if (building)
-        {
+        int status = -1;
+        Map *building = reconstruct_single_building(roof_pset, line_segs, it, solver_name, ss.str(), status);
+        if (building) {
             Geom::merge_into_source(result, building);
-            if (update_display)
-            {
+            if (update_display) {
                 Tessellator::invalidate();
                 MeshRender::invalidate();
             }
-            success = true;
             Logger::out("-") << "done. Time: " << t_single.time_string() << std::endl;
         }
+
+        if (status == 1)        ++num_successful;
+        else if (status == 0)   ++num_compromised;
+        else                    ++num_failed;
+
         roofs.clear();
         progress.next();
     }
 
-    if (num > 0)
-        Logger::warn("-") << "encountered " << num << " non-simple foot print "
-                          << (num > 1 ? " polygons." : " polygon.") << std::endl;
-	Logger::out("-") << "reconstruction done. Time: " << t.time_string() << std::endl;
+    if (num_complex_footprint > 0)
+        Logger::warn("-") << "encountered " << num_complex_footprint << " non-simple footprint "
+                          << (num_complex_footprint > 1 ? " polygons." : " polygon.") << std::endl;
+    Logger::out("-") << "reconstruction done. "
+        << num_successful << " succeeded, "
+        << num_compromised << " compromised, "
+        << num_failed << " failed. Total time: " << t.time_string() << std::endl;
     result->set_offset(pset->offset());
 
     // delete intermediate directory if the reconstruction was successful
-    if (success && FileUtils::is_directory(Method::intermediate_dir)) {
+    if (num_failed == 0 && num_compromised == 0 && FileUtils::is_directory(Method::intermediate_dir)) {
         if (!FileUtils::delete_directory(Method::intermediate_dir))
             Logger::err("-") << "failed to delete intermediate directory: " << Method::intermediate_dir << std::endl;
     }
 
-    return success;
+    // successful if at one model was reconstructed
+    return (num_successful + num_compromised > 0);
 }
 
 std::vector<std::vector<int>> Reconstruction::compute_height_field(PointSet *pset, Map::Facet *footprint)
@@ -677,12 +694,19 @@ std::vector<vec3> Reconstruction::compute_line_segment(PointSet *seg_pset,
     return line_segments;
 }
 
+// 'status' returns one of the following values:
+//      1: successful
+//      0: compromised (due to, e.g., too complex, detected inner wall excluded)
+//     -1: failed (due to, e.g., insufficient data and roofs not detected, solver timeout).
 Map *Reconstruction::reconstruct_single_building(PointSet *roof_pset,
                                                  const std::vector<vec3>& line_segments,
                                                  Map::Facet *footprint,
                                                  LinearProgramSolver::SolverName solver_name,
-                                                 const std::string& index_string)
+                                                 const std::string& index_string,
+                                                 int& status)
 {
+    status = -1; // default to failed
+
     // refine planes
     HypothesisGenerator hypo(roof_pset);
     hypo.refine_planes();
@@ -691,8 +715,6 @@ Map *Reconstruction::reconstruct_single_building(PointSet *roof_pset,
     Map *hypothesis = hypo.generate(&polyfit_info, footprint, line_segments);
     if (!hypothesis)
         return nullptr;
-
-    bool compromised = false;
 
     // in case huge number of candidate faces, we may skip the reconstruction (because no solver can solve the involved
     // optimization problem within a reasonable time window).
@@ -727,11 +749,12 @@ Map *Reconstruction::reconstruct_single_building(PointSet *roof_pset,
         hypothesis = hypo.generate(&polyfit_info, footprint, detected_line_segments);
         if (hypothesis->size_of_facets() > Method::max_allowed_candidate_faces) { // still too many
             Logger::err("-") << "too many candidate faces (" << initial_num_candidate_faces << " -> " << hypothesis->size_of_facets() << " by excluding detected lines). Reconstruction skipped, or it would take too much time" << std::endl;
+            status = -1;
             return nullptr;
         }
         else {
             Logger::warn("-") << "too many candidate faces (" << initial_num_candidate_faces << " -> " << hypothesis->size_of_facets() << " by excluding detected lines). Reconstruction compromised" << std::endl;
-            compromised = true;
+            status = 0;
         }
     }
 
@@ -740,22 +763,23 @@ Map *Reconstruction::reconstruct_single_building(PointSet *roof_pset,
     polyfit_info.generate(roof_pset, hypothesis, v, false);
 
     FaceSelection selector(roof_pset, hypothesis);
-
     bool success = selector.optimize(&polyfit_info, footprint, v, solver_name);
     if (success) {
         extrude_boundary_to_ground(hypothesis, Geom::facet_plane(footprint), &polyfit_info);
-
         Geom::merge_into_source(hypothesis, footprint);
         if (hypothesis->size_of_facets() == 0) {
             delete hypothesis;
+            status = -1;
             return nullptr;
         }
 
-        if (compromised) {
+        if (status == 0) { // if known to be compromised
             const std::string reconstruction_file_name = Method::intermediate_dir + "/" + index_string + "_Compromised_Result.obj";
             hypothesis->set_offset(roof_pset->offset());
             MapIO::save(reconstruction_file_name, hypothesis);
         }
+        else
+            status = 1; // if reached here, then successful
         return hypothesis;
     }
     else {
@@ -764,6 +788,7 @@ Map *Reconstruction::reconstruct_single_building(PointSet *roof_pset,
         MapIO::save(candidate_faces_file_name, hypothesis);
         Logger::err("-") << "reconstruction failed (in face selection)" << std::endl;
         delete hypothesis;
+        status = -1;
         return nullptr;
     }
 }

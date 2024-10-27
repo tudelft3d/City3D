@@ -51,8 +51,12 @@ class Reconstruction
 
 	int extract_building_roof(PointSet* pset, VertexGroup* building, unsigned int min_support = 40);
 
+    // 'status' returns one of the following values:
+    //      1: successful
+    //      0: compromised (due to, e.g., too complex, detected inner wall excluded)
+    //     -1: failed (due to, e.g., insufficient data and roofs not detected, solver timeout).
 	Map* reconstruct_single_building(PointSet* roof_pset, const std::vector<vec3>& line_segments, Map::Facet* footprint,
-                                     LinearProgramSolver::SolverName solver_name, const std::string& index_string);
+                                     LinearProgramSolver::SolverName solver_name, const std::string& index_string, int& status);
 
 	std::vector<vec3> compute_line_segment(PointSet* seg_pset, PointSet* roof_pset, Map::Facet* footprint);
 
