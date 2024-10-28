@@ -167,12 +167,9 @@ void PolyFitInfo::generate(PointSet* pset, Map* mesh, std::vector<Plane3d*>& v, 
 		if (face_area < 1e-16)
 		{
 			Logger::err("-") << "degenerate facet with area: " << face_area << std::endl;
-			FacetHalfedgeCirculator cir(f);
-			for (; !cir->end(); ++cir)
-			{
-				Logger::err("-") << cir->vertex()->point() << std::endl;
-			}
-			Logger::err("-") << std::endl;
+//			FacetHalfedgeCirculator cir(f);
+//			for (; !cir->end(); ++cir)
+//				Logger::err("-") << cir->vertex()->point() << std::endl;
 			continue;
 		}
 

@@ -64,7 +64,7 @@ Map* AlphaShapeMesh::apply(AlphaShape* as, const Plane3d& plane, double radius) 
 	}
 
 	if (faces.empty())
-		return nil;
+		return nullptr;
 
 	Map* mesh = new Map;
 	MapBuilder builder(mesh);
@@ -94,7 +94,7 @@ Map* AlphaShapeMesh::apply(AlphaShape* as, const Plane3d& plane, double radius) 
 Map* AlphaShapeMesh::apply(const VertexGroup* g, double radius) {
 	const PointSet* pset = g->point_set();
 	if (!pset)
-		return nil;
+		return nullptr;
 
 	std::size_t num_input = g->size();
 	const std::vector<vec3>& points = pset->points();
@@ -118,7 +118,7 @@ Map* AlphaShapeMesh::apply(const VertexGroup* g, double radius) {
 Map* AlphaShapeMesh::apply(const PointSet* pset, const std::vector<unsigned int>& point_indices, const Plane3d& plane, double radius) {
 	if (point_indices.size() < 10) {
 		//Logger::out("-") << "very few points - no need to compute AlphaShapeMesh" << std::endl;
-		return nil;
+		return nullptr;
 	}
 
 	const std::vector<vec3>& points = pset->points();

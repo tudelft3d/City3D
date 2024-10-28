@@ -619,9 +619,10 @@ bool MainWindow::doOpen(const QString &fileName)
             return false;
         }
 
-        /// ToDo: currently the Z coordinate of the footprint/ground is set to the min_Z of the point cloud.
-        ///       This is not optimal. In practice, the Z coordinate of each building should be determined
-        ///       by extracting local ground planes, or directly from available DTM or DSM data.
+        /// ToDo: in this demo the Z coordinate of the footprint/ground is set to the min_Z of the point cloud.
+        ///       This is not optimal (at least noise, outliers, and incompleteness not considered).
+        ///       In practice, the Z coordinate of each building should be determined by extracting local ground planes,
+        ///       or directly from available DTM or DSM data.
         const vec3& offset = pset->offset();
         footprint = MapIO::read(name, vec3(offset.x, offset.y, -pset->bbox().z_min()));
 		if (footprint) {

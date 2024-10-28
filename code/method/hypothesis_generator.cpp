@@ -72,8 +72,8 @@ static void remove_degenerated_facets(Map* mesh)
 
 #endif
 
-HypothesisGenerator::HypothesisGenerator(PointSet* pset)
-	: pset_(pset)
+HypothesisGenerator::HypothesisGenerator(PointSet* roof_pset)
+	: roof_pset_(roof_pset)
 {
 }
 
@@ -101,8 +101,8 @@ static std::list<unsigned int> points_on_plane(VertexGroup* g, const Plane3d& pl
 
 void HypothesisGenerator::merge(VertexGroup* g1, VertexGroup* g2, double max_dist)
 {
-	std::vector<VertexGroup::Ptr>& groups = pset_->groups();
-	const std::vector<vec3>& points = pset_->points();
+	std::vector<VertexGroup::Ptr>& groups = roof_pset_->groups();
+	const std::vector<vec3>& points = roof_pset_->points();
 
 	std::vector<unsigned int> points_indices;
 	points_indices.insert(points_indices.end(), g1->begin(), g1->end());
@@ -110,9 +110,9 @@ void HypothesisGenerator::merge(VertexGroup* g1, VertexGroup* g2, double max_dis
 
 	VertexGroup::Ptr g = new VertexGroup;
 	g->insert(g->end(), points_indices.begin(), points_indices.end());
-	g->set_point_set(pset_);
+	g->set_point_set(roof_pset_);
 	g->set_color(fused_color(g1->color(), static_cast<float>(g1->size()), g2->color(), static_cast<float>(g2->size())));
-	pset_->fit_plane(g);
+    roof_pset_->fit_plane(g);
 	groups.push_back(g);
 
 	std::vector<VertexGroup::Ptr>::iterator pos = std::find(groups.begin(), groups.end(), g1);
@@ -138,7 +138,7 @@ void HypothesisGenerator::merge(VertexGroup* g1, VertexGroup* g2, double max_dis
 
 void HypothesisGenerator::refine_planes()
 {
-	std::vector<VertexGroup::Ptr>& groups = pset_->groups();
+	std::vector<VertexGroup::Ptr>& groups = roof_pset_->groups();
 	if (groups.size() <= 1)
 		return;
 
@@ -164,7 +164,7 @@ void HypothesisGenerator::refine_planes()
 
 	// merge co-planar vertex groups
 	int num = groups.size();
-	const std::vector<vec3>& points = pset_->points();
+	const std::vector<vec3>& points = roof_pset_->points();
 	double avg_max_dist = 0;
 	for (std::size_t i = 0; i < groups.size(); ++i)
 	{
@@ -243,7 +243,7 @@ void HypothesisGenerator::refine_planes()
 }
 
 void HypothesisGenerator::collect_valid_planes(PolyFitInfo* polyfit_info,
-	Map::Facet* foot_print,
+	Map::Facet* footprint,
 	const std::vector<vec3>& line_segments)
 {
 	std::vector<Plane3d*>& supporting_planes = polyfit_info->planes;
@@ -251,7 +251,7 @@ void HypothesisGenerator::collect_valid_planes(PolyFitInfo* polyfit_info,
 	planar_segments_.clear();
 	added_vertical_faces.clear();
 	vertex_group_plane_.clear();
-	std::vector<VertexGroup::Ptr>& groups = pset_->groups();
+	std::vector<VertexGroup::Ptr>& groups = roof_pset_->groups();
 	//////////////////////////////////
 	//add vertical planes
 	std::vector<vec3> temp_p;
@@ -303,8 +303,7 @@ void HypothesisGenerator::collect_valid_planes(PolyFitInfo* polyfit_info,
 	VertexGroup::Ptr g1 = new VertexGroup;
 	g1->set_point_set(pset1);
 	pset1->groups().push_back(g1);
-	auto bbz = pset_->bbox().z_max() + 0.5;
-	z_plane = bbz;
+	const auto bbz = roof_pset_->bbox().z_max() + 0.5;
 	vec3 bbplane(0, 0, bbz);
 	const vec3& n1 = vec3(0, 0, -1);
 	Plane3d* plane1 = new Plane3d(bbplane, n1);
@@ -318,8 +317,7 @@ void HypothesisGenerator::collect_valid_planes(PolyFitInfo* polyfit_info,
 	VertexGroup::Ptr g2 = new VertexGroup;
 	g2->set_point_set(pset2);
 	pset2->groups().push_back(g2);
-	auto bbz2 = pset_->bbox().z_min() - 0.5;
-	z_bottom = bbz2;
+	const auto bbz2 = roof_pset_->bbox().z_min() - 0.5;
 	vec3 bbplane2(0, 0, bbz2);
 	const vec3& n2 = vec3(0, 0, 1);
 	Plane3d* plane2 = new Plane3d(bbplane2, n2);
@@ -341,10 +339,10 @@ void HypothesisGenerator::collect_valid_planes(PolyFitInfo* polyfit_info,
 	//////////////////////////////////////////////////////////////////////////
 
 	std::map<Map::Halfedge*, VertexGroup::Ptr>
-		& foot_print_edge_derived_vertex_group = polyfit_info->foot_print_edge_derived_vertex_group;
-	std::map<Map::Halfedge*, Plane3d*>& foot_print_edge_derived_plane = polyfit_info->foot_print_edge_derived_plane;
+		& footprint_edge_derived_vertex_group = polyfit_info->footprint_edge_derived_vertex_group;
+	std::map<Map::Halfedge*, Plane3d*>& footprint_edge_derived_plane = polyfit_info->footprint_edge_derived_plane;
 
-	FacetHalfedgeCirculator cir(foot_print);
+	FacetHalfedgeCirculator cir(footprint);
 	for (; !cir->end(); ++cir)
 	{
 		PointSet::Ptr pset = new PointSet;
@@ -363,10 +361,10 @@ void HypothesisGenerator::collect_valid_planes(PolyFitInfo* polyfit_info,
 		//planar_segments_.push_back(g);
 		supporting_planes.push_back(plane);
 		vertex_group_plane_[g] = plane;
-		foot_print_edge_derived_plane[h] = plane;
-		foot_print_edge_derived_plane[h->opposite()] = plane;
-		foot_print_edge_derived_vertex_group[h] = g;
-		foot_print_edge_derived_vertex_group[h->opposite()] = g;
+		footprint_edge_derived_plane[h] = plane;
+		footprint_edge_derived_plane[h->opposite()] = plane;
+		footprint_edge_derived_vertex_group[h] = g;
+		footprint_edge_derived_vertex_group[h->opposite()] = g;
 	}
 
 	Logger::out("    -") << "num initial planes:  " << polyfit_info->planes.size() << std::endl;
@@ -399,7 +397,7 @@ static void check_source_planes(Map* mesh)
 	}
 }
 
-Map* HypothesisGenerator::compute_proxy_mesh(PolyFitInfo* polyfit_info, Map::Facet* foot_print)
+Map* HypothesisGenerator::compute_proxy_mesh(PolyFitInfo* polyfit_info, Map::Facet* footprint)
 {
 
 	Map* mesh = new Map;
@@ -411,14 +409,14 @@ Map* HypothesisGenerator::compute_proxy_mesh(PolyFitInfo* polyfit_info, Map::Fac
 	MapHalfedgeAttribute<std::set<Plane3d*> > edge_source_planes(mesh, "EdgeSourcePlanes");
 	MapVertexAttribute<std::set<Plane3d*> > vertex_source_planes(mesh, "VertexSourcePlanes");
 
-	std::map<Map::Halfedge*, Plane3d*>& foot_print_edge_derived_plane = polyfit_info->foot_print_edge_derived_plane;
+	std::map<Map::Halfedge*, Plane3d*>& footprint_edge_derived_plane = polyfit_info->footprint_edge_derived_plane;
 	std::map<Map::Halfedge*, VertexGroup::Ptr>
-		& foot_print_edge_derived_vertex_group = polyfit_info->foot_print_edge_derived_vertex_group;
+		& footprint_edge_derived_vertex_group = polyfit_info->footprint_edge_derived_vertex_group;
 	std::vector<Plane3d*>& supporting_planes = polyfit_info->planes;
 	builder.begin_surface();
 	int idx = 0;
 	std::vector<Map::Halfedge*> ring;
-	FacetHalfedgeCirculator cir(foot_print);
+	FacetHalfedgeCirculator cir(footprint);
 	for (; !cir->end(); ++cir)
 	{
 		Map::Halfedge* h = cir->halfedge();
@@ -447,8 +445,8 @@ Map* HypothesisGenerator::compute_proxy_mesh(PolyFitInfo* polyfit_info, Map::Fac
 				builder.add_vertex_to_facet(idx);
 				++idx;
 
-				Plane3d* plane1 = foot_print_edge_derived_plane[h];
-				Plane3d* plane2 = foot_print_edge_derived_plane[h->next()];
+				Plane3d* plane1 = footprint_edge_derived_plane[h];
+				Plane3d* plane2 = footprint_edge_derived_plane[h->next()];
 				assert(plane1);
 				assert(plane2);
 				assert(plane1 != plane);
@@ -523,7 +521,7 @@ Map* HypothesisGenerator::compute_proxy_mesh(PolyFitInfo* polyfit_info, Map::Fac
 			if (plane->intersection(s, t, p))
 			{
 				inter_points.push_back(p);
-				inter_derived_plane.push_back(foot_print_edge_derived_plane[h->next()]);
+				inter_derived_plane.push_back(footprint_edge_derived_plane[h->next()]);
 			}
 		}
 		// compute a direction of the intersecting line of the two planes
@@ -539,7 +537,7 @@ Map* HypothesisGenerator::compute_proxy_mesh(PolyFitInfo* polyfit_info, Map::Fac
 			// This is done in 2D (by projection onto the face)
 
 			Polygon2d plg; // the face polygon in 2D
-			FacetHalfedgeConstCirculator cir1(foot_print);
+			FacetHalfedgeConstCirculator cir1(footprint);
 			for (; !cir1->end(); ++cir1)
 			{
 				const vec3& p = cir1->halfedge()->vertex()->point();
@@ -1146,21 +1144,20 @@ bool HypothesisGenerator::query_intersection(Plane3d* plane1, Plane3d* plane2, P
 	return true;
 }
 
-Map* HypothesisGenerator::generate(PolyFitInfo* polyfit_info, Map::Facet* foot_print, const std::vector<vec3>& line_segments)
+Map* HypothesisGenerator::generate(PolyFitInfo* polyfit_info, Map::Facet* footprint, const std::vector<vec3>& line_segments)
 {
-	if (!pset_)
-		return nil;
+	if (!roof_pset_)
+		return nullptr;
 
-	if (pset_->groups().empty())
-	{
+	if (roof_pset_->groups().empty()) {
 		Logger::warn("-") << "planar segments do not exist" << std::endl;
-		return nil;
+		return nullptr;
 	}
-	collect_valid_planes(polyfit_info, foot_print, line_segments);
-	Map* mesh = compute_proxy_mesh(polyfit_info, foot_print);
+	collect_valid_planes(polyfit_info, footprint, line_segments);
+	Map* mesh = compute_proxy_mesh(polyfit_info, footprint);
 
 	if (!mesh)
-		return nil;
+		return nullptr;
 	facet_attrib_supporting_vertex_group_.bind(mesh, Method::facet_attrib_supporting_vertex_group);
 	edge_source_planes_.bind(mesh, "EdgeSourcePlanes");
 	vertex_source_planes_.bind(mesh, "VertexSourcePlanes");
@@ -1183,45 +1180,3 @@ Map* HypothesisGenerator::generate(PolyFitInfo* polyfit_info, Map::Facet* foot_p
 
 	return mesh;
 }
-
-Map* HypothesisGenerator::generate(PolyFitInfo* polyfit_info,
-	Map* inter_result,
-	Map::Facet* foot_print,
-	const std::vector<vec3>& line_segments)
-{
-	if (!pset_)
-		return nil;
-
-	if (pset_->groups().empty())
-	{
-		Logger::warn("-") << "planar segments do not exist" << std::endl;
-		return nil;
-	}
-	collect_valid_planes(polyfit_info, foot_print, line_segments);
-	Map* mesh = compute_proxy_mesh(polyfit_info, foot_print);
-
-	if (!mesh)
-		return nil;
-	facet_attrib_supporting_vertex_group_.bind(mesh, Method::facet_attrib_supporting_vertex_group);
-	edge_source_planes_.bind(mesh, "EdgeSourcePlanes");
-	vertex_source_planes_.bind(mesh, "VertexSourcePlanes");
-	facet_attrib_supporting_plane_.bind(mesh, "FacetSupportingPlane");
-	triplet_intersection(polyfit_info->planes);
-	pairwise_cut(mesh);
-
-#if REMOVE_DEGENERATE_FACES
-	remove_degenerated_facets(mesh);
-#endif
-
-	facet_attrib_supporting_vertex_group_.unbind();
-	facet_attrib_supporting_plane_.unbind();
-	edge_source_planes_.unbind();
-	vertex_source_planes_.unbind();
-	check_source_planes(mesh);
-
-	Logger::out("    -") << "num candidate faces: " << mesh->size_of_facets() << std::endl;
-
-	return mesh;
-}
-
-

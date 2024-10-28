@@ -55,8 +55,8 @@ public:
 	MapFacetAttribute<double>		facet_attrib_facet_area;
 	MapFacetAttribute<double>		facet_attrib_covered_area;
 
-	std::map<Map::Halfedge*, Plane3d*>			foot_print_edge_derived_plane;
-	std::map<Map::Halfedge*, VertexGroup::Ptr>	foot_print_edge_derived_vertex_group;
+	std::map<Map::Halfedge*, Plane3d*>			footprint_edge_derived_plane;
+	std::map<Map::Halfedge*, VertexGroup::Ptr>	footprint_edge_derived_vertex_group;
 
 private:
 	// std::vector<unsigned int>& points returns the point indices projected in f.

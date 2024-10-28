@@ -111,14 +111,14 @@ protected:
 	int			coord_system_region_size_;
 	bool		show_coord_sys_;
 
-	Map::Ptr		foot_print_;
+	Map::Ptr		footprint_;
 	Map::Ptr		reconstruction_;
 	PointSet::Ptr	point_set_;
 
 	bool			show_point_set_;
 	PointSetRender* point_set_render_;
 	
-	bool show_foot_print_;
+	bool show_footprint_;
 	bool show_reconstruction_;
 };
 

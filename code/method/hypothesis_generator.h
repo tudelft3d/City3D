@@ -46,27 +46,26 @@ namespace MapTypes {
 class HypothesisGenerator
 {
  public:
-	HypothesisGenerator(PointSet* pset);
+	HypothesisGenerator(PointSet* roof_pset);
 	~HypothesisGenerator();
 
 	void refine_planes();
 
-	Map* generate(PolyFitInfo* polyfit_info, Map::Facet* foot_print, const std::vector<vec3>& line_segments);
-	Map* generate(PolyFitInfo* polyfit_info, Map* inter_result, Map::Facet* foot_print, const std::vector<vec3>& line_segments);
+	Map* generate(PolyFitInfo* polyfit_info, Map::Facet* footprint, const std::vector<vec3>& line_segments);
 
 	std::vector<Plane3d*> get_vertical_planes();
 
  private:
-	void collect_valid_planes(PolyFitInfo* polyfit_info, Map::Facet* foot_print, const std::vector<vec3>& line_segments);
+	void collect_valid_planes(PolyFitInfo* polyfit_info, Map::Facet* footprint, const std::vector<vec3>& line_segments);
 
-	Map* compute_proxy_mesh(PolyFitInfo* polyfit_info, Map::Facet* foot_print);
+	Map* compute_proxy_mesh(PolyFitInfo* polyfit_info, Map::Facet* footprint);
 
 	// pairwise cut
 	void pairwise_cut(Map* mesh);
 
  private:
-	void bound(Map* mesh, const Map::Facet* foot_print);
-	void bound(Map* mesh, Map::Facet* f, const Map::Facet* foot_print);
+	void bound(Map* mesh, const Map::Facet* footprint);
+	void bound(Map* mesh, Map::Facet* f, const Map::Facet* footprint);
 	MapFacetAttribute<Map*> inter_result;
 
 	void merge(VertexGroup* g1, VertexGroup* g2, double max_dist);
@@ -114,7 +113,7 @@ class HypothesisGenerator
 
 	void triplet_intersection(const std::vector<Plane3d*>& supporting_planes);
 
-	// query the intersecting point for existing data base, i.e., triplet_intersection_
+	// query the intersecting point for existing database, i.e., triplet_intersection_
 	bool query_intersection(Plane3d* plane1, Plane3d* plane2, Plane3d* plane3, vec3& p);
 
 	// compute the intersection of a plane triplet
@@ -122,7 +121,7 @@ class HypothesisGenerator
 	bool intersection_plane_triplet(const Plane3d* plane1, const Plane3d* plane2, const Plane3d* plane3, vec3& p);
 
  private:
-	PointSet* pset_;
+	PointSet* roof_pset_;
 	MapFacetAttribute<VertexGroup*> facet_attrib_supporting_vertex_group_;
 	MapFacetAttribute<Plane3d*> facet_attrib_supporting_plane_;
 
@@ -130,11 +129,8 @@ class HypothesisGenerator
 	std::map<VertexGroup*, Plane3d*> vertex_group_plane_;
 	std::vector<VertexGroup::Ptr> added_vertical_faces;
 	VertexGroup::Ptr cut_horizontal_faces;
-	Plane3d* cut_top;
 	VertexGroup::Ptr cut_horizontal_faces2;
-	Plane3d* cut_bottom;
 
-	double z_plane, z_bottom;
 
 	Plane3d* min_zplane;
 	Plane3d* max_zplane;

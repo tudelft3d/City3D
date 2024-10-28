@@ -33,7 +33,7 @@ FT Otr2_edge_sim::max_distance(std::vector<Point> p, Otr_2 &otr2)
 }
 
 std::vector<vec3> Otr2_edge_sim::edge_simplify(std::vector<std::vector<int>> edge_point,
-                                               Map::Facet *foot_print,
+                                               Map::Facet *footprint,
                                                double distance)
 {
 
@@ -82,15 +82,15 @@ std::vector<vec3> Otr2_edge_sim::edge_simplify(std::vector<std::vector<int>> edg
         } while (m < new_sigma_d); //ensure hausdorff distance less than this threshold
     }
     std::vector<vec3> line_segments;
-    line_segments = cluster_lines(otr2, foot_print, sp);
+    line_segments = cluster_lines(otr2, footprint, sp);
     return line_segments;
 
 }
 
-double compute_avg_length(Map::Facet *foot_print)
+double compute_avg_length(Map::Facet *footprint)
 {
     double len = 0;
-    FacetHalfedgeCirculator fcir(foot_print);
+    FacetHalfedgeCirculator fcir(footprint);
     for (; !fcir->end(); ++fcir)
     {
         vec3 q = fcir->halfedge()->vertex()->point();
@@ -98,15 +98,15 @@ double compute_avg_length(Map::Facet *foot_print)
         double dis2 = length(q - q1);
         len += dis2;
     }
-    len /= foot_print->nb_edges();
+    len /= footprint->nb_edges();
     return 0.5*len;
 }
 
-std::vector<vec2> compute_principle_directions(Map::Facet *foot_print)
+std::vector<vec2> compute_principle_directions(Map::Facet *footprint)
 {
     std::vector<vec2> dirs;
-    auto len = compute_avg_length(foot_print);
-    FacetHalfedgeCirculator fcir(foot_print);
+    auto len = compute_avg_length(footprint);
+    FacetHalfedgeCirculator fcir(footprint);
     for (; !fcir->end(); ++fcir)
     {
         vec3 q = fcir->halfedge()->vertex()->point();
@@ -138,7 +138,7 @@ float dist_fun(vec4 a, vec4 b)
 
 }
 
-std::vector<vec3> Otr2_edge_sim::cluster_lines(Otr_2 &otr2, Map::Facet *foot_print, int &width)
+std::vector<vec3> Otr2_edge_sim::cluster_lines(Otr_2 &otr2, Map::Facet *footprint, int &width)
 {
     std::vector<Point> points;
     std::vector<std::size_t> isolated_vertices;
@@ -166,7 +166,7 @@ std::vector<vec3> Otr2_edge_sim::cluster_lines(Otr_2 &otr2, Map::Facet *foot_pri
     // edges
     std::vector<std::pair<std::size_t, std::size_t> >::iterator eit;
     //delete the wrong line segments
-    auto main_dirs = compute_principle_directions(foot_print);
+    auto main_dirs = compute_principle_directions(footprint);
 
     //cluster the lines based on the orientation and distance using dbscan;
     DBSCAN<vec4, float> dbscan;
@@ -279,7 +279,7 @@ std::vector<vec3> Otr2_edge_sim::cluster_lines(Otr_2 &otr2, Map::Facet *foot_pri
         vec2 r_direction;
         vec2 p_mid = (p_2 + p_1) * 0.5;
         double max_cos = 0;
-        FacetHalfedgeCirculator fcir(foot_print);
+        FacetHalfedgeCirculator fcir(footprint);
         for (auto dir: main_dirs)
         {
             double angel = std::abs(Geom::cos_angle(dir, p_d));

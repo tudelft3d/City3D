@@ -54,11 +54,11 @@ class FaceSelection
 
 	// optimization using the requested solver
     // return false if failed or error occurred.
-	bool optimize(PolyFitInfo* polyfit_info, Map::Facet* foot_print, std::vector<Plane3d*>& v, LinearProgramSolver::SolverName solver_name);
+	bool optimize(PolyFitInfo* polyfit_info, Map::Facet* footprint, std::vector<Plane3d*>& v, LinearProgramSolver::SolverName solver_name);
 
 private:
-	std::vector<std::vector<Map::Facet*> > find_multi_roofs(Map* mesh, Map::Facet* foot_print, std::vector<Plane3d*>& v);
-	std::vector<Map::Facet*> overlapping_faces(Map::Facet* f, const std::vector<Map::Facet*>& faces, Map::Facet* foot_print);
+	std::vector<std::vector<Map::Facet*> > find_multi_roofs(Map* mesh, Map::Facet* footprint, std::vector<Plane3d*>& v);
+	std::vector<Map::Facet*> overlapping_faces(Map::Facet* f, const std::vector<Map::Facet*>& faces, Map::Facet* footprint);
 
  private:
 	PointSet* pset_;

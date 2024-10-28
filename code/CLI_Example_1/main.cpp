@@ -47,8 +47,9 @@ int main(int argc, char **argv)
     std::cout << "loading input footprint data from file: " << input_footprint_file << std::endl;
     const vec3& offset = pset->offset();
     /// ToDo: in this demo the Z coordinate of the footprint/ground is set to the min_Z of the point cloud.
-    ///       This is not optimal. In practice, the Z coordinate of each building should be determined
-    ///       by extracting local ground planes, or directly from available DTM or DSM data.
+    ///       This is not optimal (at least noise, outliers, and incompleteness not considered).
+    ///       In practice, the Z coordinate of each building should be determined by extracting local ground planes,
+    ///       or directly from available DTM or DSM data.
     Map *footprint = MapIO::read(input_footprint_file, vec3(offset.x, offset.y, -pset->bbox().z_min()));
     if (!footprint) {
         std::cerr << "failed loading footprint data from file: " << input_footprint_file << std::endl;

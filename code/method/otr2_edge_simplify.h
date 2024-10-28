@@ -30,11 +30,11 @@ typedef std::vector<PolygonPtr> PolygonPtrVector;
 class Otr2_edge_sim
 {
  public:
-	std::vector<vec3> edge_simplify(std::vector<std::vector<int>> edge_point, Map::Facet* foot_print, double distance);
+	std::vector<vec3> edge_simplify(std::vector<std::vector<int>> edge_point, Map::Facet* footprint, double distance);
 
 	FT max_distance(std::vector<Point> p, Otr_2& otr2);
 
-    std::vector<vec3> cluster_lines(Otr_2& otr2, Map::Facet* foot_print, int& width);
+    std::vector<vec3> cluster_lines(Otr_2& otr2, Map::Facet* footprint, int& width);
 
 
 	Otr2_edge_sim(double x, double y, double res)

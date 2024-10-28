@@ -30,7 +30,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 std::vector<Map::Facet*> FaceSelection::overlapping_faces(Map::Facet* f,
                                                           const std::vector<Map::Facet*>& faces,
-                                                          Map::Facet* foot_print)
+                                                          Map::Facet* footprint)
 {
 	vec3 c(0, 0, 0);
 	int degree = 0;
@@ -43,7 +43,7 @@ std::vector<Map::Facet*> FaceSelection::overlapping_faces(Map::Facet* f,
 	}
 	c /= degree;
 
-	const Plane3d& plane = Geom::facet_plane(foot_print);
+	const Plane3d& plane = Geom::facet_plane(footprint);
 	c = plane.projection(c);
 	const vec2& p = plane.to_2d(c);
 
@@ -72,7 +72,7 @@ std::vector<Map::Facet*> FaceSelection::overlapping_faces(Map::Facet* f,
 }
 
 std::vector<std::vector<Map::Facet*> > FaceSelection::find_multi_roofs(Map* mesh,
-	Map::Facet* foot_print,
+	Map::Facet* footprint,
 	std::vector<Plane3d*>& v)
 {
 	facet_attrib_supporting_plane_.bind_if_defined(model_, "FacetSupportingPlane");
@@ -94,7 +94,7 @@ std::vector<std::vector<Map::Facet*> > FaceSelection::find_multi_roofs(Map* mesh
 	for (std::size_t i = 0; i < faces.size(); ++i)
 	{
 		Map::Facet* ft = faces[i];
-		const std::vector<Map::Facet*>& roofs = overlapping_faces(ft, faces, foot_print);
+		const std::vector<Map::Facet*>& roofs = overlapping_faces(ft, faces, footprint);
 		if (roofs.size() > 1)
 			multiple_roofs.push_back(roofs);
 	}
@@ -102,7 +102,7 @@ std::vector<std::vector<Map::Facet*> > FaceSelection::find_multi_roofs(Map* mesh
 }
 
 bool FaceSelection::optimize(PolyFitInfo* polyfit_info,
-	Map::Facet* foot_print,
+	Map::Facet* footprint,
 	std::vector<Plane3d*>& v, LinearProgramSolver::SolverName solver_name)
 {
 	if (pset_ == 0 || model_ == 0)
@@ -358,7 +358,7 @@ bool FaceSelection::optimize(PolyFitInfo* polyfit_info,
 	}
 
 	// Add constraints: single-roof
-	const std::vector<std::vector<Map::Facet*> >& multiple_roofs = find_multi_roofs(model_, foot_print, v);
+	const std::vector<std::vector<Map::Facet*> >& multiple_roofs = find_multi_roofs(model_, footprint, v);
 	std::set<std::vector<int>> multi_roof_set;
 	for (std::size_t i = 0; i < multiple_roofs.size(); ++i)
 	{

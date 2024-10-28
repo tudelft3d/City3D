@@ -75,22 +75,18 @@ void Reconstruction::segmentation(PointSet* pset, Map *footprint, bool simplify_
 
     pset->groups().clear();
 
-    //	Logger::out("-") << "building kd-tree..." << std::endl;
     StopWatch w;
-    // estimate the best z value
-    double avg_z = 0.0;
-    FOR_EACH_VERTEX_CONST(Map, footprint, it) avg_z += it->point().z;
-    avg_z /= footprint->size_of_vertices();
 
     KdTreeSearch_var kdtree = new KdTreeSearch;
     kdtree->begin();
     // I need a 2D version of the point cloud
     std::vector<vec3> backup_points = pset->points();
-
     std::vector<vec3> points = pset->points();
+
+    const double z_footprint = footprint->bbox().z_min();
     for (std::size_t i = 0; i < points.size(); ++i)
     {
-        points[i].z = avg_z;
+        points[i].z = z_footprint;
         kdtree->add_point(&points[i]);
     }
     kdtree->end();
@@ -109,7 +105,7 @@ void Reconstruction::segmentation(PointSet* pset, Map *footprint, bool simplify_
         {
             const vec3 &p = plg[i];
             plg2d.push_back(vec2(p.x, p.y));
-            box.add_point(vec3(p.x, p.y, avg_z));
+            box.add_point(vec3(p.x, p.y, z_footprint));
         }
 
         std::vector<unsigned int> nbs;
@@ -428,17 +424,18 @@ bool Reconstruction::reconstruct(PointSet *pset, Map *footprint, Map *result, Li
         if (!g) {
             ++num_failed;
             if (!save_footprint(it, pset->offset(), footprint_file_name))
-                Logger::err("-") << "failed to save footprint as mesh into file: " << footprint_file_name;
-            Logger::err("-") << "building not segmented (reconstruction skipped)" << std::endl;
+                Logger::err("-") << "failed to save footprint as mesh into file: " << footprint_file_name << std::endl;
+            Logger::err("-") << "no points falling within the footprint (reconstruction skipped)" << std::endl;
             continue;
         }
+
         //ensure the footprint is manifold
         if (!is_simple_polygon(it))
         {
             ++num_complex_footprint;
             ++num_failed;
             if (!save_footprint(it, pset->offset(), footprint_file_name))
-                Logger::err("-") << "failed to save footprint as mesh into file: " << footprint_file_name;
+                Logger::err("-") << "failed to save footprint as mesh into file: " << footprint_file_name << std::endl;
             Logger::err("-") << "non-simple footprint polygon (reconstruction skipped)" << std::endl;
             continue;
         }
@@ -446,13 +443,21 @@ bool Reconstruction::reconstruct(PointSet *pset, Map *footprint, Map *result, Li
         std::vector<VertexGroup::Ptr> &roofs = g->children();
         PointSet::Ptr roof_pset = create_roof_point_set(pset, roofs, g);
         roof_pset->set_offset(pset->offset());
+        if (roof_pset->groups().empty()) {
+            ++num_failed;
+            if (!save_footprint(it, pset->offset(), footprint_file_name))
+                Logger::err("-") << "failed to save footprint as mesh into file: " << footprint_file_name << std::endl;
+            Logger::err("-") << "no roofs detected for the building (reconstruction skipped)" << std::endl;
+            continue;
+        }
+
         PointSet::Ptr image_pset = create_projected_point_set(pset, roof_pset);
         image_pset->set_offset(pset->offset());
 
         if (roof_pset->num_points() < 20) {
             ++num_failed;
             if (!save_footprint(it, pset->offset(), footprint_file_name))
-                Logger::err("-") << "failed to save footprint as mesh into file: " << footprint_file_name;
+                Logger::err("-") << "failed to save footprint as mesh into file: " << footprint_file_name << std::endl;
             Logger::err("-") << "too few (" << roof_pset->num_points() << ") roof points (reconstruction skipped)" << std::endl;
             continue;
         }
@@ -730,6 +735,11 @@ Map *Reconstruction::reconstruct_single_building(PointSet *roof_pset,
 {
     status = -1; // default to failed
 
+    if (roof_pset->groups().empty())  {
+        Logger::warn("-") << "planar segments do not exist" << std::endl;
+        return nullptr;
+    }
+
     const std::string footprint_file_name  = Method::intermediate_dir + "/" + index_string + "_Footprint.obj";
 
     // refine planes
@@ -740,7 +750,7 @@ Map *Reconstruction::reconstruct_single_building(PointSet *roof_pset,
     Map *hypothesis = hypo.generate(&polyfit_info, footprint, line_segments);
     if (!hypothesis) {
         if (!save_footprint(footprint, roof_pset->offset(), footprint_file_name))
-            Logger::err("-") << "failed to save footprint as mesh into file: " << footprint_file_name;
+            Logger::err("-") << "failed to save footprint as mesh into file: " << footprint_file_name << std::endl;
         return nullptr;
     }
 
@@ -749,7 +759,7 @@ Map *Reconstruction::reconstruct_single_building(PointSet *roof_pset,
     if (hypothesis->size_of_facets() > Method::max_allowed_candidate_faces) {
         // save footprint
         if (!save_footprint(footprint, roof_pset->offset(), footprint_file_name))
-            Logger::err("-") << "failed to save footprint as mesh into file: " << footprint_file_name;
+            Logger::err("-") << "failed to save footprint as mesh into file: " << footprint_file_name << std::endl;
         // save detected lines
         const std::string line_segments_file_name = Method::intermediate_dir + "/" + index_string + "_DetectedLineSegments.xyz";
         std::ofstream output(line_segments_file_name.c_str());
@@ -789,7 +799,7 @@ Map *Reconstruction::reconstruct_single_building(PointSet *roof_pset,
             delete hypothesis;
             status = -1;
             if (!save_footprint(footprint, roof_pset->offset(), footprint_file_name))
-                Logger::err("-") << "failed to save footprint as mesh into file: " << footprint_file_name;
+                Logger::err("-") << "failed to save footprint as mesh into file: " << footprint_file_name << std::endl;
             return nullptr;
         }
 
@@ -804,7 +814,7 @@ Map *Reconstruction::reconstruct_single_building(PointSet *roof_pset,
     }
     else {
         if (!save_footprint(footprint, roof_pset->offset(), footprint_file_name))
-            Logger::err("-") << "failed to save footprint as mesh into file: " << footprint_file_name;
+            Logger::err("-") << "failed to save footprint as mesh into file: " << footprint_file_name << std::endl;
 
         const std::string candidate_faces_file_name = Method::intermediate_dir + "/" + index_string + "_Failed_JustCandidateFaces.obj";
         hypothesis->set_offset(roof_pset->offset());

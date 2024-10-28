@@ -55,10 +55,10 @@ PaintCanvas::PaintCanvas(QWidget *parent, QGLFormat format)
 	, coord_system_region_size_(150)
 	, show_coord_sys_(true)
 	, point_set_(nil)
-	, foot_print_(nil)
+	, footprint_(nil)
 	, reconstruction_(nil)
 	, show_point_set_(true)
-	, show_foot_print_(true)
+	, show_footprint_(true)
 	, show_reconstruction_(true)
 {
 	setFPSIsDisplayed(true);
@@ -96,8 +96,8 @@ void PaintCanvas::clear() {
 	if (point_set_)
 		point_set_.forget();
 
-	if (foot_print_)
-		foot_print_.forget();
+	if (footprint_)
+		footprint_.forget();
 
 	if (reconstruction_)
 		reconstruction_.forget();
@@ -214,7 +214,7 @@ void PaintCanvas::draw() {
 	if (point_set_ && show_point_set_ && point_set_render_)
 		point_set_render_->draw(point_set_);
 
-	if (reconstruction_ || foot_print_) {
+	if (reconstruction_ || footprint_) {
 		glEnable(GL_LIGHTING);
 		Tessellator::draw();
 
@@ -407,22 +407,22 @@ vec3 PaintCanvas::unProjectionOf(double winx, double winy, double winz) {  // sc
 
 void PaintCanvas::setFootPrint(Map* mesh) {
 	bool scene_changed = false;
-	if (foot_print_ || mesh == nil) {
-		Tessellator::remove_mesh(foot_print_);
-		MeshRender::remove_mesh(foot_print_);
-		foot_print_.forget();
+	if (footprint_ || mesh == nil) {
+		Tessellator::remove_mesh(footprint_);
+		MeshRender::remove_mesh(footprint_);
+		footprint_.forget();
 		scene_changed = true;
 	}
 
 	if (mesh) {
-		foot_print_ = mesh;
+		footprint_ = mesh;
 
-		MapFacetAttribute<Color> color(foot_print_, "color");
-		FOR_EACH_FACET(Map, foot_print_, it)
+		MapFacetAttribute<Color> color(footprint_, "color");
+		FOR_EACH_FACET(Map, footprint_, it)
 			color[it] = random_color();
 
-		Tessellator::add_mesh(foot_print_);
-		MeshRender::add_mesh(foot_print_);
+		Tessellator::add_mesh(footprint_);
+		MeshRender::add_mesh(footprint_);
 		scene_changed = true;
 	}
 
@@ -462,10 +462,10 @@ void PaintCanvas::setPointSet(PointSet* pset) {
 
 	if (pset) {
 		point_set_ = pset;
-		if (foot_print_) {
-			Tessellator::remove_mesh(foot_print_);
-			MeshRender::remove_mesh(foot_print_);
-			foot_print_.forget();
+		if (footprint_) {
+			Tessellator::remove_mesh(footprint_);
+			MeshRender::remove_mesh(footprint_);
+			footprint_.forget();
 			Tessellator::invalidate();
 			MeshRender::invalidate();
 		}
@@ -481,7 +481,7 @@ void PaintCanvas::setPointSet(PointSet* pset) {
 
 
 Map* PaintCanvas::footPrint() const {
-	return foot_print_;
+	return footprint_;
 }
 
 Map* PaintCanvas::reconstruction() const {
@@ -509,14 +509,14 @@ void PaintCanvas::setProjectionMode(bool b) {
 
 void PaintCanvas::setShowFootPrint(bool b) {
 	if (b) {
-		Tessellator::add_mesh(foot_print_);
-		MeshRender::add_mesh(foot_print_);
-		show_foot_print_ = true;
+		Tessellator::add_mesh(footprint_);
+		MeshRender::add_mesh(footprint_);
+		show_footprint_ = true;
 	}
 	else {
-		Tessellator::remove_mesh(foot_print_);
-		MeshRender::remove_mesh(foot_print_);
-		show_foot_print_ = false;
+		Tessellator::remove_mesh(footprint_);
+		MeshRender::remove_mesh(footprint_);
+		show_footprint_ = false;
 	}
 
 	Tessellator::invalidate();
@@ -649,27 +649,27 @@ void PaintCanvas::estimateNormals() {
 void PaintCanvas::segmentation() {
     main_window_->updateWeights();
 	Reconstruction recon;
-    if (!foot_print_) {
+    if (!footprint_) {
 		if (main_window_->want_footprint()) {
-            auto foot_print = recon.generate_footprint(point_set_);
-            setFootPrint(foot_print);
+            auto footprint = recon.generate_footprint(point_set_);
+            setFootPrint(footprint);
         }
 		else
 			return;
     }
 
-	if (foot_print_) {
-		recon.segmentation(point_set_, foot_print_);
+	if (footprint_) {
+		recon.segmentation(point_set_, footprint_);
 		main_window_->wgtRender_->checkBoxPointSet->setChecked(false);
 
-        // foot_print may have been simplified in segmentation, so update the viewer
-        Tessellator::remove_mesh(foot_print_);
-        MeshRender::remove_mesh(foot_print_);
-        MapFacetAttribute<Color> color(foot_print_, "color");
-        FOR_EACH_FACET(Map, foot_print_, it)
+        // footprint may have been simplified in segmentation, so update the viewer
+        Tessellator::remove_mesh(footprint_);
+        MeshRender::remove_mesh(footprint_);
+        MapFacetAttribute<Color> color(footprint_, "color");
+        FOR_EACH_FACET(Map, footprint_, it)
             color[it] = random_color();
-        Tessellator::add_mesh(foot_print_);
-        MeshRender::add_mesh(foot_print_);
+        Tessellator::add_mesh(footprint_);
+        MeshRender::add_mesh(footprint_);
         Tessellator::invalidate();
         MeshRender::invalidate();
     }
@@ -686,7 +686,7 @@ void PaintCanvas::segmentation() {
 void PaintCanvas::extractRoofs() {
     main_window_->updateWeights();
 	Reconstruction recon;
-	auto status = recon.extract_roofs(point_set_, foot_print_);
+	auto status = recon.extract_roofs(point_set_, footprint_);
 	main_window_->wgtRender_->checkBoxPointSet->setChecked(!status);
 	main_window_->wgtRender_->checkBoxSegments->setChecked(true);
 	main_window_->checkBoxShowReconstruction->setChecked(false);
@@ -695,7 +695,7 @@ void PaintCanvas::extractRoofs() {
 
 
 void PaintCanvas::reconstruct() {
-	if (!foot_print_) {
+	if (!footprint_) {
 		Logger::warn("-") << "footprint does not exist. You must either load it or generate it by clicking the 'Segmentation' button" << std::endl;
 		return;
 	}
@@ -704,7 +704,7 @@ void PaintCanvas::reconstruct() {
 	main_window_->updateWeights();
 	Reconstruction recon;
 
-	bool status = recon.reconstruct(point_set_, foot_print_, reconstruction_, main_window_->active_solver(), show_reconstruction_);
+	bool status = recon.reconstruct(point_set_, footprint_, reconstruction_, main_window_->active_solver(), show_reconstruction_);
 	if (!status)
 		setReconstruction(nil);
 
