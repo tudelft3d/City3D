@@ -1,6 +1,6 @@
 ### Parameter Tuning 
 
-For LoD2 building reconstruction on custom datasets, adjustments to specific parameters may be necessary. Three primary parameters—**Number** and  **Density** —are key to optimizing the reconstruction process for varying dataset characteristics.
+For LoD2 building reconstruction on custom datasets, adjustments to specific parameters may be necessary. Two parameters—**Number** and  **Density** —are key to optimizing the reconstruction process for varying dataset characteristics.
 
 #### 1. **Number** (Plane Detection)
 This parameter defines the granularity of plane detection:
