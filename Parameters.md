@@ -39,5 +39,6 @@ adjusted interactively (see image below). You can check the `Manual` box to acce
 For [CLI_Example_1](https://github.com/tudelft3d/City3D/tree/main/code/CLI_Example_1) and 
 [CLI_Example_2](https://github.com/tudelft3d/City3D/tree/main/code/CLI_Example_2), these parameters can be manually 
 tuned within the source code, e.g.,
-https://github.com/tudelft3d/City3D/blob/210325f108b00fcf54d6f80853655e487a4e26af/code/CLI_Example_1/main.cpp#L30
+https://github.com/tudelft3d/City3D/blob/210325f108b00fcf54d6f80853655e487a4e26af/code/CLI_Example_1/main.cpp#L31
+https://github.com/tudelft3d/City3D/blob/210325f108b00fcf54d6f80853655e487a4e26af/code/CLI_Example_1/main.cpp#L32
 
