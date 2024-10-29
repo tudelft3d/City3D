@@ -72,9 +72,8 @@ int main(int argc, char **argv) {
 
             // Step 3: extract planes from the point cloud of each building
             std::cout << "\textracting roof planes..." << std::endl;
-
             if (!recon.extract_roofs(pset, footprint)) {
-                std::cerr << "\tno roofs could be extracted from the point cloud" << std::endl;
+                std::cerr << "\tno roofs could be extracted from the point cloud (" << input_cloud_file << ")"<< std::endl;
                 continue;
             }
 
