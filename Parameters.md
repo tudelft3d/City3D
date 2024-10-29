@@ -8,7 +8,7 @@ parameters might be necessary for the practical reconstruction from datasets wit
    plane extraction. A smaller value yields more planes capturing finer details and smaller structures but potentially 
    with less confidence. However, decreasing `min_points` may lead to an excessive number of candidate faces (and
    thus an optimization problem that may not be solved within a reasonable time window). In this case, the user is
-  advised to increase `pixel_size` to target results with simpler structures.
+  advised to increase `min_points` to target results with simpler structures.
 
 - `pixel_size` (in height map generation). This parameter determines the resolution of the height map, which will 
    affect the precision of line detection for footprint generation. The recommended values are typically in the range
