@@ -14,8 +14,8 @@ namespace Method {
 	extern double lambda_model_height;
 	extern double lambda_model_complexity;
 
-    extern double number_region_growing;
-    extern double point_density;
+    extern double min_points;
+    extern double pixel_size;
 
 	// - two points considered coincident
 	// - a point considered to be on a plane, etc.

@@ -8,8 +8,8 @@ namespace Method
 	double lambda_model_height = 0.04;
 	double lambda_model_complexity = 0.62;
 
-    double number_region_growing=40;
-    double point_density=0.15;
+    double min_points = 40;
+    double pixel_size = 0.15;
 
 	double coincident_threshold = 1e-7;
 

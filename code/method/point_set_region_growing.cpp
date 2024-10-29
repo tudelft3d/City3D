@@ -86,7 +86,7 @@ std::vector<VertexGroup::Ptr> do_detect(
 	return results;
 }
 
-std::vector<VertexGroup::Ptr> Region_Growing_Dectetor::detect(
+std::vector<VertexGroup::Ptr> RegionGrowingDectetor::detect(
 	PointSet* pset,
 	unsigned int min_support)
 {
@@ -139,7 +139,7 @@ std::vector<VertexGroup::Ptr> Region_Growing_Dectetor::detect(
 		min_support);
 }
 
-std::vector<VertexGroup::Ptr> Region_Growing_Dectetor::detect(
+std::vector<VertexGroup::Ptr> RegionGrowingDectetor::detect(
 	PointSet* pset,
 	const std::vector<unsigned int>& vertitces,
 	unsigned int min_support    // the minimal number of points required for a primitive
@@ -273,7 +273,7 @@ std::vector<VertexGroup::Ptr> do_detect(
 	return results;
 }
 
-std::vector<VertexGroup::Ptr> Region_Growing_Dectetor::detect(
+std::vector<VertexGroup::Ptr> RegionGrowingDectetor::detect(
 	PointSet* pset,
 	unsigned int min_support)
 {
@@ -326,7 +326,7 @@ std::vector<VertexGroup::Ptr> Region_Growing_Dectetor::detect(
 
 }
 
-std::vector<VertexGroup::Ptr> Region_Growing_Dectetor::detect(
+std::vector<VertexGroup::Ptr> RegionGrowingDectetor::detect(
 	PointSet* pset,
 	const std::vector<unsigned int>& vertitces,
 	unsigned int min_support    // the minimal number of points required for a primitive

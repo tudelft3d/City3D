@@ -36,20 +36,20 @@ void WeightPanelManual::updateUI() {
 	float fitting = truncate_digits(Method::lambda_data_fitting, 3);
 	float coverage = truncate_digits(Method::lambda_model_height, 3);
 	float complexity = truncate_digits(Method::lambda_model_complexity, 3);
-    float number=Method::number_region_growing;
-    float density=Method::point_density;
+    float min_points=Method::min_points;
+    float pixel_size=Method::pixel_size;
 
 	QString text_fitting = QString("%1").arg(fitting);
 	QString text_coverage = QString("%1").arg(coverage);
 	QString text_complexity = QString("%1").arg(complexity);
-    QString text_number = QString("%1").arg(number);
-    QString text_density = QString("%1").arg(density);
+    QString text_min_points = QString("%1").arg(min_points);
+    QString text_pixel_size = QString("%1").arg(pixel_size);
 
 	lineEditFitting->setText(text_fitting);
 	lineEditHeight->setText(text_coverage);
 	lineEditComplexity->setText(text_complexity);
-    lineEditNumber->setText(text_number);
-    lineEditDensity->setText(text_density);
+    lineEditMinPoints->setText(text_min_points);
+    lineEditPixelSize->setText(text_pixel_size);
 }
 
 
@@ -57,6 +57,6 @@ void WeightPanelManual::updateWeights() {
 	Method::lambda_data_fitting = lineEditFitting->text().toFloat();
 	Method::lambda_model_height = lineEditHeight->text().toFloat();
 	Method::lambda_model_complexity = lineEditComplexity->text().toFloat();
-    Method::number_region_growing=lineEditNumber->text().toFloat();
-    Method::point_density=lineEditDensity->text().toFloat();
+    Method::min_points=lineEditMinPoints->text().toFloat();
+    Method::pixel_size=lineEditPixelSize->text().toFloat();
 }

@@ -151,7 +151,7 @@ int Reconstruction::extract_building_roof(PointSet *pset,
     std::vector<unsigned int> p_index = *building;
     std::vector<unsigned int> remaining_ind;
 
-    Region_Growing_Dectetor rg;
+    RegionGrowingDectetor rg;
     //std::cout<<"min_support: "<<min_support<<std::endl;
     const std::vector<VertexGroup::Ptr> &roofs = rg.detect(pset, p_index, min_support);
     if (roofs.empty())
@@ -201,12 +201,12 @@ bool Reconstruction::extract_roofs(PointSet *pset, Map *footprint)
         if (!g)
             continue;
         std::vector<VertexGroup::Ptr> &roofs = g->children();
-        unsigned int min_support = Method::number_region_growing;
-        num += extract_building_roof(pset, g, min_support);
-        while (roofs.empty() && min_support > 6) // Liangliang: the number must be "> 6" to avoid infinite loops
+        unsigned int min_points = Method::min_points;
+        num += extract_building_roof(pset, g, min_points);
+        while (roofs.empty() && min_points > 6) // Liangliang: the number must be "> 6" to avoid infinite loops
         {
-            num += extract_building_roof(pset, g,  min_support);
-            min_support *= 0.75;
+            num += extract_building_roof(pset, g,  min_points);
+            min_points *= 0.75;
         }
         progress.next();
     }
@@ -527,9 +527,9 @@ std::vector<std::vector<int>> Reconstruction::compute_height_field(PointSet *pse
         plg.push_back(r);
     }
 
-    //set the image resolution, a larger value for the sparser or noisy point set, usually (0.15,0.25).
-    double point_density = Method::point_density;
-    int in_x = (x_max - x_min) / point_density, in_y = (y_max - y_min) / point_density;
+    //set the pixel size of the height map, a larger value for the sparser or noisy point set, usually within (0.15, 0.3).
+    double pixel_size = Method::pixel_size;
+    int in_x = (x_max - x_min) / pixel_size, in_y = (y_max - y_min) / pixel_size;
     width_ = ogf_max(in_x, in_y);
     height_ = width_;
     int image_width = width_, image_height = height_;

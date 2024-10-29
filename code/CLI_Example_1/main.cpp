@@ -21,11 +21,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../model/map.h"
 #include "../model/map_io.h"
 #include "../model/point_set_io.h"
+#include "../method/method_global.h"
 #include "../method/reconstruction.h"
 
 
 int main(int argc, char **argv)
 {
+    ///ToDo: user may need to tune these parameters for their datasets
+    Method::min_points = 40;
+    Method::pixel_size = 0.15;
+
     const std::string directory = std::string(CITY3D_ROOT_DIR) + "/../data/";
 
     // input point cloud file name
