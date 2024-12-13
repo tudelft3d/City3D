@@ -787,14 +787,10 @@ public:
       pt, geom_traits().construct_vector_2_object()(pt, ps));
 
     boost::optional<FT> Dqt;
-    typename CGAL::cpp11::result_of<typename Traits_::Intersect_2(Line, Line)>::type
-      result = intersection(lab, lts);
-    if (result)
-    {
-      const Point* iq = boost::get<Point>(&(*result));
-      if (iq)
-        Dqt = CGAL::approximate_sqrt(geom_traits().compute_squared_distance_2_object()(*iq, pt));
-    }
+    CGAL::Object result = intersection(lab, lts);
+    const Point* iq = CGAL::object_cast<Point>(&result);
+    if (iq)
+      Dqt = CGAL::approximate_sqrt(geom_traits().compute_squared_distance_2_object()(*iq, pt));
 
     return std::make_pair( (Dabt < FT(0) ? false : true) ,Dqt );
   }

@@ -48,6 +48,7 @@ if (NOT GUROBI_FOUND)
     # Hardcoded search paths
     set(SEARCH_PATHS_FOR_HEADERS
             "$ENV{GUROBI_HOME}/include"
+            "/Library/gurobi1200/macos_universal2/include"
             "/Library/gurobi1003/macos_universal2/include"
             "/Library/gurobi952/macos_universal2/include"
             "/home/liangliang/dev/gurobi952/include"
@@ -57,6 +58,7 @@ if (NOT GUROBI_FOUND)
 
     set(SEARCH_PATHS_FOR_LIBRARIES
             "$ENV{GUROBI_HOME}/lib"
+            "/Library/gurobi1200/macos_universal2/lib"
             "/Library/gurobi1003/macos_universal2/lib"
             "/Library/gurobi952/macos_universal2/lib"
             "/home/liangliang/dev/gurobi952/lib"
@@ -70,7 +72,7 @@ if (NOT GUROBI_FOUND)
 
 
     find_library(GUROBI_C_LIBRARY
-            NAMES gurobi100 libgurobi
+            NAMES gurobi120 gurobi100 libgurobi
             PATHS ${SEARCH_PATHS_FOR_LIBRARIES}
             )
 

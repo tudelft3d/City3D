@@ -1,14 +1,15 @@
-# ------------------------------------------------------------------------------
-#      Copyright (C) 2015 by Liangliang Nan (liangliang.nan@gmail.com)
+# *************************************************************************
+#      Copyright (C) 2015 Liangliang Nan <liangliang.nan@gmail.com>
 #      https://3d.bk.tudelft.nl/liangliang/
 #
 #      This file is part of Easy3D. If it is useful in your research/work,
 #      I would be grateful if you show your appreciation by citing it:
-#       ------------------------------------------------------------------
+#      ------------------------------------------------------------------
 #           Liangliang Nan.
-#           Easy3D: a lightweight, easy-to-use, and efficient C++
-#           library for processing and rendering 3D data. 2018.
-#       ------------------------------------------------------------------
+#           Easy3D: a lightweight, easy-to-use, and efficient C++ library
+#           for processing and rendering 3D data.
+#           Journal of Open Source Software, 6(64), 3255, 2021.
+#      ------------------------------------------------------------------
 #
 #      Easy3D is free software; you can redistribute it and/or modify
 #      it under the terms of the GNU General Public License Version 3
@@ -21,7 +22,7 @@
 #
 #      You should have received a copy of the GNU General Public License
 #      along with this program. If not, see <http://www.gnu.org/licenses/>.
-# ------------------------------------------------------------------------------
+# *************************************************************************
 
 
 # ------------------------------------------------------------------------------
@@ -37,7 +38,7 @@
 #           target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Gui Qt5::Widgets Qt5::OpenGL)
 #       ------------------------------------------------------------------------
 # NOTE: 'UseQt5.cmake' must be included after you define your project but before
-#       'add_executable()' or'add_library()'.
+#       'add_executable()' or 'add_library()'.
 #
 #   The recommended way to specify libraries and headers with CMake is to use the
 #   target_link_libraries command. This command automatically adds appropriate
@@ -56,7 +57,6 @@ set(QT5_ROOT_PATH CACHE PATH "Qt5 root directory (i.e. where the 'bin' folder li
 if (QT5_ROOT_PATH)
     list(APPEND CMAKE_PREFIX_PATH ${QT5_ROOT_PATH})
 endif ()
-
 
 # find qt5 components
 find_package(Qt5 COMPONENTS Core Gui OpenGL Widgets)
@@ -77,12 +77,15 @@ if (QT5_FOUND)
     get_target_property(QT5_LIB_LOCATION Qt5::Core LOCATION_${CMAKE_BUILD_TYPE})
     get_filename_component(QT_BINARY_DIR ${QT5_LIB_LOCATION} DIRECTORY)
 
-    # Apple uses frameworks - move up until we get to the base directory to set the bin directory properly
     if (APPLE)
+        # Apple uses frameworks - move up until we get to the base directory to set the bin directory properly
         get_filename_component(QT_BINARY_DIR ${QT_BINARY_DIR} DIRECTORY)
-        set(QT_BINARY_DIR "${QT_BINARY_DIR}/bin")
-
-        set(MACDEPLOYQT "${QT_BINARY_DIR}/macdeployqt")
+        set(QT_BINARY_DIR ${QT_BINARY_DIR}/bin)
+        set(MACDEPLOYQT ${QT_BINARY_DIR}/macdeployqt)
+        message(STATUS "macdeployqt: ${MACDEPLOYQT}")
+    elseif(WIN32)
+        set(WINDEPLOYQT ${QT_BINARY_DIR}/windeployqt.exe)
+        message(STATUS "windeployqt: ${WINDEPLOYQT}")
     endif ()
 
     # set QT5_ROOT_PATH if it wasn't set by the user

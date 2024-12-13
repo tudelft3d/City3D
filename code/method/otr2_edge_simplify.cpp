@@ -242,8 +242,8 @@ std::vector<vec3> Otr2_edge_sim::cluster_lines(Otr_2 &otr2, Map::Facet *footprin
         avg_dir /= total_len;
         Line cen_line(Point(cen.x, cen.y), Vector(avg_dir.x, avg_dir.y));
         CGAL::Iso_rectangle_2<K> abox(Point(cls_xmin, cls_ymin), Point(cls_xmax, cls_ymax));
-        auto result = CGAL::intersection(abox, cen_line);
-        if (const Segment *s = boost::get<Segment>(&*result))
+        CGAL::Object result = CGAL::intersection(abox, cen_line);
+        if (const Segment *s = CGAL::object_cast<Segment>(&result))
         {
             output_points.push_back(s->point(0));
             output_points.push_back(s->point(1));

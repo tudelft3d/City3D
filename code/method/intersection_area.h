@@ -130,28 +130,23 @@ double intersection_area(std::vector<vec2> s, std::vector<vec2> t)
                 {
                     icount++;
                     auto tr_j = cdt1.triangle(j);
-                    auto object = CGAL::intersection(tr_i, tr_j);
-                    if (object)
+                    CGAL::Object object = CGAL::intersection(tr_i, tr_j);
+
+                    if (const Triangle *ptr = CGAL::object_cast<Triangle>(&object))
+                        area_inter += CGAL::abs((*ptr).area());
+                    else if (const std::vector<Point_2> *ptr = CGAL::object_cast<std::vector<Point_2> >(&object))
                     {
-                        if (const Triangle *ptr = boost::get<Triangle>(&*object))
-                        {
-                            area_inter += CGAL::abs((*ptr).area());
-                        } else if (const std::vector<Point_2> *ptr = boost::get<std::vector<Point_2> >(&*object))
-                        {
-                            std::vector<Point_2> v = (*ptr);
-                            if (v.size() < 3)
-                            { std::cout << "nononono................." << std::endl; }
+                        std::vector<Point_2> v = (*ptr);
+                        if (v.size() < 3)
+                        { std::cout << "nononono................." << std::endl; }
 
-                            for (size_t k = 1; k < v.size() - 1; k++)
-                            {
-                                Triangle t_k(v[0], v[k], v[k + 1]);
-                                area_inter += CGAL::abs((t_k).area());
-                            }
-
+                        for (size_t k = 1; k < v.size() - 1; k++)
+                        {
+                            Triangle t_k(v[0], v[k], v[k + 1]);
+                            area_inter += CGAL::abs((t_k).area());
                         }
 
                     }
-
                 }
             }
         }
