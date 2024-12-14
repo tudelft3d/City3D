@@ -39,10 +39,28 @@ set(${PROJECT_NAME}_FORMS
 set(${PROJECT_NAME}_RESOURCES
         Resources/City3D.qrc
         Resources/City3D.rc
+        Resources/City3D.icns
         )
 
 if (APPLE)
-    add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${${PROJECT_NAME}_HEADERS} ${${PROJECT_NAME}_SOURCES} ${${PROJECT_NAME}_FORMS} ${${PROJECT_NAME}_RESOURCES})
+    # set also the icon
+    # This tells CMake where to find and install the ICON file
+    set(${PROJECT_NAME}_ICON ${CMAKE_CURRENT_SOURCE_DIR}/Resources/City3D.icns)
+    set_source_files_properties(${${PROJECT_NAME}_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
+
+    add_executable( ${PROJECT_NAME} MACOSX_BUNDLE ${${PROJECT_NAME}_ICON} ${${PROJECT_NAME}_HEADERS} ${${PROJECT_NAME}_SOURCES} ${${PROJECT_NAME}_FORMS} ${${PROJECT_NAME}_RESOURCES} )
+
+    set_source_files_properties(${${PROJECT_NAME}_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
+
+    ## Note: On macOS, high-DPI support is enabled by settings in the Info.plist file. Make sure they are present.
+    ## For more information, see: http://doc.qt.io/qt-5/highdpi.html
+    ## Enable high DPI support by using my Info.plist file in which I added NSHighResolutionCapable to be true.
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+            INSTALL_RPATH "@executable_path/../Frameworks"
+            MACOSX_BUNDLE_BUNDLE_NAME ${PROJECT_NAME}
+            MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/Mac/City3D.plist"
+            MACOSX_BUNDLE_ICON_FILE City3D.icns
+            )
 elseif (MINGW)
     set(CMAKE_RC_COMPILER_INIT windres)
     enable_language(RC)
@@ -66,10 +84,3 @@ target_include_directories(${PROJECT_NAME} PRIVATE ${CITY3D_ROOT})
 
 target_link_libraries(${PROJECT_NAME} ${QtLibs})
 target_link_libraries(${PROJECT_NAME} basic math model method renderer 3rd_glew 3rd_QGLViewer)
-
-# Note: On macOS, high-DPI support is enabled by settings in the Info.plist file. Make sure they are present.
-# For more information, see: http://doc.qt.io/qt-5/highdpi.html
-# Enable high DPI support by using my Info.plist file in which I added NSHighResolutionCapable to be true.
-if (APPLE)
-    set_target_properties(${PROJECT_NAME} PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/Mac/LOD2.plist)
-endif ()

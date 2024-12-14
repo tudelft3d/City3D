@@ -4,10 +4,12 @@
         <file>filesave.png</file>
         <file>snap_shot.png</file>
         <file>about.png</file>
-        <file>City3D.png</file>
         <file>step1.png</file>
         <file>step2.png</file>
         <file>step3.png</file>
         <file>perspective.png</file>
+        <file>City3D.png</file>
+        <file>City3D.ico</file>
+        <file>City3D.icns</file>
     </qresource>
 </RCC>
