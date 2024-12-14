@@ -24,7 +24,9 @@ You can build City3D from the source code˙
 
 * Download the [source code](https://github.com/tudelft3d/City3D).
 * Dependencies (Attention for Windows users: ALL dependencies must be for `x64`)
-    - [Qt](https://www.qt.io/) (v5.12 and later). This is required by only the [GUI demo](https://github.com/tudelft3d/City3D/tree/main/code/City3D) of City3D. 
+    - [Qt](https://www.qt.io) ([v5.14.2](https://download.qt.io/archive/qt/5.14/5.14.2/),
+      [v5.12.12](https://download.qt.io/archive/qt/5.12/5.12.12/), and [v6.7.3](https://www.qt.io/download-qt-installer-oss)
+      have been tested). This is required by only the [GUI demo](https://github.com/tudelft3d/City3D/tree/main/code/City3D) of City3D. 
       Without Qt, you should still be able to build the two command-line programs [CLI_Example_1](https://github.com/tudelft3d/City3D/tree/main/code/CLI_Example_1) and [CLI_Example_2](https://github.com/tudelft3d/City3D/tree/main/code/CLI_Example_2).
     - [CGAL](http://www.cgal.org/index.html) (v5.6, v5.5 and v5.4 have been tested). Newer versions of CGAL (v5.6 and later) are always preferred for better performance.
     - [OpenCV](https://opencv.org/releases/) (v4.0 and later, only the main modules are needed).
