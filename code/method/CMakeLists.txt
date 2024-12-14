@@ -41,6 +41,9 @@ set(method_SOURCES
 add_library(${PROJECT_NAME} STATIC ${method_SOURCES} ${method_HEADERS})
 set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER "City3D")
 
+if (POLICY CMP0167)
+    cmake_policy(SET CMP0167 NEW)
+endif ()
 find_package(CGAL REQUIRED COMPONENTS Core)
 if (CGAL_FOUND)
     message(STATUS "Found CGAL v${CGAL_VERSION}: ${CGAL_INCLUDE_DIRS}")

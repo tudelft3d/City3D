@@ -10,8 +10,6 @@ if (NOT Qt6_FOUND AND NOT Qt5_FOUND)
     return()
 endif ()
 
-find_package(Qt5 COMPONENTS Xml)
-
 set(${PROJECT_NAME}_HEADERS
         main_window.h
         paint_canvas.h
