@@ -25,8 +25,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <QSettings>
 #include <QCloseEvent>
 #include <QPlainTextEdit>
-#include <QGroupBox>
-#include <QColorDialog>
 #include <QProgressBar>
 #include <QMimeData>
 #include <QComboBox>
@@ -39,16 +37,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "dlg/weight_panel_click.h"
 #include "dlg/weight_panel_manual.h"
 
-#include "../basic/logger.h"
 #include "../basic/file_utils.h"
-#include "../model/map.h"
-#include "../model/point_set.h"
-#include "../model/map_attributes.h"
-#include "../model/map_copier.h"
 #include "../model/map_builder.h"
 #include "../model/map_io.h"
 #include "../model/map_serializer_json.h"
-#include "../model/map_enumerator.h"
 #include "../model/point_set_io.h"
 #include "../method/method_global.h"
 #include "../basic/attribute_serializer.h"
@@ -111,13 +103,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 	//////////////////////////////////////////////////////////////////////////
 
-	// Setup the format to allow anti-aliasing if the graphic driver allows this.
-	QGLFormat format = QGLFormat::defaultFormat();
-	format.setProfile(QGLFormat::CompatibilityProfile);
-	format.setSampleBuffers(true); // you can also call setOption(QGL::SampleBuffers)
-	format.setSamples(8);  // 8 is enough
-
-	mainCanvas_ = new PaintCanvas(this, format);
+	mainCanvas_ = new PaintCanvas(this);
 	mainCanvas_->setAttribute(Qt::WA_MouseTracking);
 	mainCanvas_->setMouseTracking(true);
 	layoutCanvas->addWidget(mainCanvas_);

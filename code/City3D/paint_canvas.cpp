@@ -20,38 +20,26 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "paint_canvas.h"
 #include "main_window.h"
 #include "dlg/wgt_render.h"
-#include "../3rd_party/3rd_QGLViewer-2.6.3/manipulatedCameraFrame.h"
-#include "../3rd_party/3rd_QGLViewer-2.6.3/camera.h"
-#include "../basic/file_utils.h"
-#include "../basic/stop_watch.h"
-#include "../model/map.h"
+#include "../3rd_party/3rd_QGLViewer/QGLViewer/manipulatedCameraFrame.h"
 #include "../model/map_editor.h"
 #include "../model/map_geometry.h"
-#include "../model/point_set.h"
-#include "../model/vertex_group.h"
 #include "../renderer/opengl_info.h"
 #include "../renderer/mesh_render.h"
 #include "../renderer/point_set_render.h"
-#include "../renderer/rendering_styles.h"
 #include "../renderer/tessellator.h"
-#include "../model/map_circulators.h"
-#include "../method/method_global.h"
 #include "../method/reconstruction.h"
 #include "../method/point_set_normals.h"
 
-#include <QFileDialog>
 #include <QMouseEvent>
 #include <QMessageBox>
-#include <QColorDialog>
 
-#include <cassert>
 #include <fstream>
 #include <algorithm>
 
 
 using namespace qglviewer;
-PaintCanvas::PaintCanvas(QWidget *parent, QGLFormat format)
-	: QGLViewer(format, parent)
+PaintCanvas::PaintCanvas(QWidget *parent)
+	: QGLViewer(parent)
 	, coord_system_region_size_(150)
 	, show_coord_sys_(true)
 	, point_set_(nil)
@@ -221,35 +209,7 @@ void PaintCanvas::draw() {
 		glDisable(GL_LIGHTING);
 		MeshRender::draw();
 	}
-
-	//const static QFont font("Tekton Pro Ext", 12/*, QFont::Bold*/); // "Times", "Helvetica", "Bradley Hand ITC"
-	//if (show_hint_text_) {
-	//	if (!hint_text_.isEmpty()) {
-	//		glColor3f(0, 0, 0.7f);
-	//		drawText(30, 40, hint_text_, font);
-	//		if (!hint_text2nd_.isEmpty())
-	//			drawText(30, 70, hint_text2nd_, font);
-	//	}
-	//}
-
-	//if (show_mouse_hint_) {
-	//	glColor3f(0, 0, 0);
-	//	drawText(30, 120, "Mouse Operations:", font);
-	//	drawText(30, 150, "  - Orbit: left button", font);
-	//	drawText(30, 180, "  - Pan:   right button", font);
-	//	drawText(30, 210, "  - Zoom:  wheel", font);
-	//}
 }
-
-void PaintCanvas::mouseMoveEvent(QMouseEvent* e)
-{
-	bool found = false;
-	qglviewer::Vec p = camera()->pointUnderPixel(e->pos(), found);
-	main_window_->showCoordinateUnderMouse(vec3(p.x, p.y, p.z), found);
-
-	QGLViewer::mouseMoveEvent(e);
-}
-
 
 
 void PaintCanvas::keyPressEvent(QKeyEvent *e) {
@@ -271,12 +231,12 @@ void PaintCanvas::snapshotScreen() {
 	if (need_hide)
 		show_coord_sys_ = true;
 
-	updateGL();
+	update();
 }
 
 
 void PaintCanvas::update_graphics() {
-	updateGL();
+	update();
 
 	// This approach has significant drawbacks. For example, imagine you wanted to perform two such loops 
 	// in parallel-calling one of them would effectively halt the other until the first one is finished 
@@ -288,7 +248,7 @@ void PaintCanvas::update_graphics() {
 }
 
 void PaintCanvas::update_all() {
-	updateGL();
+	update();
 	main_window_->updateStatusBar();
 
 	// This approach has significant drawbacks. For example, imagine you wanted to perform two such loops 
@@ -303,7 +263,7 @@ void PaintCanvas::update_all() {
 
 void PaintCanvas::showCoordinateSystem(bool b) {
 	show_coord_sys_ = b;
-	updateGL();
+	update();
 }
 
 
@@ -313,7 +273,7 @@ void PaintCanvas::fitScreen(const Box3d& box) {
 
 	setSceneBoundingBox(vmin, vmax);
 	showEntireScene();
-	updateGL();
+	update();
 }
 
 void PaintCanvas::fitAll() {
@@ -335,7 +295,7 @@ void PaintCanvas::drawCornerAxis()
 {
 	glEnable(GL_MULTISAMPLE);
 
-	// The viewport and the scissor are changed to fit the lower left
+	// The viewport and scissor are changed to fit the lower left
 	// corner. Original values are saved.
 	int viewport[4];
 	int scissor[4];
@@ -368,18 +328,6 @@ void PaintCanvas::drawCornerAxis()
 	float axis_size = 0.9f; // other 0.2 space for drawing the x, y, z labels
 	drawAxis(axis_size);
 
-	// Draw text id
-	glColor3f(0, 0, 0);
-
-	// Liangliang: It seems the renderText() func disables multi-sample.
-	// Is this a bug in Qt ?
-	GLboolean anti_alias = glIsEnabled(GL_MULTISAMPLE);
-	const_cast<PaintCanvas*>(this)->renderText(axis_size, 0, 0, "X");
-	const_cast<PaintCanvas*>(this)->renderText(0, axis_size, 0, "Y");
-	const_cast<PaintCanvas*>(this)->renderText(0, 0, axis_size, "Z");
-	if (anti_alias)
-		glEnable(GL_MULTISAMPLE);
-
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();
 
@@ -388,7 +336,7 @@ void PaintCanvas::drawCornerAxis()
 
 	//////////////////////////////////////////////////////////////////////////
 
-	// The viewport and the scissor are restored.
+	// The viewport and scissor are restored.
 	glScissor(scissor[0], scissor[1], scissor[2], scissor[3]);
 	glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
 }
@@ -542,97 +490,6 @@ void PaintCanvas::setShowReconstruction(bool b) {
 	MeshRender::invalidate();
 
 	update_all();
-}
-
-void PaintCanvas::saveStateAsMappleFormat() {
-	std::string str = FileUtils::replace_extension(stateFileName().toStdString(), "state");
-	QString name = QString::fromStdString(str);
-	if (name.isEmpty())
-		return;
-
-	// Write the state to file
-	std::ofstream output(name.toStdString().c_str());
-	if (output.fail()) {
-		QMessageBox::warning(window(), tr("Save state to file error"), tr("Unable to create file %1").arg(name));
-		return;
-	}
-
-	//-----------------------------------------------------
-
-	// first line is just a comment
-	output << "<Mapple state file version 263>" << std::endl << std::endl;
-
-	//-----------------------------------------------------
-
-	// write foreground and background colors
-	output << "<color>" << std::endl;
-	QColor fc = foregroundColor();
-	output << "\t foreground: " << fc.red() << " " << fc.green() << " " << fc.blue() << std::endl;
-	QColor bc = backgroundColor();
-	output << "\t background: " << bc.red() << " " << bc.green() << " " << bc.blue() << std::endl;
-	output << "</color>" << std::endl << std::endl;
-
-	//-----------------------------------------------------
-
-	// Revolve or fly camera mode is not saved
-	// ...
-
-	//-----------------------------------------------------
-
-	output << "<display>" << std::endl;
-	output << "\t cameraIsEdited: " << cameraIsEdited() << std::endl;
-	output << "\t gridIsDrawn: " << gridIsDrawn() << std::endl;
-	output << "\t axisIsDrawn: " << axisIsDrawn() << std::endl;
-	output << "\t FPSIsDisplayed: " << FPSIsDisplayed() << std::endl;
-	output << "</display>" << std::endl << std::endl;
-
-	//-----------------------------------------------------
-
-	output << "<windowState>" << std::endl;
-	output << "\t state: " << window()->windowState() << std::endl;;
-	if (window()->windowState() == Qt::WindowNoState) {
-		output << "\t size: " << window()->width() << " " << window()->height() << std::endl;
-		output << "\t position: " << window()->pos().x() << " " << window()->pos().y() << std::endl;
-	}
-	output << "</windowState>" << std::endl << std::endl;
-
-	//-----------------------------------------------------
-
-	output << "<camera>" << std::endl;
-	// Restore original QCamera zClippingCoefficient before saving.
-	if (cameraIsEdited())
-		camera()->setZClippingCoefficient(previousCameraZClippingCoefficient_);
-
-	switch (camera()->type()) {
-	case Camera::PERSPECTIVE:	output << "\t type: " << "PERSPECTIVE" << std::endl;	break;
-	case Camera::ORTHOGRAPHIC:	output << "\t type: " << "ORTHOGRAPHIC" << std::endl;	break;
-	}
-	output << "\t zClippingCoefficient: " << QString::number(camera()->zClippingCoefficient()).toStdString() << std::endl;
-	output << "\t zNearCoefficient: " << QString::number(camera()->zNearCoefficient()).toStdString() << std::endl;
-	output << "\t sceneRadius: " << QString::number(camera()->sceneRadius()).toStdString() << std::endl;
-	output << "\t orthoCoefficient: " << QString::number(camera()->orthoCoefficient()).toStdString() << std::endl;
-	output << "\t fieldOfView: " << QString::number(camera()->fieldOfView()).toStdString() << std::endl;
-	output << "\t sceneCenter: " << camera()->sceneCenter() << std::endl;
-
-	// ManipulatedCameraFrame
-	output << "\t position: " << camera()->frame()->position() << std::endl;
-	output << "\t orientation: " << camera()->frame()->orientation() << std::endl;
-	output << "\t wheelSens: " << camera()->frame()->wheelSensitivity() << std::endl;
-	output << "\t rotSens: " << camera()->frame()->rotationSensitivity() << std::endl;
-	output << "\t zoomSens: " << camera()->frame()->zoomSensitivity() << std::endl;
-	output << "\t spinSens: " << camera()->frame()->spinningSensitivity() << std::endl;
-	output << "\t transSens: " << camera()->frame()->translationSensitivity() << std::endl;
-
-	output << "\t zoomsOnPivotPoint: " << camera()->frame()->zoomsOnPivotPoint() << std::endl;
-	output << "\t pivotPoint: " << camera()->frame()->pivotPoint() << std::endl;
-	output << "\t rotatesAroundUpVector: " << camera()->frame()->rotatesAroundUpVector() << std::endl;
-	output << "\t flySpeed: " << camera()->frame()->flySpeed() << std::endl;
-	output << "\t sceneUpVector: " << camera()->frame()->sceneUpVector() << std::endl;
-
-	if (cameraIsEdited())
-		// #CONNECTION# 5.0 from setCameraIsEdited()
-		camera()->setZClippingCoefficient(5.0);
-	output << "</camera>" << std::endl << std::endl;
 }
 
 void PaintCanvas::estimateNormals() {

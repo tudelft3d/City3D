@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define PAINTCANVAS_H
 
 #include "../3rd_party/3rd_glew/include/GL/glew.h"
-#include "../3rd_party/3rd_QGLViewer-2.6.3/qglviewer.h"
+#include "../3rd_party/3rd_QGLViewer/QGLViewer/qglviewer.h"
 #include "../basic/color.h"
 #include "../math/math_types.h"
 #include "../basic/canvas.h"
@@ -37,7 +37,7 @@ class PaintCanvas : public QGLViewer
 	Q_OBJECT
 
 public:
-	PaintCanvas(QWidget *parent, QGLFormat format);
+	PaintCanvas(QWidget *parent);
 	~PaintCanvas();
 
 public:
@@ -75,9 +75,6 @@ protected:
 	virtual void draw();
 	virtual void init();
 
-	// Mouse events functions
-	virtual void mouseMoveEvent(QMouseEvent *e);
-
 	// Keyboard events functions
 	virtual void keyPressEvent(QKeyEvent *e);
 
@@ -98,8 +95,6 @@ public Q_SLOTS:
 	void setShowPointSet(bool);
 	void setShowFootPrint(bool);
 	void setShowReconstruction(bool);
-
-	void saveStateAsMappleFormat();
 
 private :
 	void drawCornerAxis();

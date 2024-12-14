@@ -1,9 +1,5 @@
-cmake_minimum_required(VERSION 3.12)
-
 get_filename_component(PROJECT_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 project(${PROJECT_NAME})
-
-
 
 add_library(${PROJECT_NAME} STATIC src/glew.c)
 
@@ -17,6 +13,7 @@ target_compile_definitions(${PROJECT_NAME} PUBLIC GLEW_STATIC GLEW_NO_GLU)
 
 set (OpenGL_GL_PREFERENCE GLVND)
 find_package(OpenGL REQUIRED)
+message(STATUS "OpenGL libraries: ${OPENGL_LIBRARIES}")
 target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES})
 
 

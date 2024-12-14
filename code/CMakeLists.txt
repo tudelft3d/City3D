@@ -17,7 +17,9 @@ endif()
 
 ################################################################################
 
-set (CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+message("-- Setting C++11")
 
 ################################################################################
 
@@ -38,7 +40,7 @@ set(POLYFIT_INCLUDE_DIR  ${CITY3D_ROOT}  ${CMAKE_CURRENT_BINARY_DIR})
 set(POLYFIT_SOURCE_DIR   ${CITY3D_ROOT})
 
 set(3RD_PARTY_DIR   ${CITY3D_ROOT}/3rd_party)
-set(POLYFIT_qglviewer_DIR           ${3RD_PARTY_DIR}/3rd_QGLViewer-2.6.3)
+set(POLYFIT_qglviewer_DIR           ${3RD_PARTY_DIR}/3rd_QGLViewer)
 set(POLYFIT_scip_DIR                ${3RD_PARTY_DIR}/3rd_scip)
 set(POLYFIT_soplex_DIR              ${3RD_PARTY_DIR}/3rd_soplex)
 set(POLYFIT_glew_DIR                ${3RD_PARTY_DIR}/3rd_glew)
@@ -47,6 +49,9 @@ set(POLYFIT_eigen_DIR               ${3RD_PARTY_DIR}/3rd_eigen-3.3.7)
 ### conditionally compile certain modules depending on libraries found on the system
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
 
+if (POLICY CMP0167)
+        cmake_policy(SET CMP0167 NEW)
+endif ()
 find_package(Boost REQUIRED)
 if (Boost_FOUND)
         message(STATUS "Found Boost-${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_BUGFIX_VERSION}")
@@ -65,7 +70,7 @@ SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY
 
 add_subdirectory(3rd_party/3rd_scip)
 add_subdirectory(3rd_party/3rd_soplex)
-add_subdirectory(3rd_party/3rd_QGLViewer-2.6.3)
+add_subdirectory(3rd_party/3rd_QGLViewer)
 add_subdirectory(3rd_party/3rd_glew)
 add_subdirectory(3rd_party/3rd_rply)
 add_subdirectory(3rd_party/3rd_LAStools)

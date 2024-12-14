@@ -3,12 +3,10 @@ cmake_minimum_required(VERSION 3.12)
 get_filename_component(PROJECT_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 project(${PROJECT_NAME})
 
-include(../cmake/UseQt5.cmake)
-if (NOT QT5_FOUND)
-    message(WARNING "${PROJECT_NAME} requires Qt but Qt was not found. You can set 'Qt5_DIR' to the "
-            "directory containing 'Qt5Config.cmake' or 'qt5-config.cmake' in 'CMakeCache.txt'. "
-            "Optionally, you can set the Qt5 root directory 'QT5_ROOT_PATH' to the directory "
-            "containing the 'bin' folder.")
+include(../cmake/UseQt.cmake)
+if (NOT Qt6_FOUND AND NOT Qt5_FOUND)
+    message(WARNING "${PROJECT_NAME} requires Qt (Qt6 or Qt5), but Qt was not found. You can set 'Qt*_DIR' to the "
+            "directory containing 'Qt*Config.cmake' or 'qt*-config.cmake' (* is 5 or 6) to specify the location of Qt.")
     return()
 endif ()
 
@@ -66,13 +64,8 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE QT_DEPRECATED_WARNINGS)
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${CITY3D_ROOT})
 
-target_link_libraries(${PROJECT_NAME} Qt5::Core)
-target_link_libraries(${PROJECT_NAME} Qt5::Gui)
-target_link_libraries(${PROJECT_NAME} Qt5::Widgets)
-target_link_libraries(${PROJECT_NAME} Qt5::OpenGL)
-target_link_libraries(${PROJECT_NAME} Qt5::Xml)
-
-target_link_libraries(${PROJECT_NAME} basic math model method renderer 3rd_glew 3rd_QGLViewer-2.6.3)
+target_link_libraries(${PROJECT_NAME} ${QtLibs})
+target_link_libraries(${PROJECT_NAME} basic math model method renderer 3rd_glew 3rd_QGLViewer)
 
 # Note: On macOS, high-DPI support is enabled by settings in the Info.plist file. Make sure they are present.
 # For more information, see: http://doc.qt.io/qt-5/highdpi.html
