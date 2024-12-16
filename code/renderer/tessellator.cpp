@@ -2,7 +2,6 @@
 #include "../model/map.h"
 #include "../model/map_attributes.h"
 #include "../model/map_geometry.h"
-#include "../basic/color.h"
 #include "../basic/logger.h"
 
 #ifdef _WIN32
