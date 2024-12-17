@@ -51,8 +51,11 @@ std::vector<vec3> Otr2_edge_sim::edge_simplify(std::vector<std::vector<int>> edg
             }
         }
     }
-
+    if(!points.size())
+        return std::vector<vec3>();
     Otr_2 otr2(points);
+    if (!otr2.number_of_all_edges())
+        return std::vector<vec3>();
     FT m = 0;
     FT sigma_d = 0.25;
     FT tolerance = 2.0;

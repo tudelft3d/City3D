@@ -147,6 +147,8 @@ AlphaShape::AlphaShape(InputIterator first, InputIterator beyond) {
 		// merge the two maps
 		initialize_alpha_spectrum();
 	}
+    if(!get_all_finite_facets().size())
+        return;
 
 	Alpha_iterator alpha = find_optimal_alpha(1);
 	if (alpha == alpha_end())
