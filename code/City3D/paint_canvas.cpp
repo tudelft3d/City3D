@@ -18,6 +18,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 #include "paint_canvas.h"
+
+#include <fstream>
+#include <QMouseEvent>
+#include <QMessageBox>
+
 #include "main_window.h"
 #include "dlg/wgt_render.h"
 #include "../3rd_party/3rd_QGLViewer/QGLViewer/manipulatedCameraFrame.h"
@@ -30,14 +35,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../method/reconstruction.h"
 #include "../method/point_set_normals.h"
 
-#include <QMouseEvent>
-#include <QMessageBox>
-
-#include <fstream>
-#include <algorithm>
-
 
 using namespace qglviewer;
+
 PaintCanvas::PaintCanvas(QWidget *parent)
 	: QGLViewer(parent)
 	, coord_system_region_size_(150)
@@ -69,9 +69,6 @@ PaintCanvas::PaintCanvas(QWidget *parent)
 
 
 PaintCanvas::~PaintCanvas() {
-//	// this is required by the following destruction of textures, shaders, etc.
-//	makeCurrent();
-
 	delete point_set_render_;
 	Tessellator::terminate();
 	MeshRender::terminate();
@@ -174,31 +171,16 @@ void PaintCanvas::init()
 	glMaterialfv(GL_FRONT, GL_SPECULAR, specular);
 	glMaterialf(GL_FRONT, GL_SHININESS, shininess);
 
-	////////////////////////////////////////////////////////////////////////////
-
-	// 	// make the back side different
-	// 	float back_specular[] = { 0.0f, 0.0f, 0.0f, 1.0f };
-	// 	float back_shininess = 128;
-	// 	float ambient_back[]  = {0.0f, 1.0f, 0.0f, 1.0f};
-	// 	glMaterialfv(GL_BACK, GL_SPECULAR, back_specular);
-	// 	glMaterialf(GL_BACK, GL_SHININESS, back_shininess);
-	// 	glMaterialfv(GL_BACK, GL_AMBIENT, ambient_back);
-
 	////////////////////////////////////////////////////////////////////////
 
 	// to use facet color, the GL_COLOR_MATERIAL should be enabled
 	glEnable(GL_COLOR_MATERIAL);
-	// to use material color, the GL_COLOR_MATERIAL should be disabled
-	//glDisable(GL_COLOR_MATERIAL);
 
 	setFPSIsDisplayed(false);
 }
 
 
 void PaintCanvas::draw() {
-	if (show_coord_sys_)
-		drawCornerAxis();
-
 	if (point_set_ && show_point_set_ && point_set_render_)
 		point_set_render_->draw(point_set_);
 
@@ -209,6 +191,9 @@ void PaintCanvas::draw() {
 		glDisable(GL_LIGHTING);
 		MeshRender::draw();
 	}
+
+    if (show_coord_sys_)
+        drawCornerAxis();
 }
 
 
