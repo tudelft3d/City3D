@@ -13,7 +13,10 @@
 #  if defined(__APPLE__) && defined(__MACH__)
 #    include <OpenGL/glu.h>
 #  else
-#    include <GL/glu.h>
+#ifdef WIN32
+#include <windows.h>
+#endif
+# include <GL/glu.h>
 #  endif
 
 
