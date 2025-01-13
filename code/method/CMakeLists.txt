@@ -64,4 +64,6 @@ endif ()
 target_include_directories(${PROJECT_NAME} PRIVATE ${POLYFIT_eigen_DIR})
 
 find_package(OpenCV REQUIRED COMPONENTS core imgproc)
+message(STATUS "OpenCV_INCLUDE_DIRS: ${OpenCV_INCLUDE_DIRS}")
+message(STATUS "OpenCV_LIBS: ${OpenCV_LIBS}")
 target_link_libraries(${PROJECT_NAME} basic math model renderer ${OpenCV_LIBS})
