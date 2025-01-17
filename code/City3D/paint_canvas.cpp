@@ -181,6 +181,8 @@ void PaintCanvas::init()
 
 
 void PaintCanvas::draw() {
+    ogf_check_gl;
+
 	if (point_set_ && show_point_set_ && point_set_render_)
 		point_set_render_->draw(point_set_);
 
